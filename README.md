@@ -1,3 +1,3 @@
 # Site étudiant
 
-[![GitHub release](https://img.shields.io/github/release/qubyte/rubidium.svg)]()
+[![GitHub release](https://img.shields.io/github/release/antoine1003/site-etudiants.svg)]()
