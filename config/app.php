@@ -183,7 +183,8 @@ return [
         Jrean\UserVerification\UserVerificationServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
-        Themsaid\Langman\LangmanServiceProvider::class
+        Themsaid\Langman\LangmanServiceProvider::class,
+        PendoNL\LaravelFontAwesome\LaravelFontAwesomeServiceProvider::class,
 
     ],
 
@@ -238,6 +239,7 @@ return [
         'UserVerification' => Jrean\UserVerification\Facades\UserVerification::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'LaravelLocalization' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::class,
+        'FontAwesome' => PendoNL\LaravelFontAwesome\Facade::class,
     ],
 
 ];

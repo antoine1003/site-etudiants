@@ -11,12 +11,16 @@ class WelcomeController extends Controller
 {
     public function index()
     {
-    	flash('Bonsoir')->success();
-    	return view('welcome');
+    	return view('main.home');
     }
 
     public function flashs()
     {
 		return view('flash');
+    }
+
+    public function login()
+    {
+    	return view('main.login');
     }
 }

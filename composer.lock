@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "5fcfc33eb3ebfbd08a5c94af43000f19",
+    "content-hash": "851d9749c5400c405cd2a0f608fa3500",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -1098,6 +1098,45 @@
                 "random"
             ],
             "time": "2017-03-13T16:27:32+00:00"
+        },
+        {
+            "name": "pendonl/laravel-fontawesome",
+            "version": "v1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PendoNL/laravel-fontawesome.git",
+                "reference": "d5bca89375bc25ec08c7ec3885bc2ebbe5c13279"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PendoNL/laravel-fontawesome/zipball/d5bca89375bc25ec08c7ec3885bc2ebbe5c13279",
+                "reference": "d5bca89375bc25ec08c7ec3885bc2ebbe5c13279",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PendoNL\\LaravelFontAwesome\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Joshua de Gier",
+                    "email": "info@pendo.nl"
+                }
+            ],
+            "description": "Laravel helper for FontAwesome icons",
+            "time": "2016-11-11T16:42:56+00:00"
         },
         {
             "name": "psr/log",

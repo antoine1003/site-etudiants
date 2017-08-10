@@ -404,6 +404,7 @@
                     </nav>
                     <div class="pt30 pb40 container">
                         <h4>Blank page with sticky footer</h4>
+                        @fa('arrow-up');
                     </div>
                 </div>
             </div>
