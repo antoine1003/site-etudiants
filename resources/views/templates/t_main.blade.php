@@ -1,6 +1,7 @@
 <html lang="{{ LaravelLocalization::getCurrentLocale() }}">
     <head>
         <title>@yield('title')</title>
+        <link href="{{ URL::asset('css/flag-icons/css/flag-icon.min.css') }}" rel="stylesheet">
         @section('css')
         @show
     </head>
@@ -38,6 +39,7 @@
             </div>
         </nav>
 
+
         @section('content')
         @show
 
@@ -57,22 +59,19 @@
                                     <i class="fa fa-twitter"></i>twitter
                                 </a>
                             </li>
-                            <li class="list-inline-item">
-                                <a href="#">
-                                    <i class="fa fa-instagram"></i>instagram
-                                </a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href="#">
-                                    <i class="fa fa-behance"></i>Behance
-                                </a>
-                            </li>
                         </ul>
                         <h4><i class="fa fa-phone"></i> 1800-355-4322</h4>
                         <h4><i class="fa fa-envelope"></i> {{config('custom_settings.mails.contact')}}</h4>
                         <p>© Copyright 2017. {{config('custom_settings.name_site')}}</p>
-                    </div>
+                        <div>
+                            @if(LaravelLocalization::getCurrentLocale() === 'fr')
+                                <a href="{{ LaravelLocalization::getLocalizedURL('en', Request::url()) }}"><span class="flag-icon flag-icon-us"></span> English</a>
+                            @else
+                                <a href="{{ LaravelLocalization::getLocalizedURL('fr', Request::url()) }}"><span class="flag-icon flag-icon-fr"></span> Français</a>
+                            @endif
+                        </div>                   
                 </div>
+            </div>
             </div>
         </footer>
         <!--/footer-->
@@ -80,6 +79,18 @@
         @push('scripts')
             <script src="/example.js"></script>
         @endpush -->
-        @stack('scripts') 
+        @stack('scripts')
+        <script>
+            document.getElementById("foo").onchange = function() {
+                if (this.selectedIndex!==0) {
+                    window.location.href = this.value;
+                }        
+            };
+        </script>
+        <script type="text/javascript">
+            $(function(){
+            $('.selectpicker').selectpicker();
+        });
+</script>
     </body>
 </html>
