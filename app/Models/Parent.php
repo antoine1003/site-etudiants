@@ -8,6 +8,11 @@ class Parent extends Model
 {
     public function user()
     {
-    	return $this->hasOne(User::class, 'id', 'users_id');
+    	return $this->hasOne('App\Models\User', 'id', 'users_id');
+    }
+
+    public function eleve($value='')
+    {
+		return $this->belongsToMany('App\Models\Eleve');
     }
 }

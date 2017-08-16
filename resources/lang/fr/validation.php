@@ -77,7 +77,7 @@ return [
     'attributes' => [
         'name' => 'Nom',
         'username' => 'Pseudo',
-        'email' => 'aAdresse e-mail',
+        'email' => 'Adresse mail',
         'first_name' => 'Prénom',
         'last_name' => 'Nom',
         'password' => 'Mot de passe',

@@ -14,7 +14,16 @@ class CreateParentsTable extends Migration
     public function up()
     {
         Schema::create('parents', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('id');            
+            $table->integer('users_id')->unsigned();
+            $table->foreign('users_id')
+                  ->references('id')
+                  ->on('users')
+                  ->onDelete('restrict')
+                  ->onUpdate('restrict');
+                  
+            $table->dateTime('debut_abonnement');
+            $table->dateTime('fin_abonnement');
             $table->timestamps();
         });
     }

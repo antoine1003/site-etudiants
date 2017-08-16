@@ -75,22 +75,6 @@
             </div>
         </footer>
         <!--/footer-->
-        <!-- Dans l'autre page : 
-        @push('scripts')
-            <script src="/example.js"></script>
-        @endpush -->
-        @stack('scripts')
-        <script>
-            document.getElementById("foo").onchange = function() {
-                if (this.selectedIndex!==0) {
-                    window.location.href = this.value;
-                }        
-            };
-        </script>
-        <script type="text/javascript">
-            $(function(){
-            $('.selectpicker').selectpicker();
-        });
-</script>
+        @stack('scripts')       
     </body>
 </html>

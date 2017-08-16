@@ -1,4 +1,4 @@
-<?php
+cla<?php
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,6 +15,19 @@ class CreateElevesTable extends Migration
     {
         Schema::create('eleves', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('users_id')->unsigned();
+            $table->foreign('users_id')
+                  ->references('id')
+                  ->on('users')
+                  ->onDelete('restrict')
+                  ->onUpdate('restrict');
+
+            $table->integer('classes_id')->unsigned();
+            $table->foreign('classes_id')
+                  ->references('id')
+                  ->on('classes')
+                  ->onDelete('restrict')
+                  ->onUpdate('restrict');            
             $table->timestamps();
         });
     }
@@ -26,6 +39,12 @@ class CreateElevesTable extends Migration
      */
     public function down()
     {
+        Schema::table('eleves', function(Blueprint $table) {
+
+            $table->dropForeign('eleves_classes_id_foreign');
+            $table->dropForeign('eleves_users_id_foreign');
+
+        });
         Schema::dropIfExists('eleves');
     }
 }

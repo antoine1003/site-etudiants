@@ -14,8 +14,7 @@
 Route::group(['prefix' => LaravelLocalization::setLocale()], function()
 {
 	/** ADD ALL LOCALIZED ROUTES INSIDE THIS GROUP **/
-	Route::get('/',  'WelcomeController@index' );
-	Route::get('/login',  'WelcomeController@login' );
+	Route::get('/',  'WelcomeController@index' )->name('index');
 	Auth::routes();
 });
 

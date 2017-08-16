@@ -18,22 +18,23 @@
             <div class="container">
                 <div class="row pb30">
                     <div class="col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2">
+                        @include('flash::message')
                         <h3 class="text-white text-center mb30">@lang('main_site.login.login_title')</h3>
                         <form method="POST" action="login">
                             {{ csrf_field() }}
                             <div class="form-group">
-                                <input type="email" class="form-control" placeholder="@lang('validation.attributes.username')">
+                                <input name="email" type="email" class="form-control" placeholder="@lang('validation.attributes.email')" value="{{old('email')}}">
                             </div>
                             <div class="form-group">
-                                <input type="password" class="form-control" placeholder="@lang('validation.attributes.password')">
+                                <input name="password" type="password" class="form-control" placeholder="@lang('validation.attributes.password')">
                             </div>
                               <div class="form-group">
-                                  <button type="submit" class="btn btn-rounded btn-primary btn-block">@lang('main_site.login.sign_in')</button>
+                                  <button type="submit" class="btn btn-rounded btn-primary btn-block">@lang('main_site.form.sign_in')</button>
                             </div>
                             <div class="text-center"><a href="#" class="btn btn-link btn-block">@lang('main_site.login.login_trouble')</a></div>
                             <hr>
                             <div>
-                                <a href="signup" class="btn btn-white-outline btn-block">@lang('main_site.login.sign_up')</a>
+                                <a href="register" class="btn btn-white-outline btn-block">@lang('main_site.form.sign_up')</a>
                             </div>
                         </form>
                     </div>

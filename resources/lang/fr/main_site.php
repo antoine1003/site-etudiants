@@ -8,11 +8,18 @@ return [
         'pricing' => 'Tarifs',
         'contact' => 'Contact',
     ],
+    'form' => [
+        'sign_in' => 'Se connecter',
+        'sign_up' => 'S\'enregistrer',
+    ],
     'login' => [
         'title' => 'Se connecter',
         'login_title' => 'Se connecter pour continuer',
-        'sign_in' => 'Se connecter',
-        'sign_up' => 'S\'enregistrer',
         'login_trouble' => 'Des difficultés pour vous connecter?',
+    ],
+    'register' => [
+        'title' => 'S\'enregistrer',
+        'login_title' => 'Rejoindre StudyFlow!',
+        'account_already' => 'Déjà un compte? Connectez vous!',
     ],
 ];

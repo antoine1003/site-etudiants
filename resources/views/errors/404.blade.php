@@ -6,16 +6,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>@lang('errors.404.title')</title>    
         <!-- Plugins CSS -->
-        <link href="css/plugins/plugins.css" rel="stylesheet">
-        <link href="css/style.css" rel="stylesheet">
+        <link href="{{ URL::asset('css/plugins/plugins.css') }}" rel="stylesheet">
+        <link href="{{ URL::asset('css/style.css') }}" rel="stylesheet">
     </head>
 
-    <body data-spy="scroll" data-darget=".navbar-seconday">
-        <div id="preloader">
-            <div id="preloader-inner"></div>
-        </div><!--/preloader-->
-
-       
+    <body data-spy="scroll" data-darget=".navbar-seconday">       
 
         <div class="fullscreen bg-parallax parallax-overlay" style="background-image: url('http://placehold.it/1920x1000')">
             <div class="d-flex align-items-center text-center particle-content error-404-content">
@@ -24,7 +19,7 @@
                     <div class=" col-md-12">
                         <h1 class="text-uppercase">404</h1>
                         <p class="lead">@lang('errors.404.description')</p>
-                        <a href='index.html' class='btn btn-lg btn-white-outline'>@lang('errors.404.main_site')</a>
+                        <a href='{{ LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), route("index")) }}' class='btn btn-lg btn-white-outline'>@lang('errors.404.main_site')</a>
                     </div>
                 </div>
             </div>

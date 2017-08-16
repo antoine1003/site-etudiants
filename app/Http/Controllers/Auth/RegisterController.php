@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Http\Requests\RegisterRequest;
+use Carbon\Carbon;
+use Illuminate\Auth\Events\Registered;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Jrean\UserVerification\Traits\VerifiesUsers;
+use Jrean\UserVerification\Facades\UserVerification;
 
 class RegisterController extends Controller
 {
@@ -22,12 +28,14 @@ class RegisterController extends Controller
 
     use RegistersUsers;
 
+    use VerifiesUsers;
+
     /**
      * Where to redirect users after registration.
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/login';
 
     /**
      * Create a new controller instance.
@@ -40,21 +48,6 @@ class RegisterController extends Controller
     }
 
     /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
-    }
-
-    /**
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
@@ -63,9 +56,36 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
+            'nom' => $data['nom'],
+            'prenom' => $data['prenom'],
             'email' => $data['email'],
+            'ville' => $data['ville'],
             'password' => bcrypt($data['password']),
+            'date_inscription' => Carbon::now()
         ]);
+    }
+
+    public function showRegistrationForm()
+    {
+        return view('main.register');
+    }
+
+    public function register(RegisterRequest $request)
+    {
+        
+        $user = $this->create($request->all());
+
+        event(new Registered($user));
+
+        //$this->guard()->login($user);
+
+        UserVerification::generate($user);
+
+        UserVerification::send($user, trans('mails.verification.title'));
+
+        flash(trans('alerts.mails.verification_mail_send',['usermail' => $request->email]))->success();
+
+        return $this->registered($request, $user)
+                        ?: redirect(LaravelLocalization::getCurrentLocale().$this->redirectPath());
     }
 }
