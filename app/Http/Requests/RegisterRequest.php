@@ -30,6 +30,7 @@ class RegisterRequest extends FormRequest
             'email' => 'required|max:80|email|unique:users',
             'password' => 'required|min:6|max:25|confirmed',
             'password_confirmation' => 'required|min:6|max:25',
+            'ville' => 'required',
             
         ];
     }

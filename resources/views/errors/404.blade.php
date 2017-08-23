@@ -12,14 +12,14 @@
 
     <body data-spy="scroll" data-darget=".navbar-seconday">       
 
-        <div class="fullscreen bg-parallax parallax-overlay" style="background-image: url('http://placehold.it/1920x1000')">
+        <div class="fullscreen bg-parallax parallax-overlay" style="background-image: url('{{ URL::asset('img/404.jpg') }}')">
             <div class="d-flex align-items-center text-center particle-content error-404-content">
                  <div class="container">
                 <div class="row">
                     <div class=" col-md-12">
                         <h1 class="text-uppercase">404</h1>
                         <p class="lead">@lang('errors.404.description')</p>
-                        <a href='{{ LaravelLocalization::getLocalizedURL(LaravelLocalization::getCurrentLocale(), route("index")) }}' class='btn btn-lg btn-white-outline'>@lang('errors.404.main_site')</a>
+                        <a href='{{ route("index") }}' class='btn btn-lg btn-white-outline'>@lang('errors.404.main_site')</a>
                     </div>
                 </div>
             </div>

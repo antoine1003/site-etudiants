@@ -37,6 +37,10 @@ class RegisterController extends Controller
      */
     protected $redirectTo = '/login';
 
+    protected $redirectAfterVerification = '/login';
+    
+    protected $redirectIfVerified = '/register';
+
     /**
      * Create a new controller instance.
      *
@@ -84,8 +88,8 @@ class RegisterController extends Controller
         UserVerification::send($user, trans('mails.verification.title'));
 
         flash(trans('alerts.mails.verification_mail_send',['usermail' => $request->email]))->success();
-
+        //TODO : Si multilingue LaravelLocalization::getCurrentLocale().$this->redirectPath()
         return $this->registered($request, $user)
-                        ?: redirect(LaravelLocalization::getCurrentLocale().$this->redirectPath());
+                        ?: redirect($this->redirectPath());
     }
 }

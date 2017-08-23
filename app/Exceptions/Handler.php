@@ -4,7 +4,9 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Session\TokenMismatchException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class Handler extends ExceptionHandler
 {
@@ -44,6 +46,15 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof TokenMismatchException){
+            //redirect to a form. Here is an example of how I handle mine
+            flash(trans('alerts.exceptions.csrf_error'))->warning();
+            return redirect(LaravelLocalization::getCurrentLocale().'/login');
+        }
+        elseif ($exception instanceof UserIsVerifiedException) {
+            flash(trans('alerts.exceptions.user_already_verified'))->warning();
+            return redirect(LaravelLocalization::getCurrentLocale().'/login');
+        }
         return parent::render($request, $exception);
     }
 

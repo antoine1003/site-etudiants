@@ -77,6 +77,15 @@
                 <div class="top-right links">
                     @if (Auth::check())
                         <a href="{{ url('/home') }}">Home</a>
+                        {!! Form::open([
+                            'route' => 'logout',
+                            'name' => 'logout-form',
+                            'id' => 'logout-form',
+                        ]) !!}
+                        {!! Form::button('Log Out', [
+                            'type' => 'submit'
+                        ]) !!}
+{!! Form::close() !!}
                     @else
                         <a href="{{ url('/login') }}">Login</a>
                         <a href="{{ url('/register') }}">Register</a>

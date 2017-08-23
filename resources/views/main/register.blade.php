@@ -21,7 +21,6 @@
                         <h3 class="text-white text-center mb30">@lang('main_site.register.login_title')</h3>
                         @include('flash::message')
                         {!! Form::open(['url' => 'register']) !!}
-                            {{ csrf_field() }}
                             <div class="form-group">
                                 <input name="nom" type="text" class="form-control" placeholder="@lang('validation.attributes.last_name')" value="{{old('nom')}}">
                                  {!! $errors->first('nom', '<small class="help-block text-danger">:message</small>') !!}
@@ -35,7 +34,7 @@
                                  {!! $errors->first('email', '<small class="help-block text-danger">:message</small>') !!}
                             </div>
                             <div class="form-group">
-                                <input name="ville" type="test" class="form-control" placeholder="@lang('validation.attributes.city')" value="{{old('ville')}}">
+                                <input id="ville" name="ville" type="text" class="form-control" placeholder="@lang('validation.attributes.city')" value="{{old('ville')}}">
                                 {!! $errors->first('ville', '<small class="help-block text-danger">:message</small>') !!}
                             </div>
                             <div class="form-group">
@@ -67,4 +66,11 @@
     <script src="js/assan.custom.js"></script> 
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        function activatePlacesSearch() {
+            var input = document.getElementById('ville');
+            var autocomplete = new google.maps.places.Autocomplete(input);
+        }
+    </script>
+   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCOyMEWBwzrI10Y2N4dVOU8NI3NN-UC0Q4&libraries=places&callback=activatePlacesSearch"></script>
 @endpush

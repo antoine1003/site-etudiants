@@ -24,9 +24,11 @@
                             {{ csrf_field() }}
                             <div class="form-group">
                                 <input name="email" type="email" class="form-control" placeholder="@lang('validation.attributes.email')" value="{{old('email')}}">
+                                {!! $errors->first('email', '<small class="help-block text-danger">:message</small>') !!}
                             </div>
                             <div class="form-group">
                                 <input name="password" type="password" class="form-control" placeholder="@lang('validation.attributes.password')">
+                                {!! $errors->first('password', '<small class="help-block text-danger">:message</small>') !!}
                             </div>
                               <div class="form-group">
                                   <button type="submit" class="btn btn-rounded btn-primary btn-block">@lang('main_site.form.sign_in')</button>
