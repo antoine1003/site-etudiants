@@ -21,7 +21,13 @@ class CreateClassesTable extends Migration
                   ->references('id')
                   ->on('etats_validations')
                   ->onDelete('restrict')
-                  ->onUpdate('restrict');
+                  ->onUpdate('cascade');
+            $table->integer('categorie_classes_id')->unsigned();
+            $table->foreign('categorie_classes_id')
+                  ->references('id')
+                  ->on('categorie_classes')
+                  ->onDelete('restrict')
+                  ->onUpdate('cascade');
             $table->timestamps();
         });
     }
@@ -36,6 +42,7 @@ class CreateClassesTable extends Migration
         Schema::table('classes', function(Blueprint $table) {
 
             $table->dropForeign('classes_etats_validations_id_foreign');
+            $table->dropForeign('classes_categorie_classes_id_foreign');
 
         });
         Schema::dropIfExists('classes');

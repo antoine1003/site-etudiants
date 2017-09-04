@@ -23,7 +23,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <a class="navbar-brand" href="index.html">
-                    <img class='logo logo-light' src="{{config('custom_settings.logo_path')}}" alt="">
+                    <img class='logo logo-light' src="{{config('custom_settings.img.logo_small')}}" alt="">
                 </a>
 
                 <div class="collapse navbar-collapse" id="navbarsspy">

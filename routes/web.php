@@ -24,4 +24,13 @@ Route::get('/',  'WelcomeController@index' )->name('index');
 Route::get('email-verification/error', 'Auth\RegisterController@getVerificationError')->name('email-verification.error');
 Route::get('email-verification/check/{token}', 'Auth\RegisterController@getVerification')->name('email-verification.check');
 Route::get('email-verification/resend/{email}', 'Auth\LoginController@resendVerification')->name('email-verification.resend');
+Route::get('logout', 'Auth\LoginController@logoutGet')->name('logout-get');
+
+Route::group(['prefix' => 'user','middleware' => 'auth'], function() {
+    Route::get('dashboard', 'UserController@dashboard')->name('user.dashboard');
+    Route::get('welcome/3/{type}', 'UserController@welcomeGetDisplay')->name('user.welcome-get')->where('id', '[0-9]+');
+    Route::get('welcome/{id}/{type?}/{categorie?}/{classe?}', 'UserController@welcome')->name('user.welcome')->where('id', '[0-9]+');
+    
+});
+
 Auth::routes();

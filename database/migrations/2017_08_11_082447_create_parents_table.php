@@ -20,7 +20,7 @@ class CreateParentsTable extends Migration
                   ->references('id')
                   ->on('users')
                   ->onDelete('restrict')
-                  ->onUpdate('restrict');
+                  ->onUpdate('cascade');
                   
             $table->dateTime('debut_abonnement');
             $table->dateTime('fin_abonnement');

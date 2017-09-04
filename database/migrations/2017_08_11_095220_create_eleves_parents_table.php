@@ -19,11 +19,11 @@ class CreateElevesParentsTable extends Migration
             $table->integer('parents_id')->unsigned();
             $table->foreign('eleves_id')->references('id')->on('eleves')
                         ->onDelete('restrict')
-                        ->onUpdate('restrict');
+                        ->onUpdate('cascade');
 
             $table->foreign('parents_id')->references('id')->on('parents')
                         ->onDelete('restrict')
-                        ->onUpdate('restrict');
+                        ->onUpdate('cascade');
 
         });
     }

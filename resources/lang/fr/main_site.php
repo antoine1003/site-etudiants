@@ -11,6 +11,7 @@ return [
     'form' => [
         'sign_in' => 'Se connecter',
         'sign_up' => 'S\'enregistrer',
+        'sign_out' => 'Se déconnecter',
     ],
     'login' => [
         'title' => 'Se connecter',

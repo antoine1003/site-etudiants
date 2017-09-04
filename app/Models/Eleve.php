@@ -11,7 +11,7 @@ class Eleve extends Model
     	return $this->hasOne('App\Models\User', 'id', 'users_id');
     }
 
-        public function eleve()
+        public function parent()
     {
 		return $this->belongsToMany('App\Models\Parent');
     }

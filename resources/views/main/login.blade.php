@@ -9,12 +9,11 @@
         <!-- Plugins CSS -->
         <link href="{{ URL::asset('css/plugins/plugins.css') }}" rel="stylesheet">
         <link href="{{ URL::asset('css/style.css') }}" rel="stylesheet">
-        <link href="{{ URL::asset('css/font-awesome/css/font-awesome.css') }}" rel="stylesheet">
 @endsection
 
 
 @section('content')
-    <div class="bg-parallax parallax-overlay accounts-page"  data-jarallax='{"speed": 0.2}' style='background-image: url("http://placehold.it/1920x1000")'>
+    <div class="bg-parallax parallax-overlay accounts-page"  data-jarallax='{"speed": 0.2}' style="background-image: url({{config('custom_settings.img.login_register')}})">
             <div class="container">
                 <div class="row pb30">
                     <div class="col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2">

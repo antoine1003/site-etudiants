@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('ville');
             $table->string('password');
             $table->dateTime('date_inscription');
+            $table->boolean('is_blocked')->default(false);
             $table->timestamps();
             $table->rememberToken();
         });

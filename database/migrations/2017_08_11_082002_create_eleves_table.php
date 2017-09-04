@@ -20,14 +20,14 @@ class CreateElevesTable extends Migration
                   ->references('id')
                   ->on('users')
                   ->onDelete('restrict')
-                  ->onUpdate('restrict');
+                  ->onUpdate('cascade');
 
             $table->integer('classes_id')->unsigned();
             $table->foreign('classes_id')
                   ->references('id')
                   ->on('classes')
                   ->onDelete('restrict')
-                  ->onUpdate('restrict');            
+                  ->onUpdate('cascade');            
             $table->timestamps();
         });
     }
