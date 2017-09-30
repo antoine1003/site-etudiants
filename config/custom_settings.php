@@ -7,6 +7,8 @@ return [
         'support' => 'support@adautry.com',
         'contact' => 'contact@adautry.com',
     ],
+    'is_multilingue' => false,
+    'is_under_maintenance' => false,
     'name_site' => 'Study Flow',
     'logo_path' => 'http://placehold.it/127x35',
     'img' => [

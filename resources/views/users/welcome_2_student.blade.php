@@ -36,7 +36,7 @@
                     </div>
                     <div class="row mb40 mt-3">
                         <div class="col-md-4 col-sm-6 col-xs-12">
-                        {!! Form::open(['url' => 'user/welcome/3/student','method' => 'GET','id' => 'mainform']) !!}
+                        {!! Form::open(['url' => route("user.welcome-post",["type" => "student"]),'method' => 'POST','id' => 'mainform']) !!}
                         {{ csrf_field() }}                          
                                 <fieldset id="fieldsetSelect">
                                 <label for="exampleSelect1" class="text-white">@lang('user_site.welcome.two.student.class')</label>
@@ -44,10 +44,10 @@
                                         <div class="input-group">
                                             <select name="classe" class="form-control" id="classesSelect">
                                                 @foreach ($categories as $categorie)
-                                                    <optgroup label="{{$categorie->nom_categorie}}">
+                                                    <optgroup label="{{ucfirst($categorie->nom_categorie)}}">
                                                         @foreach ($classes as $classe)
                                                             @if($classe->nom_categorie == $categorie->nom_categorie)
-                                                                <option value="{{$categorie->nom_categorie.'$'.$classe->nom_classe}}">{{$classe->nom_classe}}</option>
+                                                                <option value="{{$categorie->nom_categorie.'$'.$classe->nom_classe}}">{{ucfirst($classe->nom_classe)}}</option>
                                                             @endif
                                                         @endforeach
                                                     </optgroup>
@@ -85,7 +85,7 @@
                                         <div class="input-group">
                                              <select class="form-control form-control-sm" id="categorieSelect">
                                                 @foreach ($categories as $categorie)  
-                                                    <option>{{$categorie->nom_categorie}}</option>
+                                                    <option>{{ucfirst($categorie->nom_categorie)}}</option>
                                                 @endforeach
                                             </select>                                            
                                             <div class="input-group-addon form-control-sm">
@@ -188,29 +188,23 @@
                 {
                     categorieStr = document.getElementById("addCatInput").value;
                 }
-                if (categorieExist(categorieStr)) {
-                    document.getElementById('cancelClassDiv').style.display = 'block';
-                    document.getElementById('errMessage').innerHTML = "@lang('user_site.welcome.two.student.categoryalreadyexist')";
-
-                }else {
-                    var classesSelect = document.getElementById('classesSelect');
-                    var optGroup = document.createElement('optgroup');
-                    optGroup.label = categorieStr;
-                    classesSelect.appendChild(optGroup);
-                    var opt = document.createElement('option');
-                    opt.setAttribute("value", categorieStr + '$' + classeStr);
-                    opt.setAttribute("selected", "selected"); 
-                    opt.innerHTML = classeStr;
-                    optGroup.appendChild(opt);
-                    classesSelect.setAttribute("disabled", "true");
-                    var select_val = $('#classesSelect option:selected').val();
-                    $('#hdn_classe').removeAttr("disabled");
-                    $('#hdn_classe').val(select_val);
-                    $('#fieldsetSelect option:last').prop('selected',true);
-                    newClassHasBeenAdd = true;
-                    document.getElementById('cancelClassDiv').style.display = 'block';
-                    $('#gridSystemModal').modal('hide');
-                }                
+                var classesSelect = document.getElementById('classesSelect');
+                var optGroup = document.createElement('optgroup');
+                optGroup.label = categorieStr;
+                classesSelect.appendChild(optGroup);
+                var opt = document.createElement('option');
+                opt.setAttribute("value", categorieStr + '$' + classeStr);
+                opt.setAttribute("selected", "selected"); 
+                opt.innerHTML = classeStr;
+                optGroup.appendChild(opt);
+                classesSelect.setAttribute("disabled", "true");
+                var select_val = $('#classesSelect option:selected').val();
+                $('#hdn_classe').removeAttr("disabled");
+                $('#hdn_classe').val(select_val);
+                $('#fieldsetSelect option:last').prop('selected',true);
+                newClassHasBeenAdd = true;
+                document.getElementById('cancelClassDiv').style.display = 'block';
+                $('#gridSystemModal').modal('hide');                
             }
         }
 
@@ -237,24 +231,6 @@
                 document.getElementById('divDefault').style.display = 'none';
                 document.getElementById('divAddCat').style.display = 'block';
             }
-        }
-
-        /**
-         * Check if a categorie already exists
-         * @param  {string} value Category to check
-         * @return {bool}
-         */
-        function categorieExist(value) {
-            var allCat = [@foreach($categories as $categorie)
-               '{{ htmlspecialchars_decode($categorie->nom_categorie)}}',
-                @endforeach ];
-
-            var exist = false;
-            allCat.forEach(function(element) {
-              if(element == value){
-                exist = true;
-              }
-            });
         }
         </script>
         <script type="text/javascript">

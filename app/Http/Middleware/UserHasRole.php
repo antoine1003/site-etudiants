@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+
+class UserHasRole
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next)
+    {
+        if (Auth::check()) {
+            $user = Auth::user();
+            if ($user->hasAnyRole()) {
+                return $next($request);
+            }
+            else{
+                return redirect()->route('user.welcome',['id' => 1]);
+            }
+        }
+        else {
+            abort(403);
+        }        
+    }
+}

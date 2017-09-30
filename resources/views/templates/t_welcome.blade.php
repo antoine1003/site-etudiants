@@ -12,8 +12,8 @@
         @section('content')
         @show
 
-        
-        <footer class="footer footer-light relative pt50 pb30">
+    
+        <footer class="footer fixed-bottom footer-light pt50 pb30">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 offset-lg-3 text-center">
@@ -33,10 +33,12 @@
                         <h4><i class="fa fa-envelope"></i> {{config('custom_settings.mails.contact')}}</h4>
                         <p>© Copyright 2017. {{config('custom_settings.name_site')}}</p>
                         <div>
-                            @if(LaravelLocalization::getCurrentLocale() === 'fr')
-                                <a href="{{ LaravelLocalization::getLocalizedURL('en', Request::url()) }}"><span class="flag-icon flag-icon-us"></span> English</a>
-                            @else
-                                <a href="{{ LaravelLocalization::getLocalizedURL('fr', Request::url()) }}"><span class="flag-icon flag-icon-fr"></span> Français</a>
+                            @if(config('custom_settings.is_multilingue') == true)
+                                @if(LaravelLocalization::getCurrentLocale() === 'fr')
+                                    <a href="{{ LaravelLocalization::getLocalizedURL('en', Request::url()) }}"><span class="flag-icon flag-icon-us"></span> English</a>
+                                @else
+                                    <a href="{{ LaravelLocalization::getLocalizedURL('fr', Request::url()) }}"><span class="flag-icon flag-icon-fr"></span> Français</a>
+                                @endif
                             @endif
                         </div>                   
                 </div>
