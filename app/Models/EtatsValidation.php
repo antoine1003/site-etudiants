@@ -10,4 +10,10 @@ class EtatsValidation extends Model
     {
     	return $this->belongsTo('App\Models\Classe');
     }
+
+    public function matiere()
+    {
+    	return $this->belongsTo('App\Models\Matiere');
+    }
+
 }

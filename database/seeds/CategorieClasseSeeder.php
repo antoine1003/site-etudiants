@@ -30,8 +30,12 @@ class CategorieClasseSeeder extends Seeder
             'id' => 4,
             'nom_categorie' => 'école d\'ingénieur',
         ]);
-          CategorieClasse::create([
+         CategorieClasse::create([
             'id' => 5,
+            'nom_categorie' => 'classe préparatoire',
+        ]);
+          CategorieClasse::create([
+            'id' => 6,
             'nom_categorie' => 'autre',
         ]);
     }

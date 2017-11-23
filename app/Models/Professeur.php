@@ -8,6 +8,11 @@ class Professeur extends Model
 {
     public function user()
     {
-    	return $this->hasOne('App\Models\User', 'id', 'users_id');
+    	return $this->hasOne('App\Models\User');
+    }
+
+    public function matiereprofesseur()
+    {
+    	return $this->belongTo('App\Models\MatiereProfesseur');
     }
 }

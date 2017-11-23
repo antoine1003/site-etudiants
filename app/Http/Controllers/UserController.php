@@ -13,8 +13,6 @@ use DB;
 
 class UserController extends Controller
 {
-    
-    
     public function welcome(Request $request, $id = 1, $type = null, $categorie = null,  $classe = null)
     {
         //Si l'id est dans les paramettres de l'url
@@ -33,20 +31,32 @@ class UserController extends Controller
                     {
                         if(in_array($type, array('teacher','student','parent' )))
                         {
+                            //Récupération des classes
+                            $classes = DB::table('classes')
+                                ->select('nom_categorie','nom_classe')
+                                ->join('etats_validations', 'etats_validations.id', '=', 'classes.etats_validations_id')
+                                ->join('categorie_classes','categorie_classes.id','=','classes.categorie_classes_id')
+                                ->where('nom_etat', 'validated')
+                                ->orderBy('nom_categorie')
+                                ->get();
+                            $categories = DB::table('categorie_classes')
+                                ->select('nom_categorie')
+                                ->orderBy('nom_categorie')
+                                ->get();
 
                             switch ($type) 
                             {
                                 case 'teacher':
-                                    return view('users.welcome_2_teacher');
+                                    $matieres = DB::table('matieres')
+                                        ->select('nom_matiere')                                        
+                                        ->join('etats_validations', 'etats_validations.id', '=', 'matieres.etats_validations_id')
+                                        ->where('nom_etat', 'validated')
+                                        ->orderBy('nom_matiere')
+                                        ->get();
+                                    return view('users.welcome_2_teacher',['classes' => $classes, 'categories' => $categories, 'matieres' => $matieres]);
                                 case 'student':
 
-                                    $classes = DB::table('classes')
-                                    ->select('nom_categorie','nom_classe')
-                                    ->join('etats_validations', 'etats_validations.id', '=', 'classes.etats_validations_id')
-                                    ->join('categorie_classes','categorie_classes.id','=','classes.categorie_classes_id')
-                                    ->where('nom_etat', 'validated')
-                                    ->orderBy('nom_categorie')
-                                    ->get();
+                                    
 
                                     $categories = DB::table('categorie_classes')
                                     ->select('nom_categorie')
@@ -114,34 +124,90 @@ class UserController extends Controller
         }
         //abort(404);
     }
-
+    /**
+     * Gère la partie finale de welcome (id = 3)
+     * @param  Request $request [description]
+     * @param  [type]  $type    [description]
+     * @return [type]           [description]
+     */
     public function welcomePost(Request $request, $type)
     {
-        $data = Input::get('classe');
-        if (count($data) > 0 ){
-            $all  = urldecode(Input::get('classe'));
-            $tab = explode('$', $all);
-            $tabLength = sizeof($tab);
-            if ($tabLength != 2) {
+        switch ($type) {
+            case 'student':
+                $data = Input::get('classe');
+                if (count($data) > 0 ){
+                    $all  = urldecode(Input::get('classe'));
+                    $tab = explode('$', $all);
+                    $tabLength = sizeof($tab);
+                    if ($tabLength != 2) {
+                        Session::flash('bootstrap-alert-type', 'danger');
+                        Session::flash('bootstrap-alert', trans('alerts.front.welcome_wrongchoice'));
+                        return redirect()->route('user.welcome',['id' => 2, 'type' => $type]);
+                    }
+                    else{
+                        $classe = $tab[1];
+                        $categorie = $tab[0];
+                        $role = Role::where('name',(string)$type)->first();
+                        $user = Auth::user();
+                        $user->attachRole($role);
+                        return view('users.welcome_3',['type' => $type]);
+                    }
+                }
+                else
+                {
+                    Session::flash('bootstrap-alert-type', 'danger');
+                    Session::flash('bootstrap-alert', trans('alerts.front.welcome_wrongchoice'));
+                    return redirect()->route('user.welcome',['id' => 2, 'type' => $type]);
+                }
+                break;
+
+            case 'teacher':
+                $matieres = Input::get('matieres');
+                $categories = Input::get('categories');
+
+                if (count($categories) > 0 && count($matieres) > 0 ){
+                    $user = Auth::user();
+                    foreach ($categories as $categorie){
+                        foreach ($matieres as $matiere) {
+                            $id_matiere = DB::table('matieres')
+                                            ->select('id')
+                                            ->where('nom_matiere', urldecode($matiere))
+                                            ->limit(1)
+                                            ->get(); 
+                        }
+                    }
+                    $all  = urldecode(Input::get('classe'));
+                    $tab = explode('$', $all);
+                    $tabLength = sizeof($tab);
+                    
+                    if ($tabLength != 2) {
+                        Session::flash('bootstrap-alert-type', 'danger');
+                        Session::flash('bootstrap-alert', trans('alerts.front.welcome_wrongchoice'));
+                        return redirect()->route('user.welcome',['id' => 2, 'type' => $type]);
+                    }
+                    else{
+                        $classe = $tab[1];
+                        $categorie = $tab[0];
+                        $role = Role::where('name',(string)$type)->first();
+                        $user = Auth::user();
+                        $user->attachRole($role);
+                        return view('users.welcome_3',['type' => $type]);
+                    }
+                }
+                else
+                {
+                    Session::flash('bootstrap-alert-type', 'danger');
+                    Session::flash('bootstrap-alert', trans('alerts.front.welcome_wrongchoice'));
+                    return redirect()->route('user.welcome',['id' => 2, 'type' => $type]);
+                }
+                break;
+            default:
                 Session::flash('bootstrap-alert-type', 'danger');
                 Session::flash('bootstrap-alert', trans('alerts.front.welcome_wrongchoice'));
                 return redirect()->route('user.welcome',['id' => 2, 'type' => $type]);
-            }
-            else{
-                $classe = $tab[1];
-                $categorie = $tab[0];
-                $role = Role::where('name',(string)$type)->first();
-                $user = Auth::user();
-                $user->attachRole($role);
-                return view('users.welcome_3',['type' => $type]);
-            }
+                break;
         }
-        else
-        {
-            Session::flash('bootstrap-alert-type', 'danger');
-            Session::flash('bootstrap-alert', trans('alerts.front.welcome_wrongchoice'));
-            return redirect()->route('user.welcome',['id' => 2, 'type' => $type]);
-        }
+        
     }
 
     public function dashboard()

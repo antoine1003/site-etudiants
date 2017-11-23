@@ -23,7 +23,7 @@ class RedirectIfAuthenticated
             }
             else
             {
-                return redirect()->route('user.welcome');
+                return redirect()->route('user.welcome' , ['id' => 1]);
             }
             
         }

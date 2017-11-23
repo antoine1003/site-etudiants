@@ -29,6 +29,22 @@ return [
 				'cancelclassadd'       => 'Annuler la proposition de classe.',
 				'category'             => 'Catégorie',
 				'dontfindcategorie'    => 'Ajouter une catégorie',
+	    	],
+	    	'teacher' => [
+				'title'                => 'Vous êtes un professeur',
+				'body'                 => 'Afin de contruire votre profil, vous devez maintenant choisir les matières que vous enseignez ainsi que leur niveaux. Si votre matière n\'est pas das notre base vous pouvez nous proposer votre matière en cliquant sur le lien en dessous.',
+				'class'                => 'Matières',
+				'dontfindmat'        => 'Vous ne trouvez pas votre matière?',				
+				'dontfindcat'        => 'Vous ne trouvez pas votre catégorie?',
+				'addclasstitle'        => 'Ajouter une matières',
+				'classname'            => 'Nom de la matières',
+				'validate'             => 'Valider',
+				'cancel'               => 'Annuler',
+				'classempty'           => 'Le nom de la matière ne peut pas être vide !',
+				'categoryalreadyexist' => 'Cette catégorie existe déjà !',
+				'cancelclassadd'       => 'Annuler la proposition de matière.',
+				'category'             => 'Catégorie',
+				'dontfindcategorie'    => 'Ajouter une catégorie',
 	    	],    	
     	],
 
@@ -37,21 +53,31 @@ return [
 				'body'  => 'Vous venez de finaliser votre inscription en tant que :type. Vous pouvez par la suite choisir d\'autre type via l\'onglet "Mon compte".',
 				'next'  => 'Vous pouvez maintenant accéder à votre espace en cliquant sur le bouton ci dessous. Pour toute question suplémentaires, n\'hésitez pas à nous contacter sur notre adresse mail : :mail_contact.',
 				'dashboard_name' => 'Allez à mon espace',
-    		],
+    		],	    
+    ],
 
-	    'type' => [
+    'type' => [
 			'student' => 'Élève',
 			'teacher' => 'Professeur',
 			'parent'  => 'Parent',
 	    	],
-    ],
 
     'dashboard' => [
     		'title' => 'Accueil utilisateur',
-    		'menu' => [
-    			'my_account' => 'Mon compte',
-    			'manage_student' => '',
-    			],
+
     	],
+	'menu' => [
+		'my_account' => 'Mon compte',
+		'manage_student' => '',
+	],
+	'left_menu' => [
+		'role' => 'Rôle',
+		'next_class' => 'Prochains cours',
+		'message_box' => 'Messagerie',
+		'inbox' => 'Boite de réception',
+		'sub_student' => [
+			'ask_class' => 'Demander un cours',
+		],
+	],
 
 ];

@@ -24,25 +24,26 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <a class="navbar-brand" href="index.html">
-                    <img class='logo logo-light' src="{{config('custom_settings.img.logo_small')}}" alt="">
+                    <img class='logo logo-light' src="{{url('/').'/'. config('custom_settings.img.logo_small')}}" alt="">
                 </a>
 
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item"><a data-scroll class="nav-link active" href="home">@lang('main_site.menu.home')</a></li>
-                        <li class="nav-item dropdown"><a class="nav-link  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><i class="fa fa-star-o" aria-hidden="true"></i> Home</a>
-                            <ul class="dropdown-menu dropdown-menu-right">
-                                <li><a href="index.html" class="dropdown-item">Home 1 - Slider</a></li>
-                                <li><a href="index-02.html" class="dropdown-item">Home 2 - Particle</a></li>
-                                <li><a href="index-03.html" class="dropdown-item">Home 3 - Carousel</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item"><a data-scroll class="nav-link" href="pricing"><i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                        @lang('user_site.dashboard.menu.my_account')</a></li>
+                        
+                        <li class="nav-item"><a data-scroll class="nav-link" href="{{route('user.account')}}"><i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                        @lang('user_site.menu.my_account')</a></li>
+
                         <li class="nav-item"><a data-scroll class="nav-link" href="{{route('logout-get')}}"><i class="fa fa-sign-out" aria-hidden="true"></i>
                     @lang('main_site.form.sign_out')</a></li>
                     </ul>
-                </div>             
+                </div>
+                <div class=" navbar-right-elements">
+                    <ul class="list-inline">
+                        <li class="list-inline-item"><a href="{{route('user.mailbox')}}" class=" menu-btn"><i class="fa fa-envelope" aria-hidden="true"></i>
+                        <span class="badge badge-default">3</span></a></li>
+                    </ul>
+                </div> 
             </div>
         </nav>
         <div class="pt30 pb40 container">

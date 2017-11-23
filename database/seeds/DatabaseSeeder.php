@@ -5,6 +5,7 @@ use App\Models\Classe;
 use App\Models\EtatsValidation;
 use App\Models\CategorieClasse;
 use App\Models\User;
+use App\Models\Matiere;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,5 +21,6 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         $this->call(ClasseSeeder::class);
         $this->call(RoleSeeder::class);
+        $this->call(MatiereSeeder::class);
     }
 }

@@ -35,7 +35,7 @@ class CreateBlockedUsersTable extends Migration
     {
         Schema::table('blocked_users', function(Blueprint $table) {
 
-            $table->dropForeign('blocked_users_users_id_foreign');
+            $table->dropForeign('blocked_users_id_foreign');
 
         });
         Schema::dropIfExists('blocked_users');

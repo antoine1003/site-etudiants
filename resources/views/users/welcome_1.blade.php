@@ -39,7 +39,7 @@
                     <div class="col-lg-4 mb30">
                         <div class="icon-box icon-box-center welcome-choice">
                             <a href="{{route('user.welcome', ['id' => 2, 'type' => 'student'])}}"><i class="icon-hover-1 bg-primary fa fa-graduation-cap icon-hover-default"></i></a>
-                            <h4>@lang('user_site.welcome.type.student')</h4>
+                            <h4>@lang('user_site.type.student')</h4>
                             <p>
                                 @lang('user_site.welcome.one.student_desc', ['nom_site' => config('custom_settings.name_site')])
                             </p>
@@ -48,7 +48,7 @@
                     <div class="col-lg-4 mb30">
                         <div class="icon-box icon-box-center welcome-choice">                       
                             <a href="{{route('user.welcome', ['id' => 2, 'type' => 'teacher'])}}"><i class="icon-hover-1 bg-dark fa fa-book icon-hover-default">2</i></a>
-                            <h4>@lang('user_site.welcome.type.teacher')</h4>
+                            <h4>@lang('user_site.type.teacher')</h4>
                             <p>
                                  @lang('user_site.welcome.one.teacher_desc')
                             </p>
@@ -57,7 +57,7 @@
                     <div class="col-lg-4 mb30">
                         <div class="icon-box icon-box-center welcome-choice">
                             <a href="{{route('user.welcome', ['id' => 2, 'type' => 'parent'])}}"><i class="icon-hover-1 bg-success fa fa-user icon-hover-default">3</i></a>
-                            <h4>@lang('user_site.welcome.type.parent')</h4>
+                            <h4>@lang('user_site.type.parent')</h4>
                             <p>
                                  @lang('user_site.welcome.one.parent_desc', ['nom_site' => config('custom_settings.name_site')])
                             </p>

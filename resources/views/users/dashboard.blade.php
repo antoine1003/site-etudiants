@@ -15,36 +15,30 @@
 @section('content')
  <div class="row">
                 <div class="col-lg-3 mb40">
-                    <div class="mb40">
-                        <form>
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search..." aria-describedby="basic-addon2">
-                                <button class="input-group-addon" id="basic-addon2"><i class="ti-search"></i></button>
-                            </div>
-                        </form>
-                    </div><!--/col-->
-                    <div class="mb40">
-                        <h4 class="sidebar-title">Categories</h4>
+                    <div class="mb40 mt-4">
+                        <h4 class="sidebar-title">@lang('user_site.left_menu.role')</h4>
                         <ul class="list-unstyled categories">
-                            <li><a href="#">Branding</a></li>
-                            <li><a href="#">Photography</a></li>
-                            <li class="active"><a href="#">Wild</a>
-                                <ul class="list-unstyled">
-                                    <li><a href="#">Nature</a></li>
-                                    <li><a href="#">Lorem</a></li>
-                                    <li><a href="#">Ipsum</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#">Branding</a></li>
-                            <li><a href="#">Photography</a></li>
-                            <li><a href="#">Wild</a></li>
+                            @role('student')
+                                <li><a href="#">@lang('user_site.type.student')</a>
+                                    <ul class="list-unstyled">
+                                        <li><a href="#">@lang('user_site.left_menu.sub_student.ask_class')</a></li>
+                                        <li><a href="#">@lang('user_site.left_menu.sub_student.ask_class')</a></li>
+                                        <li><a href="#">@lang('user_site.left_menu.sub_student.ask_class')</a></li>
+                                    </ul>
+                                </li>
+                            @endrole
+                            @role('parent')
+                                <li><a href="#">@lang('user_site.type.parent')</a></li>
+                            @endrole
+                            @role('teacher')
+                                <li><a href="#">@lang('user_site.type.teacher')</a></li>
+                            @endrole
                         </ul>
                     </div><!--/col-->
                     <div>
-                        <h4 class="sidebar-title">Latest post</h4> 
+                        <h4 class="sidebar-title">@lang('user_site.left_menu.next_class')</h4> 
                         <ul class="list-unstyled">
                             <li class="media">
-                                <img class="d-flex mr-3 img-fluid" width="64" src="images/img1.jpg" alt="Generic placeholder image">
                                 <div class="media-body">
                                     <h5 class="mt-0 mb-1"><a href="#">Beautiful Sofa lamp at low price</a></h5>
                                     April 05, 2017
