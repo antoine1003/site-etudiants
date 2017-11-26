@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Role;
+use App\Models\CategorieClasseProfesseur;
+use App\Models\Matiere;
+use App\Models\CategorieClasse;
 use DB;
 
 class UserController extends Controller
@@ -165,34 +168,26 @@ class UserController extends Controller
                 $matieres = Input::get('matieres');
                 $categories = Input::get('categories');
 
-                if (count($categories) > 0 && count($matieres) > 0 ){
+                if (count($categories) > 0 && count($matieres) > 0 )
+                {
                     $user = Auth::user();
                     foreach ($categories as $categorie){
+                        $categorie = CategorieClasse::where('nom_categorie', urldecode($categorie))->first();
+
                         foreach ($matieres as $matiere) {
-                            $id_matiere = DB::table('matieres')
-                                            ->select('id')
-                                            ->where('nom_matiere', urldecode($matiere))
-                                            ->limit(1)
-                                            ->get(); 
+                            $matiere = Matiere::where('nom_matiere', urldecode($matiere))->first();
+
+                            $categorieClasseProfesseur = new CategorieClasseProfesseur;
+                            $categorieClasseProfesseur->categorie_classes_id = $categorie->id;                            
+                            $categorieClasseProfesseur->matieres_id = $matiere->id;
+                            $categorieClasseProfesseur->professeurs_id = $user->id;
+                            $categorieClasseProfesseur->save();
                         }
                     }
-                    $all  = urldecode(Input::get('classe'));
-                    $tab = explode('$', $all);
-                    $tabLength = sizeof($tab);
-                    
-                    if ($tabLength != 2) {
-                        Session::flash('bootstrap-alert-type', 'danger');
-                        Session::flash('bootstrap-alert', trans('alerts.front.welcome_wrongchoice'));
-                        return redirect()->route('user.welcome',['id' => 2, 'type' => $type]);
-                    }
-                    else{
-                        $classe = $tab[1];
-                        $categorie = $tab[0];
-                        $role = Role::where('name',(string)$type)->first();
-                        $user = Auth::user();
-                        $user->attachRole($role);
-                        return view('users.welcome_3',['type' => $type]);
-                    }
+
+                    $role = Role::where('name',(string)$type)->first();
+                    $user = Auth::user();
+                    $user->attachRole($role);
                 }
                 else
                 {

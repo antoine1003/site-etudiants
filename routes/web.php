@@ -20,6 +20,7 @@
 	Auth::routes();
 });*/
 
+
 Route::get('/',  'WelcomeController@index' )->name('index');
 Route::get('email-verification/error', 'Auth\RegisterController@getVerificationError')->name('email-verification.error');
 Route::get('email-verification/check/{token}', 'Auth\RegisterController@getVerification')->name('email-verification.check');
@@ -33,11 +34,11 @@ Route::group(['prefix' => 'user','middleware' => 'auth'], function() {
     //Route::get('welcome/3/{type}', 'UserController@welcomeGetDisplay')->name('user.welcome-get')->where('id', '[0-9]+');
     Route::post('welcome/3/{type}', 'UserController@welcomePost')->name('user.welcome-post')->where('id', '[0-9]+');
     Route::get('welcome/{id}/{type?}/{categorie?}/{classe?}', 'UserController@welcome')->name('user.welcome')->where('id', '[0-9]+');
-    
-});
-
+  });  
 Route::group(['prefix' => 'mobile'], function() {
     Route::get('connection', 'MobileController@connection');
+    Route::get('getAllUsers', 'MobileController@getAllUsers');
+    Route::get('getUserInfoById/{id}/{token}', 'MobileController@getUserInfoById');
 });
 
 Route::get('maintenance',function() {

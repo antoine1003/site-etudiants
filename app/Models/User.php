@@ -47,7 +47,7 @@ class User extends Authenticatable
     {
         if ($this->is_blocked) {
             $now = Carbon::now();
-            $result = BlockedUser::where('users_id', $this->id)->where('time_start','<', $now)->where('time_end','>', $now)->get();
+            $result = BlockedUser::where('users_id', $this->id)->where('time_start','<', $now)->where('time_stop','>', $now)->get();
             if ($result->count()) {
                 return true;
             }            
@@ -60,9 +60,9 @@ class User extends Authenticatable
         $now = Carbon::now();
         $result = BlockedUser::where('users_id', $this->id)
                             ->where('time_start','<', $now)
-                            ->where('time_end','>', $now)
-                            ->orWhereNull('time_end')
-                            ->select('time_start','time_end', 'comment')
+                            ->where('time_stop','>', $now)
+                            ->orWhereNull('time_stop')
+                            ->select('time_start','time_stop', 'comments')
                             ->get()
                             ->first();
         if ($result->count()) {

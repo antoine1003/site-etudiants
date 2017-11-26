@@ -23,6 +23,13 @@ class CreateCategorieClasseProfesseursTable extends Migration
                   ->onDelete('restrict')
                   ->onUpdate('cascade');
 
+            $table->integer('matieres_id')->unsigned();
+            $table->foreign('matieres_id')
+                  ->references('id')
+                  ->on('matieres')
+                  ->onDelete('restrict')
+                  ->onUpdate('cascade');
+
             $table->integer('professeurs_id')->unsigned();
             $table->foreign('professeurs_id')
                   ->references('id')
@@ -43,6 +50,7 @@ class CreateCategorieClasseProfesseursTable extends Migration
       Schema::table('categorie_classe_professeurs', function(Blueprint $table) {
             $table->dropForeign('professeurs_id_foreign');
             $table->dropForeign('categorie_classes_id_foreign');
+            $table->dropForeign('matieres_id_foreign');
         });
         Schema::dropIfExists('categorie_classe_professeurs');
     }

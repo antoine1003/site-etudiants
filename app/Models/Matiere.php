@@ -10,4 +10,9 @@ class Matiere extends Model
     {
     	return $this->belongToMany('App\Models\MatiereProfesseur');
     }
+
+    public function categorieclasseprofesseur()
+    {
+    	return $this->belongTo('App\Models\CategorieClasseProfesseur');
+    }
 }

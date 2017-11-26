@@ -10,4 +10,9 @@ class CategorieClasse extends Model
     {
     	return $this->belongTo('App\Models\Classe');
     }
+
+    public function categorieclasseprofesseur()
+    {
+    	return $this->belongTo('App\Models\CategorieClasseProfesseur');
+    }
 }

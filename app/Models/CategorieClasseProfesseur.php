@@ -12,6 +12,11 @@ class CategorieClasseProfesseur extends Model
     	return $this->hasOne('App\Models\Professeur');
     }
 
+    public function matiere()
+    {
+    	return $this->hasOne('App\Models\Matiere');
+    }
+
     public function categorieclasse()
     {
     	return $this->hasOne('App\Models\CategorieClasse');
