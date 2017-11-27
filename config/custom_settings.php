@@ -15,5 +15,6 @@ return [
     	'login_register' => 'img/background.jpg',
     	'logo_small' => 'img/logo/study.png',
     ],
+    'token_mobile' => '3Ut0yntutLWudc6yox0sKGrZkJFxxfrG',
 
 ];

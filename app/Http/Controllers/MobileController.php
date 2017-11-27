@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class MobileController extends Controller
 {
@@ -27,23 +28,25 @@ class MobileController extends Controller
     	}
     }
 
-    public function connection(Request $request)
+    public function connection(Request $request,$email,$password,$token)
     {
-        $token = $request->input('token_mobile');
+
     	if (config('custom_settings.token_mobile') == $token) {
-            $email = $request->input('email');
-            $password = bcrypt($request->input('password'));
-            $nb = User::where('email',$email)->where('password',$password)->count();
-            if ($nb == 1) {
-                echo "success";
+             $u = User::where('email', $email)->first();
+
+            if (isset($u)) {            
+                if (Hash::check($password, $u->password))
+                {
+                    echo "success";
+                }
+                else
+                {
+                    echo "failed";
+                }
             }
-            else
-            {
-                echo "failed";
+            else{
+                echo "refused";
             }
-        }
-        else{
-            abort(403);
         }
     }
 }
