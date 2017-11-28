@@ -28,14 +28,14 @@ class MobileController extends Controller
     	}
     }
 
-    public function connection(Request $request,$email,$password,$token)
+    public function connection(Request $request)
     {
 
-    	if (config('custom_settings.token_mobile') == $token) {
-             $u = User::where('email', $email)->first();
+    	if (config('custom_settings.token_mobile') == $request->input('token_mobile')) {
+             $u = User::where('email', $request->input('email'))->first();
 
             if (isset($u)) {            
-                if (Hash::check($password, $u->password))
+                if (Hash::check($request->input('password'), $u->password))
                 {
                     echo "success";
                 }

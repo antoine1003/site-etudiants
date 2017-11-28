@@ -36,7 +36,7 @@ Route::group(['prefix' => 'user','middleware' => 'auth'], function() {
     Route::get('welcome/{id}/{type?}/{categorie?}/{classe?}', 'UserController@welcome')->name('user.welcome')->where('id', '[0-9]+');
   });  
 Route::group(['prefix' => 'mobile'], function() {
-    Route::get('connection/{email}/{password}/{token}', 'MobileController@connection');
+    Route::post('connection', 'MobileController@connection');
     Route::get('getAllUsers', 'MobileController@getAllUsers');
     Route::get('getUserInfoById/{id}/{token}', 'MobileController@getUserInfoById');
 });
