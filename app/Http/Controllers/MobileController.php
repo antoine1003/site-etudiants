@@ -45,7 +45,7 @@ class MobileController extends Controller
                 }
             }
             else{
-                echo "refusedsc";
+                echo "refused";
             }
         }
     }
