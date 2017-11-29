@@ -17,6 +17,7 @@ class MobileController extends Controller
 
     public function getUserInfoById(Request $request)
     {
+        app('debugbar')->disable();
         $id = $request->input('user_id');
         $id = $request->input('token_mobile');
     	if (config('custom_settings.token_mobile') == $token) {
@@ -30,7 +31,7 @@ class MobileController extends Controller
 
     public function connection(Request $request)
     {
-
+        app('debugbar')->disable();
     	if (config('custom_settings.token_mobile') == $request->input('token_mobile')) {
              $u = User::where('email', $request->input('email'))->first();
 
