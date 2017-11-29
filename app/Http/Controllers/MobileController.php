@@ -44,7 +44,7 @@ class MobileController extends Controller
             }
             else
             {
-                echo json_encode($user);
+                echo '['.json_encode($user).']';
             }
         }
         else
