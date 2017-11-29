@@ -37,8 +37,9 @@ Route::group(['prefix' => 'user','middleware' => 'auth'], function() {
   });  
 Route::group(['prefix' => 'mobile'], function() {
     Route::post('connection', 'MobileController@connection');
-    Route::get('getAllUsers', 'MobileController@getAllUsers');
-    Route::get('getUserInfoById/{id}/{token}', 'MobileController@getUserInfoById');
+    Route::post('getAllUsers', 'MobileController@getAllUsers');
+    Route::post('getUserInfoById', 'MobileController@getUserInfoById');
+    Route::post('getUserInfoByEmail', 'MobileController@getUserInfoByEmail');
 });
 
 Route::get('maintenance',function() {

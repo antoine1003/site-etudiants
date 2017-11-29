@@ -58,9 +58,6 @@ class UserController extends Controller
                                         ->get();
                                     return view('users.welcome_2_teacher',['classes' => $classes, 'categories' => $categories, 'matieres' => $matieres]);
                                 case 'student':
-
-                                    
-
                                     $categories = DB::table('categorie_classes')
                                     ->select('nom_categorie')
                                     ->orderBy('nom_categorie')
@@ -188,6 +185,7 @@ class UserController extends Controller
                     $role = Role::where('name',(string)$type)->first();
                     $user = Auth::user();
                     $user->attachRole($role);
+                     return view('users.welcome_3',['type' => $type]);
                 }
                 else
                 {

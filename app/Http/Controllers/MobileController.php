@@ -19,14 +19,38 @@ class MobileController extends Controller
     {
         app('debugbar')->disable();
         $id = $request->input('user_id');
-        $id = $request->input('token_mobile');
+        $token = $request->input('token_mobile');
     	if (config('custom_settings.token_mobile') == $token) {
     		$user = User::find($id);
             echo json_encode($user);
     	}
-    	else{
-    		abort(403);
+    	else
+        {
+    		echo "refused";
     	}
+    }
+
+    public function getUserInfoByEmail(Request $request)
+    {
+        app('debugbar')->disable();
+        $email = $request->input('user_email');
+        $token = $request->input('token_mobile');
+        if (config('custom_settings.token_mobile') == $token) 
+        {
+            $user = User::where('email',$email)->first();
+            if(empty($user))
+            {
+                echo "failed";
+            }
+            else
+            {
+                echo json_encode($user);
+            }
+        }
+        else
+        {
+            echo "refused";
+        }
     }
 
     public function connection(Request $request)
@@ -38,7 +62,21 @@ class MobileController extends Controller
             if (isset($u)) {            
                 if (Hash::check($request->input('password'), $u->password))
                 {
-                    echo "success";
+                    if($u->verified)
+                    {
+                        if ($u->is_blocked) {
+                            echo "blocked";
+                        }
+                        else
+                        {
+                            echo "success";
+                        }
+                    }
+                    else
+                    {
+                        echo "unverified";
+                    }
+                   
                 }
                 else
                 {
