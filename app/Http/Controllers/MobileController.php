@@ -58,13 +58,14 @@ class MobileController extends Controller
         app('debugbar')->disable();
         if (config('custom_settings.token_mobile') == $request->input('token_mobile')) {
             $u = User::where('id', $request->input('id_user'))->first();
-            if (isset($u) {
+            if (isset($u)) {
                 $password_old = $request->input('password_old');
                 $password_new = $request->input('password_new');
                 if (Hash::check($request->input('password_old'), $u->password)) {
                     $u->password = bcrypt($password_new);
                     $u->save();
-                    echo "success";                }
+                    echo "success";                
+                }
                 else{
                     echo "failed";
                 }
