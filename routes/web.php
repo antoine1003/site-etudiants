@@ -40,6 +40,7 @@ Route::group(['prefix' => 'mobile'], function() {
     Route::post('getAllUsers', 'MobileController@getAllUsers');
     Route::post('getUserInfoById', 'MobileController@getUserInfoById');
     Route::post('getUserInfoByEmail', 'MobileController@getUserInfoByEmail');
+    Route::post('passwordUpdate', 'MobileController@passwordUpdate');
 });
 
 Route::get('maintenance',function() {

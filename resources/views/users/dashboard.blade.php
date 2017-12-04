@@ -6,94 +6,194 @@
     @lang('user_site.dashboard.title')
 @endsection
 @section('css')
-        <!-- Plugins CSS -->
-        <link href="{{ URL::asset('css/plugins/plugins.css') }}" rel="stylesheet">
-        <link href="{{ URL::asset('css/style.css') }}" rel="stylesheet">
+       
+
+        <link href="{{ URL::asset('css/custom.css')}}" rel="stylesheet" type="text/css" media="screen">
+        <!-- Bootstrap -->
+        <link href="{{ URL::asset('css/bootstrap.min.css')}}" rel="stylesheet">             
+        <!-- font awesome for icons -->
+        <link href="{{ URL::asset('css/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
+        <!-- flex slider css -->
+        <link href="{{ URL::asset('css/flexslider.css')}}" rel="stylesheet" type="text/css" media="screen">
+        <!-- animated css  -->
+        <link href="{{ URL::asset('css/animate.css')}}" rel="stylesheet" type="text/css" media="screen">
+        <!--owl carousel css-->
+        <link href="{{ URL::asset('css/owl-carousel/owl.carousel.css')}}" rel="stylesheet" type="text/css" media="screen">
+        <link href="{{ URL::asset('css/owl-carousel/owl.theme.default.css')}}" rel="stylesheet" type="text/css" media="screen">
+        <!--mega menu -->
+        <link href="{{ URL::asset('css/yamm.css')}}" rel="stylesheet" type="text/css">
+        <!--popups css-->
+        <link href="{{ URL::asset('css/magnific-popup.css')}}" rel="stylesheet" type="text/css">
+        <!-- custom css (blue color by default) -->
+        <link href="{{ URL::asset('css/style.css')}}" rel="stylesheet" type="text/css" media="screen">
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
 @endsection
 
 
 @section('content')
- <div class="row">
-                <div class="col-lg-3 mb40">
-                    <div class="mb40 mt-4">
-                        <h4 class="sidebar-title">@lang('user_site.left_menu.role')</h4>
-                        <ul class="list-unstyled categories">
-                            @role('student')
-                                <li><a href="#">@lang('user_site.type.student')</a>
-                                    <ul class="list-unstyled">
-                                        <li><a href="#">@lang('user_site.left_menu.sub_student.ask_class')</a></li>
-                                        <li><a href="#">@lang('user_site.left_menu.sub_student.ask_class')</a></li>
-                                        <li><a href="#">@lang('user_site.left_menu.sub_student.ask_class')</a></li>
-                                    </ul>
-                                </li>
-                            @endrole
-                            @role('parent')
-                                <li><a href="#">@lang('user_site.type.parent')</a></li>
-                            @endrole
-                            @role('teacher')
-                                <li><a href="#">@lang('user_site.type.teacher')</a></li>
-                            @endrole
-                        </ul>
-                    </div><!--/col-->
-                    <div>
-                        <h4 class="sidebar-title">@lang('user_site.left_menu.next_class')</h4> 
-                        <ul class="list-unstyled">
-                            <li class="media">
-                                <div class="media-body">
-                                    <h5 class="mt-0 mb-1"><a href="#">Beautiful Sofa lamp at low price</a></h5>
-                                    April 05, 2017
-                                </div>
-                            </li>
-                            <li class="media my-4">
-                                <img class="d-flex mr-3 img-fluid" width="64" src="images/img2.jpg" alt="Generic placeholder image">
-                                <div class="media-body">
-                                    <h5 class="mt-0 mb-1"><a href="#">We need to change our thinking about others</a></h5>
-                                    Jan 05, 2017
-                                </div>
-                            </li>
-                            <li class="media">
-                                <img class="d-flex mr-3 img-fluid" width="64" src="images/img5.jpg" alt="Generic placeholder image">
-                                <div class="media-body">
-                                    <h5 class="mt-0 mb-1"><a href="#">New awesome features of bootstrap 4</a></h5>
-                                    March 15, 2017
-                                </div>
-                            </li>
-                        </ul>
+        <div class="breadcrumb-wrap">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h4>Side navigation</h4>
                     </div>
-                </div>
-                <div class="col-lg-9">
-                    <div class="row">
-                        <div class="col">
-                            <h2 class="mb30">Left <strong>Sidebar</strong> page</h2>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur pellentesque neque eget diam posuere porta. Quisque ut nulla at nunc vehicula lacinia. Proin adipiscing porta tellus, ut feugiat nibh adipiscing sit amet. In eu justo a felis faucibus ornare vel id metus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In eu libero ligula. Fusce eget metus lorem, ac viverra leo. Nullam convallis, arcu vel pellentesque sodales, nisi est varius diam, ac ultrices sem ante quis sem. Proin ultricies volutpat sapien, nec scelerisque ligula mollis lobortis.
-                            </p>
-                            <p class="lead">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur pellentesque neque eget diam posuere porta. Quisque ut nulla at nunc vehicula lacinia. Proin adipiscing porta tellus, ut feugiat nibh adipiscing sit amet. In eu justo a felis faucibus ornare vel id metus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In eu libero ligula. Fusce eget metus lorem, ac viverra leo. Nullam convallis, arcu vel pellentesque sodales, nisi est varius diam, ac ultrices sem ante quis sem. Proin ultricies volutpat sapien, nec scelerisque ligula mollis lobortis.
-                            </p>                    
-                        </div>
+                    <div class="col-sm-6 hidden-xs text-right">
+                        <ol class="breadcrumb">
+                            <li><a href="index.html">Home</a></li>
+                            <li>Side navigation</li>
+                        </ol>
                     </div>
-                    <div class="row">
-                        <div class="col-md-4 mb20">
-                            <img src="images/bg1.jpg" alt="" class="img-fluid">
-                        </div>
-                        <div class="col-md-8">
-                            Proin adipiscing porta tellus, ut feugiat nibh adipiscing sit amet. In eu justo a felis faucibus ornare vel id metus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In eu libero ligula. Fusce eget metus lorem, ac viverra leo. Nullam convallis, arcu vel pellentesque sodales, nisi est varius diam, ac ultrices sem ante quis sem. Proin ultricies volutpat sapien, nec scelerisque ligula mollis lobortis.
-                        </div>
-                    </div>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur pellentesque neque eget diam posuere porta. Quisque ut nulla at nunc vehicula lacinia. Proin adipiscing porta tellus, ut feugiat nibh adipiscing sit amet. In eu justo a felis faucibus ornare vel id metus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In eu libero ligula. Fusce eget metus lorem, ac viverra leo. Nullam convallis, arcu vel pellentesque sodales, nisi est varius diam, ac ultrices sem ante quis sem. Proin ultricies volutpat sapien, nec scelerisque ligula mollis lobortis.
-                    </p>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur pellentesque neque eget diam posuere porta. Quisque ut nulla at nunc vehicula lacinia. Proin adipiscing porta tellus, ut feugiat nibh adipiscing sit amet. In eu justo a felis faucibus ornare vel id metus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In eu libero ligula. Fusce eget metus lorem, ac viverra leo. Nullam convallis, arcu vel pellentesque sodales, nisi est varius diam, ac ultrices sem ante quis sem. Proin ultricies volutpat sapien, nec scelerisque ligula mollis lobortis.
-                    </p>
                 </div>
             </div>
+        </div><!--breadcrumbs-->
+
+        <div class="overflow-hidden">
+             <div class="container">
+
+            <div class="row">
+                <div class="col-sm-3 margin40">
+                    <div class="side-nav-wrapper">
+                        @role('teacher')
+                        <ul class="list-unstyled side-nav">
+                            <h3 class="text-gray ">@lang('user_site.type.teacher')</h3>
+                            <li><a href="#"><i class="fa fa-calendar-plus-o" aria-hidden="true"></i>@lang('user_site.left_menu.sub_teacher.next_class')</a></li>
+                            <li><a href="#"><i class="fa fa-users"></i> @lang('user_site.dashboard.teacher.my_students')</a></li>
+                        </ul>
+                        @endrole
+                        @role('student')
+                        <ul class="list-unstyled side-nav">
+                            <h3 class="text-gray ">@lang('user_site.type.student')</h3>
+                            <li><a href="#"><i class="fa fa-calendar-plus-o" aria-hidden="true"></i>@lang('user_site.left_menu.sub_teacher.next_class')</a></li>
+                            <li><a href="#"><i class="fa fa-users"></i> @lang('user_site.dashboard.teacher.my_students')</a></li>
+                        </ul>
+                        @endrole
+                    </div>
+                </div><!--sidebar col end-->
+                <div class="col-sm-9">
+                            <div class="divide80"></div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h4>This is example of Side navigation.</h4>
+                            <p>
+                                Donec sed odio dui. Nulla vitae elit libero, a pharetra augue. Nullam id dolor id nibh ultricies vehicula ut id elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Duis mollis, est non commodo luctus. Aenean lacinia bibendum nulla sed consectetur. Cras mattis consectetur purus sit amet fermentum. Donec id elit non mi porta gravida at eget metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ligula porta felis euismod semper.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="divide30"></div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h4>1/2 Col</h4>
+                            <p>
+                                Donec sed odio dui. Nulla vitae elit libero, a pharetra augue. Nullam id dolor id nibh ultricies vehicula ut id elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Duis mollis, est non commodo luctus. Aenean lacinia bibendum nulla sed consectetur. Cras mattis consectetur purus sit amet fermentum. Donec id elit non mi porta gravida at eget metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ligula porta felis euismod semper.
+                            </p>
+                        </div>
+                        <div class="col-sm-6">
+                            <h4>1/2 Col</h4>
+                            <p>
+                                Donec sed odio dui. Nulla vitae elit libero, a pharetra augue. Nullam id dolor id nibh ultricies vehicula ut id elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Duis mollis, est non commodo luctus. Aenean lacinia bibendum nulla sed consectetur. Cras mattis consectetur purus sit amet fermentum. Donec id elit non mi porta gravida at eget metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ligula porta felis euismod semper.
+                            </p>
+                        </div>
+                    </div><!--1/2 row end-->
+                    <div class="divide30"></div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <h4>1/3 Col</h4>
+                            <p>
+                                Duis mollis, est non commodo luctus. Aenean lacinia bibendum nulla sed consectetur. Cras mattis consectetur purus sit amet fermentum. Donec id elit non mi porta gravida at eget metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ligula porta felis euismod semper.
+                            </p>
+                        </div>
+                        <div class="col-sm-8">
+                            <h4>2/3 Col</h4>
+                            <p>
+                                Duis mollis, est non commodo luctus. Aenean lacinia bibendum nulla sed consectetur. Cras mattis consectetur purus sit amet fermentum. Donec id elit non mi porta gravida at eget metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ligula porta felis euismod semper.
+                                Donec id elit non mi porta gravida at eget metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ligula porta felis euismod semper.
+                            </p>
+                        </div>
+                    </div><!--1/3 row end-->
+                    <div class="divide30"></div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <h4>1/3 Col</h4>
+                            <p>
+                                Duis mollis, est non commodo luctus. Aenean lacinia bibendum nulla sed consectetur. Cras mattis consectetur purus sit amet fermentum. Donec id elit non mi porta gravida at eget metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ligula porta felis euismod semper.
+                            </p>
+                        </div>
+                        <div class="col-sm-4">
+                            <h4>1/3 Col</h4>
+                            <p>
+                                Duis mollis, est non commodo luctus. Aenean lacinia bibendum nulla sed consectetur. Cras mattis consectetur purus sit amet fermentum. Donec id elit non mi porta gravida at eget metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ligula porta felis euismod semper.
+                            </p>
+                        </div>
+                        <div class="col-sm-4">
+                            <h4>1/3 Col</h4>
+                            <p>
+                                Duis mollis, est non commodo luctus. Aenean lacinia bibendum nulla sed consectetur. Cras mattis consectetur purus sit amet fermentum. Donec id elit non mi porta gravida at eget metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ligula porta felis euismod semper.
+                            </p>
+                        </div>
+                    </div><!--1/3 row end-->
+                    <div class="divide30"></div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p>
+                                Donec sed odio dui. Nulla vitae elit libero, a pharetra augue. Nullam id dolor id nibh ultricies vehicula ut id elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Duis mollis, est non commodo luctus. Aenean lacinia bibendum nulla sed consectetur. Cras mattis consectetur purus sit amet fermentum. Donec id elit non mi porta gravida at eget metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id ligula porta felis euismod semper.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="divide60"></div>
+                </div>
+            </div>
+        </div><!--side navigation container-->
+        </div>
 @endsection
 
                    
 @push('scripts')
     <script src="{{ URL::asset('js/plugins/plugins.js') }}"></script> 
     <script src="{{ URL::asset('js/assan.custom.js') }}"></script>
-    <script src="{{ URL::asset('js/jquery.min.js') }}"></script>  
+    <script src="{{ URL::asset('js/jquery.min.js') }}"></script>
+     <!--scripts and plugins -->
+    
+    <!--bootstrap js plugin-->
+    <script src="{{ URL::asset('js/bootstrap/bootstrap.min.js')}}" type="text/javascript"></script>       
+    <!--easing plugin for smooth scroll-->
+    <script src="{{ URL::asset('js/jquery.easing.1.3.min.js') }}" type="text/javascript"></script>
+    <!--sticky header-->
+    <script type="text/javascript" src="{{ URL::asset('js/jquery.sticky.js') }}"></script>
+    <!--flex slider plugin-->
+    <script src="{{ URL::asset('js/jquery.flexslider-min.js')}}" type="text/javascript"></script>
+    <!--parallax background plugin-->
+    <script src="{{ URL::asset('js/jquery.stellar.min.js')}}" type="text/javascript"></script>
+
+ 
+    <!--on scroll animation-->
+    <script src="{{ URL::asset('js/wow.min.js')}}" type="text/javascript"></script> 
+    <!--owl carousel slider-->
+    <script src="{{ URL::asset('js/owl.carousel.min.js') }}" type="text/javascript"></script>
+    <!--popup js-->
+    <script src="{{ URL::asset('js/jquery.magnific-popup.min.js') }}" type="text/javascript"></script>
+
+     <script type="text/javascript">
+        function promptLogout() {
+            swal({
+                title: "{{trans('alerts.modal.welcome.title')}}",
+                text: "{{trans('alerts.modal.welcome.description')}}",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: '#DD6B55',
+                confirmButtonText: "{{trans('alerts.modal.welcome.option_yes')}}",
+                cancelButtonText: "{{trans('alerts.modal.welcome.option_cancel')}}",
+                closeOnConfirm: false,
+                animation: "slide-from-top",
+            },
+            function () {
+                window.location.replace("{{route('logout-get')}}");
+            });            
+        }
+            
+    </script>
 @endpush

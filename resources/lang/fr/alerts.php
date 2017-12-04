@@ -25,6 +25,7 @@ return [
 		'logoutsuccess' => 'Vous avez été correctement déconnecté!',
 		'welcome_wrongchoice' => 'Votre choix n\'est pas correct. Merci de bien vouloir réessayer.',
 		'userisblocked' => 'Votre compte a été bloqué par un administrateur, pour en savoir plus merci de nous contacter ici : :support_mail. Vous pouvez retrouver la raison de ce blocage dans un mail que nous vous avons envoyé le :date_blocage.',
+		'mail_ok' => 'Votre mail à été correctement vérifié!',
 	],
 	'modal' => [
 		'welcome' => [

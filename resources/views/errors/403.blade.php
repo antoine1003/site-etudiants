@@ -7,7 +7,7 @@
         <title>@lang('errors.403.title')</title>    
         <!-- Plugins CSS -->
         <link href="{{ URL::asset('css/plugins/plugins.css') }}" rel="stylesheet">
-        <link href="{{ URL::asset('css/style.css') }}" rel="stylesheet">
+        <link href="{{ URL::asset('css/style-bs4.css') }}" rel="stylesheet">
     </head>
 
     <body data-spy="scroll" data-darget=".navbar-seconday">       

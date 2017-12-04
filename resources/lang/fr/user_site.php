@@ -64,19 +64,25 @@ return [
 
     'dashboard' => [
     		'title' => 'Accueil utilisateur',
+    		'teacher' => [
+    			'my_students' => 'Mes élèves'
+    		],
 
     	],
 	'menu' => [
 		'my_account' => 'Mon compte',
-		'manage_student' => '',
+		'home' => 'Accueil',
+		'calendar' => 'Calendrier',
+		'inbox' => 'Messagerie',
 	],
 	'left_menu' => [
 		'role' => 'Rôle',
-		'next_class' => 'Prochains cours',
-		'message_box' => 'Messagerie',
-		'inbox' => 'Boite de réception',
 		'sub_student' => [
 			'ask_class' => 'Demander un cours',
+		],
+		'sub_teacher' => [
+    			'my_students' => 'Mes élèves',
+    			'next_class' => 'Mes cours',
 		],
 	],
 

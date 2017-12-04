@@ -6,10 +6,8 @@
         @show
     </head>
     <body>
-        <!-- Site Overlay -->
-        <div class="site-overlay"></div>
-
-        <nav class="navbar navbar-toggleable-md navbar-light navbar-transparent bg-faded">
+       
+        <nav class="navbar navbar-expand-lg navbar-light navbar-transparent bg-faded">
             <div class="search-inline">
                 <form>
                     <input type="text" class="form-control" placeholder="Type and hit enter...">
@@ -26,16 +24,13 @@
                     <img class='logo logo-light' src="{{config('custom_settings.img.logo_small')}}" alt="">
                 </a>
 
-                <div class="collapse navbar-collapse" id="navbarsspy">
+                <div class="navbar-collapse collapse" id="navbarsspy">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item"><a data-scroll class="nav-link active" href="home">@lang('main_site.menu.home')</a></li>
                     <li class="nav-item"><a data-scroll class="nav-link" href="about">@lang('main_site.menu.about')</a></li>
                     <li class="nav-item"><a data-scroll class="nav-link" href="pricing">@lang('main_site.menu.pricing')</a></li>
                     <li class="nav-item"><a data-scroll class="nav-link" href="contact">@lang('main_site.menu.contact')</a></li>
                 </ul>
-            </div>
-                
-
             </div>
         </nav>
 
@@ -64,10 +59,12 @@
                         <h4><i class="fa fa-envelope"></i> {{config('custom_settings.mails.contact')}}</h4>
                         <p>© Copyright 2017. {{config('custom_settings.name_site')}}</p>
                         <div>
-                            @if(LaravelLocalization::getCurrentLocale() === 'fr')
-                                <a href="{{ LaravelLocalization::getLocalizedURL('en', Request::url()) }}"><span class="flag-icon flag-icon-us"></span> English</a>
-                            @else
-                                <a href="{{ LaravelLocalization::getLocalizedURL('fr', Request::url()) }}"><span class="flag-icon flag-icon-fr"></span> Français</a>
+                            @if(config('custom_settings.is_multilingue') == true)
+                                @if(LaravelLocalization::getCurrentLocale() === 'fr')
+                                    <a href="{{ LaravelLocalization::getLocalizedURL('en', Request::url()) }}"><span class="flag-icon flag-icon-us"></span> English</a>
+                                @else
+                                    <a href="{{ LaravelLocalization::getLocalizedURL('fr', Request::url()) }}"><span class="flag-icon flag-icon-fr"></span> Français</a>
+                                @endif
                             @endif
                         </div>                   
                 </div>

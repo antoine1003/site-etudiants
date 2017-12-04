@@ -7,8 +7,8 @@
 @endsection
 @section('css')
         <!-- Plugins CSS -->
-        <link href="{{ URL::asset('css/plugins/plugins.css') }}" rel="stylesheet">
-        <link href="{{ URL::asset('css/style.css') }}" rel="stylesheet">
+        <link href="{{ URL::asset('css/plugins/plugins-login.css') }}" rel="stylesheet">
+        <link href="{{ URL::asset('css/style-bs4.css') }}" rel="stylesheet">
         <link href="{{ URL::asset('css/font-awesome/css/font-awesome.css') }}" rel="stylesheet">
 @endsection
 

@@ -13,7 +13,7 @@ return [
     'logo_path' => 'http://placehold.it/127x35',
     'img' => [
     	'login_register' => 'img/background.jpg',
-    	'logo_small' => 'img/logo/study.png',
+    	'logo_small' => 'img/logo/logo_bgw.png',
     ],
     'token_mobile' => '3Ut0yntutLWudc6yox0sKGrZkJFxxfrG',
 

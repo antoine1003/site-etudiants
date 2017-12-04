@@ -29,6 +29,14 @@ footer .relative{
 	font-family: 'Raleway', sans-serif;
 }
 
+.badge{
+	vertical-align: top;
+}
+
+h3.text-gray{
+	text-decoration-color: #555;
+	padding: 15px 0 0 10px;
+}
 
 /* Smartphones (portrait) ----------- */
 @media only screen 
