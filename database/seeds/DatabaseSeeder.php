@@ -6,6 +6,7 @@ use App\Models\EtatsValidation;
 use App\Models\CategorieClasse;
 use App\Models\User;
 use App\Models\Matiere;
+use App\Models\Conversation;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,6 +24,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
         $this->call(MatiereSeeder::class);
         $this->call(BlockedUserSeeder::class);
+        $this->call(ConversationSeeder::class);
         $this->call(MessageSeeder::class);
     }
 }

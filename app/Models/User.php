@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 use App\Models\BlockedUser;
+use App\Models\Conversation;
 use Carbon\Carbon;
 use Barryvdh\Debugbar\Facade as Debugbar;
 
@@ -55,6 +56,10 @@ class User extends Authenticatable
         return false;
     }
 
+    /**
+     * Retrieve the current blockage
+     * @return row_type_blocked_user 
+     */
     public function getCurrentBlockage()
     {
         $now = Carbon::now();
@@ -72,6 +77,29 @@ class User extends Authenticatable
         {
             return NULL;
         }
+    }
+
+    public function getUnreadMessages()
+    {
+        $conversations = Conversation::where('users1_id',$this->id)
+                         ->orWhere('users2_id',$this->id)
+                         ->get();
+        $nb_unread = 0;
+        if ($conversations->count()) {
+            foreach ($conversations as $conversation ) {
+                $messages = Message::where('emmeteurs_id', '<>', $this->id)
+                            ->where('conversations_id', $conversation->id)
+                            ->where('lu',false)
+                            ->get();
+                $nb_unread += $messages->count();
+            }
+            return $nb_unread;
+        }
+        else
+        {
+            return -1;
+        }
+        
     }
 
     public function hasAnyRole()

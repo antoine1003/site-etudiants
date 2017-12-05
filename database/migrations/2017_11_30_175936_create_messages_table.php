@@ -16,15 +16,16 @@ class CreateMessagesTable extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->integer('emmeteurs_id')->unsigned();
-            $table->foreign('emmeteurs_id')
+             $table->integer('conversations_id')->unsigned();
+            $table->foreign('conversations_id')
                   ->references('id')
-                  ->on('users')
+                  ->on('conversations')
                   ->onDelete('restrict')
                   ->onUpdate('cascade');
 
-            $table->integer('recepteurs_id')->unsigned();
-            $table->foreign('recepteurs_id')
+
+            $table->integer('emmeteurs_id')->unsigned();
+            $table->foreign('emmeteurs_id')
                   ->references('id')
                   ->on('users')
                   ->onDelete('restrict')
@@ -52,7 +53,7 @@ class CreateMessagesTable extends Migration
     {
         Schema::table('messages', function(Blueprint $table) {
             $table->dropForeign('emmeteurs_id_foreign');
-            $table->dropForeign('recepteurs_id_foreign');
+            $table->dropForeign('conversations_id_foreign');
             $table->dropForeign('fichiers_id_foreign');
         });
         Schema::dropIfExists('messages');

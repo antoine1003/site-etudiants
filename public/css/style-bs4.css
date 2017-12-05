@@ -26,6 +26,9 @@ Assan main style file
   font-weight: normal;
   font-style: normal; }
 
+
+  /*MODIFIED LINE : 2678 and 465*/
+
 /*
 Basic of template
 */
@@ -459,7 +462,7 @@ strong, b {
     color: rgba(255, 255, 255, 0.3); }
 
 .parallax-overlay {
-  position: relative;
+  /*position: relative;*/
   overflow: hidden; }
   .parallax-overlay:before {
     content: "";
@@ -2679,7 +2682,7 @@ Promo boxes
   background-size: cover;
   background-repeat: no-repeat;
   background-position: 50% 50%;
-  position: relative;
+  /*position: relative;*/
   overflow: hidden; }
 
 /*

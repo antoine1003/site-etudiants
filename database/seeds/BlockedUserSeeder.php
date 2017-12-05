@@ -17,7 +17,7 @@ class BlockedUserSeeder extends Seeder
         	'time_start' =>  Carbon::now(),
         	'time_stop' =>  Carbon::now()->addWeeks(3),
         	'users_id' => 3,
-        	'comments' => 'Vulgarité auprès de plusieurs élèves.'
+        	'comments' => 'Vulgarité auprès de plusieurs élèves.',
         ]);
     }
 }

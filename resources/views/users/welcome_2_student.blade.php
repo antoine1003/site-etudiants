@@ -8,7 +8,6 @@
     @section('css')
             <!-- Plugins CSS -->
             <link href="{{ URL::asset('css/plugins/plugins.css') }}" rel="stylesheet">
-            <link href="{{ URL::asset('css/style.css') }}" rel="stylesheet">
             <link href="{{ URL::asset('css/custom.css') }}" rel="stylesheet">
             <link href="{{ URL::asset('css/sweetalert.css') }}" rel="stylesheet">
     @endsection

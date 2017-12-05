@@ -19,37 +19,37 @@ class MessageSeeder extends Seeder
     	 */
     	Message::create([
     		'emmeteurs_id' => 1,
-    		'recepteurs_id' => 2,
+            'conversations_id' => 1,
     		'contenu' => 'Bonjour Arnaud, Tu vas bien?',
     	]);
 
     	Message::create([
     		'emmeteurs_id' => 2,
-    		'recepteurs_id' => 1,
+    		'conversations_id' => 1,
     		'contenu' => 'Super et toi?',
     	]);
 
     	Message::create([
     		'emmeteurs_id' => 1,
-    		'recepteurs_id' => 2,
+            'conversations_id' => 1,
     		'contenu' => 'Bien.J\'espère que tu as bien travaillé !' ,
     	]);
 
     	Message::create([
     		'emmeteurs_id' => 1,
-    		'recepteurs_id' => 3,
+            'conversations_id' => 2,
     		'contenu' => 'Ou se trouve l\'oiseau? Oui, non, zbradaraldjan?' ,
     	]);
 
     	Message::create([
     		'emmeteurs_id' => 3,
-    		'recepteurs_id' => 1,
+            'conversations_id' => 2,
     		'contenu' => 'Sur la branche.' ,
     	]);
 
     	Message::create([
     		'emmeteurs_id' => 1,
-    		'recepteurs_id' => 3,
+            'conversations_id' => 2,
     		'contenu' => 'Jolie mrd xptdr lol' ,
     	]);
     }

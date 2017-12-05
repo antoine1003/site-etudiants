@@ -8,7 +8,6 @@
 @section('css')
         <!-- Plugins CSS -->
         <link href="{{ URL::asset('css/plugins/plugins.css') }}" rel="stylesheet">
-        <link href="{{ URL::asset('css/style.css') }}" rel="stylesheet">
         <link href="{{ URL::asset('css/custom.css') }}" rel="stylesheet">
         <link href="{{ URL::asset('css/sweetalert.css') }}" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet"> 
@@ -16,7 +15,7 @@
 
 
 @section('content')           
-        <div class="bg-parallax parallax-overlay"  data-jarallax='{"speed": 0.2}' style="background-image: url({{URL::asset(config('custom_settings.img.login_register'))}})">
+        <div class="bg-parallax parallax-overlay"  data-jarallax='{"speed": 0.2}' style="background-attachment:fixed; background-image: url({{URL::asset(config('custom_settings.img.login_register'))}})">
             <div class="container mb40 mt-5">
                 <div class="row">
                     <div class="col-lg-12">

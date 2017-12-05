@@ -29,12 +29,13 @@ Route::get('logout', 'Auth\LoginController@logoutGet')->name('logout-get');
 
 Route::group(['prefix' => 'user','middleware' => 'auth'], function() {
     Route::get('dashboard', 'UserController@dashboard')->name('user.dashboard')->middleware('UserHasRole');
-    Route::get('account', 'UserController@account')->name('user.account')->middleware('UserHasRole');
+    Route::get('profile', 'UserController@profile')->name('user.profile')->middleware('UserHasRole');
     Route::get('mailbox', 'UserController@mailbox')->name('user.mailbox')->middleware('UserHasRole');
     //Route::get('welcome/3/{type}', 'UserController@welcomeGetDisplay')->name('user.welcome-get')->where('id', '[0-9]+');
     Route::post('welcome/3/{type}', 'UserController@welcomePost')->name('user.welcome-post')->where('id', '[0-9]+');
     Route::get('welcome/{id}/{type?}/{categorie?}/{classe?}', 'UserController@welcome')->name('user.welcome')->where('id', '[0-9]+');
   });  
+
 Route::group(['prefix' => 'mobile'], function() {
     Route::post('connection', 'MobileController@connection');
     Route::post('getAllUsers', 'MobileController@getAllUsers');

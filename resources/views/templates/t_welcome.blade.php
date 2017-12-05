@@ -1,7 +1,8 @@
 <html lang="{{ LaravelLocalization::getCurrentLocale() }}">
     <head>
         <title>@yield('title')</title>
-        <link href="{{ URL::asset('css/flag-icons/css/flag-icon.min.css') }}" rel="stylesheet">
+        <link href="{{ URL::asset('css/flag-icons/css/flag-icon.min.css') }}" rel="stylesheet">        
+        <link href="{{ URL::asset('css/style-bs4.css') }}" rel="stylesheet">
         @section('css')
         @show
     </head>

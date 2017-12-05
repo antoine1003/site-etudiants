@@ -25,7 +25,7 @@
                         <li> <a href=""><i class="fa fa-home" aria-hidden="true"></i> @lang('user_site.menu.home')</a></li>
                         <li><a href=""><i class="fa fa-calendar" aria-hidden="true"></i> @lang('user_site.menu.calendar')</a></li>
                         <li><a href=""><i class="fa fa-user-o" aria-hidden="true"></i>  @lang('user_site.menu.my_account')</a></li>
-                        <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i>  @lang('user_site.menu.inbox') <span class="badge">3</span></a></li>
+                        <li><a href="#"><i class="fa fa-envelope" aria-hidden="true"></i>  @lang('user_site.menu.inbox') <span class="badge"><?php echo $nb_unread ?> </span></a></li>
                         
                     </ul>
                     <ul class="nav navbar-nav navbar-right">

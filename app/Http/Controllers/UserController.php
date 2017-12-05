@@ -205,7 +205,8 @@ class UserController extends Controller
 
     public function dashboard()
     {
-
-        return view('users.dashboard');
+        $user = Auth::user();
+        $nb_unread = $user->getUnreadMessages();
+        return view('users.dashboard',['nb_unread'=> $nb_unread]);
     }
 }

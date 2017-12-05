@@ -40,12 +40,12 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h4>Side navigation</h4>
+                        <h4>Page principale</h4>
                     </div>
                     <div class="col-sm-6 hidden-xs text-right">
                         <ol class="breadcrumb">
-                            <li><a href="index.html">Home</a></li>
-                            <li>Side navigation</li>
+                            <li><a href="index.html">Utilisateur</a></li>
+                            <li>Page principale</li>
                         </ol>
                     </div>
                 </div>
