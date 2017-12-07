@@ -39,6 +39,7 @@ class CreateMessagesTable extends Migration
                   ->onUpdate('cascade');
 
             $table->boolean('lu')->default(false);
+            $table->datetime('date_lecture')->nullable();
             $table->text('contenu');
             $table->timestamps();
         });

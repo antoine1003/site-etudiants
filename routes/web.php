@@ -30,7 +30,7 @@ Route::get('logout', 'Auth\LoginController@logoutGet')->name('logout-get');
 Route::group(['prefix' => 'user','middleware' => 'auth'], function() {
     Route::get('dashboard', 'UserController@dashboard')->name('user.dashboard')->middleware('UserHasRole');
     Route::get('profile', 'UserController@profile')->name('user.profile')->middleware('UserHasRole');
-    Route::get('mailbox', 'UserController@mailbox')->name('user.mailbox')->middleware('UserHasRole');
+    Route::get('inbox', 'UserController@inbox')->name('user.inbox')->middleware('UserHasRole');
     //Route::get('welcome/3/{type}', 'UserController@welcomeGetDisplay')->name('user.welcome-get')->where('id', '[0-9]+');
     Route::post('welcome/3/{type}', 'UserController@welcomePost')->name('user.welcome-post')->where('id', '[0-9]+');
     Route::get('welcome/{id}/{type?}/{categorie?}/{classe?}', 'UserController@welcome')->name('user.welcome')->where('id', '[0-9]+');
@@ -41,6 +41,7 @@ Route::group(['prefix' => 'mobile'], function() {
     Route::post('getAllUsers', 'MobileController@getAllUsers');
     Route::post('getUserInfoById', 'MobileController@getUserInfoById');
     Route::post('getUserInfoByEmail', 'MobileController@getUserInfoByEmail');
+    Route::post('getMessagesById', 'MobileController@getMessagesById');
     Route::post('passwordUpdate', 'MobileController@passwordUpdate');
 });
 

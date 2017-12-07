@@ -8,6 +8,7 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
 use App\Models\BlockedUser;
 use App\Models\Conversation;
 use Carbon\Carbon;
+use DB;
 use Barryvdh\Debugbar\Facade as Debugbar;
 
 
@@ -56,6 +57,15 @@ class User extends Authenticatable
         return false;
     }
 
+    public function getConversations()
+    {
+        $conversations = Conversation::where('users1_id',$this->id)
+                         ->orWhere('users2_id',$this->id)
+                         ->get();
+
+        return $conversations;
+    }
+
     /**
      * Retrieve the current blockage
      * @return row_type_blocked_user 
@@ -102,6 +112,31 @@ class User extends Authenticatable
         
     }
 
+    /**
+     * Retrieve X last messages (where X equals nb_messages).
+     * @param  int    $nb_message Nb messages to retrieve
+     * @return [type]             [description]
+     */
+    public function getMessages( $nb_messages)
+    {
+        $conversations = DB::table('conversations')->select('id')->where('users1_id',$this->id)
+                         ->orWhere('users2_id',$this->id)
+                         ->get();
+        $id_convs = array();
+        foreach ($conversations as $conversation) {
+            array_push($id_convs, $conversation->id);
+        }
+          
+        $messages = Message::select('*')->whereIn('conversations_id', $id_convs)
+        ->limit($nb_messages)->get();
+       
+        return $messages;        
+    }
+
+    /**
+     * Check if the connected user has already a role.
+     * @return boolean [description]
+     */
     public function hasAnyRole()
     {
         $result = $this->hasRole(['teacher','student','parent']);

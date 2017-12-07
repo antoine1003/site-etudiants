@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Role;
+use App\Models\User;
 use App\Models\CategorieClasseProfesseur;
 use App\Models\Matiere;
 use App\Models\CategorieClasse;
@@ -201,6 +202,27 @@ class UserController extends Controller
                 break;
         }
         
+    }
+
+
+    public function inbox()
+    {
+        $user = Auth::user();
+        $conversations = $user->getConversations();
+        $name = array();
+        foreach ($conversations as $conversation) {
+            if ($conversation->users1_id == $user->id) {
+                $user_temp = User::find($conversation->users2_id);
+            }
+            else
+            {
+                $user_temp = User::find($conversation->users1_id);
+            }
+            array_push($name,$user_temp->prenom . ' ' . $user_temp->nom);
+            echo $conversation->getUnreadMessageWithUser($user->id);
+        }
+        return $name;
+        return view('users.inbox',[]);
     }
 
     public function dashboard()

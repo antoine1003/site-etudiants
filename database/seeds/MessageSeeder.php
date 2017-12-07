@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Models\Message;
-
+use Carbon\Carbon;
 class MessageSeeder extends Seeder
 {
     /**
@@ -20,8 +20,8 @@ class MessageSeeder extends Seeder
     	Message::create([
     		'emmeteurs_id' => 1,
             'conversations_id' => 1,
-    		'contenu' => 'Bonjour Arnaud, Tu vas bien?',
-    	]);
+            'contenu' => 'Bonjour Arnaud, Tu vas bien?',
+        ]);
 
     	Message::create([
     		'emmeteurs_id' => 2,
@@ -31,26 +31,14 @@ class MessageSeeder extends Seeder
 
     	Message::create([
     		'emmeteurs_id' => 1,
-            'conversations_id' => 1,
-    		'contenu' => 'Bien.J\'espère que tu as bien travaillé !' ,
-    	]);
-
-    	Message::create([
-    		'emmeteurs_id' => 1,
             'conversations_id' => 2,
-    		'contenu' => 'Ou se trouve l\'oiseau? Oui, non, zbradaraldjan?' ,
-    	]);
+            'contenu' => 'Ou se trouve l\'oiseau? Oui, non, zbradaraldjan?' ,
+        ]);
 
     	Message::create([
     		'emmeteurs_id' => 3,
             'conversations_id' => 2,
-    		'contenu' => 'Sur la branche.' ,
-    	]);
-
-    	Message::create([
-    		'emmeteurs_id' => 1,
-            'conversations_id' => 2,
-    		'contenu' => 'Jolie mrd xptdr lol' ,
-    	]);
+            'contenu' => 'Sur la branche.' ,
+        ]);
     }
 }

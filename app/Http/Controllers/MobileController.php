@@ -120,4 +120,27 @@ class MobileController extends Controller
             echo "refused";
         }
     }
+
+    public function getMessagesById(Request $request)
+    {
+        app('debugbar')->disable();
+        if (config('custom_settings.token_mobile') == $request->input('token_mobile')) {
+            $id_user = $request->input('id_user');
+            if (isset($id_user)) {
+                $nb_messages = $request->input('nb_messages');
+                $user = User::find($id_user);
+                $messages = $user->getMessages($nb_messages);
+                echo json_encode($messages);
+            }
+            else
+            {
+                echo "failed";
+            }
+           
+        }
+        else
+        {
+            echo "refused";
+        }
+    }
 }
