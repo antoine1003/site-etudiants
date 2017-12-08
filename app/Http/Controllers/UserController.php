@@ -209,20 +209,12 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $conversations = $user->getConversations();
-        $name = array();
-        foreach ($conversations as $conversation) {
-            if ($conversation->users1_id == $user->id) {
-                $user_temp = User::find($conversation->users2_id);
-            }
-            else
-            {
-                $user_temp = User::find($conversation->users1_id);
-            }
-            array_push($name,$user_temp->prenom . ' ' . $user_temp->nom);
-            echo $conversation->getUnreadMessageWithUser($user->id);
-        }
-        return $name;
-        return view('users.inbox',[]);
+        $nb_unread = $user->getUnreadMessages();
+        $nb_conv_unread = array();
+
+        $conversations = DB::select(DB::raw('SELECT conversations.id, u2.id as u2_id, CONCAT(u2.prenom," ", u2.nom) as u2_nom_complet, u1.id as u1_id, CONCAT(u1.prenom," ", u1.nom) as u1_nom_complet FROM conversations JOIN users  u1 ON conversations.users1_id = u1.id JOIN users u2 ON conversations.users2_id = u2.id WHERE users1_id = ? OR users2_id = ?'), [$user->id,$user->id]);
+        
+        return view('users.inbox',['conversations' => $conversations, 'nb_unread'=> $nb_unread, 'conn_user' => $user]);
     }
 
     public function dashboard()

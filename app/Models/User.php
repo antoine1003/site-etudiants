@@ -133,6 +133,15 @@ class User extends Authenticatable
         return $messages;        
     }
 
+    public function getMessagesInConv( $nb_messages, $id_conv)
+    {
+          
+        $messages = Message::select('*')->where('conversations_id', $id_conv)
+        ->limit($nb_messages)->get();
+       
+        return $messages;        
+    }
+
     /**
      * Check if the connected user has already a role.
      * @return boolean [description]

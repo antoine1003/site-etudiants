@@ -41,8 +41,9 @@ Route::group(['prefix' => 'mobile'], function() {
     Route::post('getAllUsers', 'MobileController@getAllUsers');
     Route::post('getUserInfoById', 'MobileController@getUserInfoById');
     Route::post('getUserInfoByEmail', 'MobileController@getUserInfoByEmail');
-    Route::post('getMessagesById', 'MobileController@getMessagesById');
-    Route::post('passwordUpdate', 'MobileController@passwordUpdate');
+    Route::post('getMessagesByUserWithConv', 'MobileController@getMessagesByUserWithConv');
+    Route::post('passwordUpdate', 'MobileController@passwordUpdate');    
+    Route::post('addMessageInConversation', 'MobileController@addMessageInConversation');
 });
 
 Route::get('maintenance',function() {

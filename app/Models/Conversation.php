@@ -20,7 +20,7 @@ class Conversation extends Model
 
     public function getUnreadMessageWithUser($id_connected_user)
     {
-    	$messages = DB::table('classe')
+    	$messages = DB::table('messages')
     				->where('conversations_id',$this->id)
     				->where('emmeteurs_id','<>',$id_connected_user)
     				->where('lu',false)

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Message;
 use Illuminate\Support\Facades\Hash;
 
 class MobileController extends Controller
@@ -121,7 +122,37 @@ class MobileController extends Controller
         }
     }
 
-    public function getMessagesById(Request $request)
+    public function addMessageInConversation(Request $request)
+    {
+        app('debugbar')->disable();
+        if (config('custom_settings.token_mobile') == $request->input('token_mobile')) {
+            $id_user = $request->input('id_user');
+            if (isset($id_user)) {
+                $id_conv = $request->input('id_conv');
+                $id_emmeteur = $request->input('id_emmeteur');
+                $id_fichier = $request->input('id_fichier');
+                $contenu = $request->input('contenu');
+                $message = new Message;
+                $message->conversations_id;
+                $message->emmeteurs_id;
+                $message->fichiers_id;
+                $message->contenu;
+                $message->save();
+            }
+            else
+            {
+                echo "failed";
+            }
+           
+        }
+        else
+        {
+            echo "refused";
+        }
+    }
+    
+
+    public function getMessagesByUserWithConv(Request $request)
     {
         app('debugbar')->disable();
         if (config('custom_settings.token_mobile') == $request->input('token_mobile')) {
@@ -129,14 +160,14 @@ class MobileController extends Controller
             if (isset($id_user)) {
                 $nb_messages = $request->input('nb_messages');
                 $user = User::find($id_user);
-                $messages = $user->getMessages($nb_messages);
+                $id_conv = $request->input('id_conv');
+                $messages = $user->getMessagesInConv($nb_messages,$id_conv);
                 echo json_encode($messages);
             }
             else
             {
                 echo "failed";
-            }
-           
+            }           
         }
         else
         {

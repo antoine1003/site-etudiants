@@ -3,7 +3,7 @@
 
 
 @section('title')
-    @lang('user_site.dashboard.title')
+    @lang('user_site.dashboard.inbox')
 @endsection
 @section('css')
        
@@ -59,9 +59,13 @@
                 <div class="col-sm-3 margin40">
                     <div class="side-nav-wrapper">
                         <h3>Conversations</h3>
-                        <ul>
+                        <ul class="list-unstyled side-nav">
                             @foreach ($conversations as $conversation)
-                                <li></li>
+                                @if($conn_user->id == $conversation->u1_id)
+                                    <li><a href=""><?php echo  $conversation->u2_nom_complet?></a></li>
+                                @else
+                                    <li><a href=""><?php echo  $conversation->u1_nom_complet?></a></li>
+                                @endif
                             @endforeach
                         </ul>
                         
