@@ -127,17 +127,20 @@ class MobileController extends Controller
         app('debugbar')->disable();
         if (config('custom_settings.token_mobile') == $request->input('token_mobile')) {
             $id_user = $request->input('id_user');
-            if (isset($id_user)) {
-                $id_conv = $request->input('id_conv');
-                $id_emmeteur = $request->input('id_emmeteur');
-                $id_fichier = $request->input('id_fichier');
-                $contenu = $request->input('contenu');
+            $id_conv = $request->input('id_conv');
+            $id_fichier = $request->input('id_fichier');
+            $contenu = $request->input('contenu');
+            if (isset($id_user) && isset($id_conv) && isset($id_fichier) && isset($contenu)) {
+               
                 $message = new Message;
-                $message->conversations_id;
-                $message->emmeteurs_id;
-                $message->fichiers_id;
-                $message->contenu;
+                $message->conversations_id = $id_conv;
+                $message->emmeteurs_id = $id_user;
+                if ($id_fichier != -1) {
+                    $message->fichiers_id = $id_fichier;
+                }                
+                $message->contenu = $contenu;
                 $message->save();
+                echo "success";
             }
             else
             {
