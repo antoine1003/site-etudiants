@@ -8,6 +8,7 @@ use DB;
 
 class Conversation extends Model
 {
+    public $nb_unread_conv;
     public function users()
     {
     	return $this->hasMany('App\Models\User');
@@ -16,16 +17,5 @@ class Conversation extends Model
     public function messages()
     {
     	return $this->belongToMany('App\Models\Message');
-    }
-
-    public function getUnreadMessageWithUser($id_connected_user)
-    {
-    	$messages = DB::table('messages')
-    				->where('conversations_id',$this->id)
-    				->where('emmeteurs_id','<>',$id_connected_user)
-    				->where('lu',false)
-    				->get();
-
-    	return $messages->count();
     }
 }

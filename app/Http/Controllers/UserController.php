@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Fichier;
+use App\Models\Message;
+use App\Models\Conversation;
 use App\Models\CategorieClasseProfesseur;
 use App\Models\Matiere;
 use App\Models\CategorieClasse;
@@ -17,6 +20,15 @@ use DB;
 
 class UserController extends Controller
 {
+    /**
+     * Gère la partie welcome (première connexion de l'utilisateur).
+     * @param  Request $request   [description]
+     * @param  integer $id        [description]
+     * @param  [type]  $type      [description]
+     * @param  [type]  $categorie [description]
+     * @param  [type]  $classe    [description]
+     * @return [type]             [description]
+     */
     public function welcome(Request $request, $id = 1, $type = null, $categorie = null,  $classe = null)
     {
         //Si l'id est dans les paramettres de l'url
@@ -204,8 +216,11 @@ class UserController extends Controller
         
     }
 
-
-    public function inbox()
+    /**
+     * user/inbox
+     * @return [type] [description]
+     */
+    public function inbox($id_conv = null, $nb_message = 5)
     {
         $user = Auth::user();
         $conversations = $user->getConversations();
@@ -213,10 +228,86 @@ class UserController extends Controller
         $nb_conv_unread = array();
 
         $conversations = DB::select(DB::raw('SELECT conversations.id, u2.id as u2_id, CONCAT(u2.prenom," ", u2.nom) as u2_nom_complet, u1.id as u1_id, CONCAT(u1.prenom," ", u1.nom) as u1_nom_complet FROM conversations JOIN users  u1 ON conversations.users1_id = u1.id JOIN users u2 ON conversations.users2_id = u2.id WHERE users1_id = ? OR users2_id = ?'), [$user->id,$user->id]);
+
+        foreach ($conversations as $conversation) {
+            $conversation->nb_unread_conv = $user->getUnreadMessagesInConv($conversation->id);
+        }
+        if ($id_conv == null) {
+            return view('users.inbox',['conversations' => $conversations, 'nb_unread'=> $nb_unread, 'conn_user' => $user]);
+        }
+        else
+        {
+            $conversation_exist = Conversation::find($id_conv);
+            //On vérifie que la conversation avec l'id donné en paramètre existe
+            if ($conversation_exist != null) {            
+                $conversation = Conversation::where('users2_id',$user->id)->orWhere('users1_id',$user->id);
+                //Si l'utilisateur connecté appartient a celle des conversation alors on peut l'afficher
+                if ($conversation != null) {
+                    $messages = DB::select(DB::raw('SELECT nom_fichier, chemin, emmeteurs_id, fichiers_id, contenu, lu, CONCAT(users.prenom, " ", users.nom) as emmeteur, messages.created_at as heure_envoi FROM messages JOIN users on users.id = messages.emmeteurs_id LEFT JOIN fichiers ON messages.fichiers_id = fichiers.id WHERE conversations_id = ? ORDER BY messages.id DESC,messages.created_at DESC LIMIT ? '),[$id_conv,$nb_message]);
+
+                    $reverse = array_reverse($messages);
+                    return view('users.conversation',['conversations' => $conversations, 'nb_unread'=> $nb_unread,'conversations_id' => $id_conv,'conn_user' => $user,'messages' => $reverse,'nb_messages' => $nb_message]);
+                }
+                else
+                {
+                    abort(404);
+                }
+            }
+            else
+            {
+                abort(404);
+            }
+        }
         
-        return view('users.inbox',['conversations' => $conversations, 'nb_unread'=> $nb_unread, 'conn_user' => $user]);
     }
 
+    public function inboxPost(Request $request)
+    {
+        //On vérifie si le message n'est pas vide.
+        $this->validate($request, [
+        'contenu' => 'required|max:255',
+        'conversations_id' => 'required|regex:/^[0-9]+$/',        
+        'document' => 'max:5000|file|mimes:jpeg,png,pdf,docx,xls',
+        ]);
+
+        $contenu = $request->input('contenu');
+        $id_conv = $request->input('conversations_id');
+        $user = Auth::user();
+
+        if ($request->hasFile('document')) {
+            $file_tmp = $request->file('document');
+            $name = $file_tmp->getClientOriginalName();
+            $path = $file_tmp->store('public');
+            $pathTab = explode("/", $path);
+
+            $fichier = new Fichier;
+            $fichier->nom_fichier = $name;
+            $fichier->chemin = $pathTab[1];
+            $fichier->save();
+
+            $message = new Message;
+            $message->conversations_id = $id_conv;
+            $message->emmeteurs_id = $user->id;
+            $message->contenu = $contenu;
+            $message->fichiers_id = $fichier->id;
+            $message->save();
+        }
+        else
+        {
+            $message = new Message;
+            $message->conversations_id = $id_conv;
+            $message->emmeteurs_id = $user->id;
+            $message->contenu = $contenu;
+            $message->save();            
+        }
+        return redirect()->route('user.inbox',['id' => $id_conv]);
+    }
+
+
+    /**
+     * user/dashboard
+     * @return [type] [description]
+     */
     public function dashboard()
     {
         $user = Auth::user();

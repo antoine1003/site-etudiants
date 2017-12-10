@@ -38,6 +38,14 @@ h3.text-gray{
 	padding: 15px 0 0 10px;
 }
 
+.file-input{
+  display: none !important;
+}
+
+.load-messages{
+	margin-top: 20px;
+	}
+
 /* Smartphones (portrait) ----------- */
 @media only screen 
 and (max-width : 500px) {
@@ -45,5 +53,12 @@ and (max-width : 500px) {
 	position:fixed;
 		 width: 50%;
   		margin: 0 auto;
+	}
+}
+
+@media only screen 
+and (max-width : 768px) {
+  .load-messages{
+	margin-top: 50px;
 	}
 }

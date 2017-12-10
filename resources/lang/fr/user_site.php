@@ -65,6 +65,7 @@ return [
     'dashboard' => [
     		'title' => 'Accueil utilisateur',
     		'inbox' => 'Messagerie',
+    		'conversation' => 'Conversation',
     		'teacher' => [
     			'my_students' => 'Mes élèves'
     		],

@@ -57,6 +57,10 @@ class User extends Authenticatable
         return false;
     }
 
+    /**
+     * Get all conversation concerning the connected user.
+     * @return Conversation [description]
+     */
     public function getConversations()
     {
         $conversations = Conversation::where('users1_id',$this->id)
@@ -89,6 +93,10 @@ class User extends Authenticatable
         }
     }
 
+    /**
+     * Get all unread messages
+     * @return int [description]
+     */
     public function getUnreadMessages()
     {
         $conversations = Conversation::where('users1_id',$this->id)
@@ -115,7 +123,7 @@ class User extends Authenticatable
     /**
      * Retrieve X last messages (where X equals nb_messages).
      * @param  int    $nb_message Nb messages to retrieve
-     * @return [type]             [description]
+     * @return Message             [description]
      */
     public function getMessages( $nb_messages)
     {
@@ -133,6 +141,12 @@ class User extends Authenticatable
         return $messages;        
     }
 
+    /**
+     * Return all messages in the conversation given in parameter.
+     * @param  int $nb_messages [description]
+     * @param  int $id_conv     Id conversation
+     * @return Message              [description]
+     */
     public function getMessagesInConv( $nb_messages, $id_conv)
     {
           
@@ -140,6 +154,21 @@ class User extends Authenticatable
         ->limit($nb_messages)->get();
        
         return $messages;        
+    }
+
+    /**
+     * Return the number of unread messages in a conversation
+     * @param  int $id_conv Id of the conversation
+     * @return Message          [description]
+     */
+    public function getUnreadMessagesInConv($id_conv)
+    {
+        $messages = Message::where('conversations_id',$id_conv)
+                    ->where('emmeteurs_id','<>',$this->id)
+                    ->where('lu',false)
+                    ->get();
+
+        return $messages->count();
     }
 
     /**
