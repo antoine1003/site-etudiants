@@ -39,7 +39,7 @@ class MobileController extends Controller
             $user = User::find($id);
             if ($user != null) {                
                 $conversations = $user->getConversationsWithFullnameAndUnread();
-                echo json_encode($user);
+                echo json_encode($conversations);
             }
             else
             {
