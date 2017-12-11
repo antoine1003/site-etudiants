@@ -23,12 +23,33 @@ class MobileController extends Controller
         $token = $request->input('token_mobile');
     	if (config('custom_settings.token_mobile') == $token) {
     		$user = User::find($id);
-            echo json_encode($user);
     	}
     	else
         {
     		echo "refused";
     	}
+    }
+
+    public function getConversationsWithFullname(Request $request)
+    {
+        app('debugbar')->disable();
+        $id = $request->input('id_user');
+        $token = $request->input('token_mobile');
+        if (config('custom_settings.token_mobile') == $token) {            
+            $user = User::find($id);
+            if ($user != null) {                
+                $conversations = $user->getConversationsWithFullnameAndUnread();
+                echo json_encode($user);
+            }
+            else
+            {
+                echo "failed";
+            }
+        }
+        else
+        {
+            echo "refused";
+        }
     }
 
     public function getUserInfoByEmail(Request $request)

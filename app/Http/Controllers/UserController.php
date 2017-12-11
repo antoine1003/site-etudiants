@@ -140,7 +140,7 @@ class UserController extends Controller
     /**
      * Gère la partie finale de welcome (id = 3)
      * @param  Request $request [description]
-     * @param  [type]  $type    [description]
+     * @param  [type]  $type    Type de l'utilisateur (teacher, student ou parent)
      * @return [type]           [description]
      */
     public function welcomePost(Request $request, $type)
@@ -225,28 +225,36 @@ class UserController extends Controller
         $user = Auth::user();
         $conversations = $user->getConversations();
         $nb_unread = $user->getUnreadMessages();
-        $nb_conv_unread = array();
 
-        $conversations = DB::select(DB::raw('SELECT conversations.id, u2.id as u2_id, CONCAT(u2.prenom," ", u2.nom) as u2_nom_complet, u1.id as u1_id, CONCAT(u1.prenom," ", u1.nom) as u1_nom_complet FROM conversations JOIN users  u1 ON conversations.users1_id = u1.id JOIN users u2 ON conversations.users2_id = u2.id WHERE users1_id = ? OR users2_id = ?'), [$user->id,$user->id]);
-
-        foreach ($conversations as $conversation) {
-            $conversation->nb_unread_conv = $user->getUnreadMessagesInConv($conversation->id);
-        }
         if ($id_conv == null) {
+            $conversations = $user->getConversationsWithFullnameAndUnread();
             return view('users.inbox',['conversations' => $conversations, 'nb_unread'=> $nb_unread, 'conn_user' => $user]);
         }
         else
         {
             $conversation_exist = Conversation::find($id_conv);
             //On vérifie que la conversation avec l'id donné en paramètre existe
-            if ($conversation_exist != null) {            
-                $conversation = Conversation::where('users2_id',$user->id)->orWhere('users1_id',$user->id);
-                //Si l'utilisateur connecté appartient a celle des conversation alors on peut l'afficher
-                if ($conversation != null) {
-                    $messages = DB::select(DB::raw('SELECT nom_fichier, chemin, emmeteurs_id, fichiers_id, contenu, lu, CONCAT(users.prenom, " ", users.nom) as emmeteur, messages.created_at as heure_envoi FROM messages JOIN users on users.id = messages.emmeteurs_id LEFT JOIN fichiers ON messages.fichiers_id = fichiers.id WHERE conversations_id = ? ORDER BY messages.id DESC,messages.created_at DESC LIMIT ? '),[$id_conv,$nb_message]);
+            if ($conversation_exist != null) { 
+                $conversations = $user->getConversationsWithFullnameAndUnread();        
+                //Si l'utilisateur connecté appartient à celle des conversations alors on peut l'afficher
+                if ($conversations != null) {
+                    //On marque les messages reçus en lu;
+                    DB::table('messages')->where('conversations_id', $id_conv)
+                                        ->where('emmeteurs_id','<>',$user->id)
+                                        ->update(['lu' => true]);
 
+                    foreach ($conversations as $conversation) {
+                        $conversation->nb_unread_conv = $user->getUnreadMessagesInConv($conversation->id);
+                    }
+
+                    $nb_unread = $user->getUnreadMessages();
+                    $nb_conv_unread = array();
+                    //On récupère les messages
+                    $messages = DB::select(DB::raw('SELECT nom_fichier, chemin, emmeteurs_id, fichiers_id, contenu, lu, CONCAT(users.prenom, " ", users.nom) as emmeteur, messages.created_at as heure_envoi FROM messages JOIN users on users.id = messages.emmeteurs_id LEFT JOIN fichiers ON messages.fichiers_id = fichiers.id WHERE conversations_id = ? ORDER BY messages.id DESC,messages.created_at DESC LIMIT ? '),[$id_conv,$nb_message]);
+                    //On inverse les messages afin de pourvoir aficher les N derniers
                     $reverse = array_reverse($messages);
                     return view('users.conversation',['conversations' => $conversations, 'nb_unread'=> $nb_unread,'conversations_id' => $id_conv,'conn_user' => $user,'messages' => $reverse,'nb_messages' => $nb_message]);
+                    
                 }
                 else
                 {

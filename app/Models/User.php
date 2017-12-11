@@ -42,7 +42,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if the user is blocked or not
+     * Vérifie si l'utilisateur connecté est bloqué ou non.
      * @return boolean
      */
     public function isBlocked()
@@ -58,7 +58,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Get all conversation concerning the connected user.
+     * Renvois les conversations concernant l'utilisateur connecté.
      * @return Conversation [description]
      */
     public function getConversations()
@@ -70,9 +70,19 @@ class User extends Authenticatable
         return $conversations;
     }
 
+    public function getConversationsWithFullnameAndUnread()
+    {
+        $conversations = DB::select(DB::raw('SELECT conversations.id, u2.id as u2_id, CONCAT(u2.prenom," ", u2.nom) as u2_nom_complet, u1.id as u1_id, CONCAT(u1.prenom," ", u1.nom) as u1_nom_complet FROM conversations JOIN users  u1 ON conversations.users1_id = u1.id JOIN users u2 ON conversations.users2_id = u2.id WHERE users1_id = ? OR users2_id = ?'), [$this->id,$this->id]);
+        foreach ($conversations as $conversation) {
+            $conversation->nb_unread_conv = $this->getUnreadMessagesInConv($conversation->id);
+        }
+
+        return $conversations;
+    }
+
     /**
-     * Retrieve the current blockage
-     * @return row_type_blocked_user 
+     * Renvois le blockage en cours
+     * @return BlockedUser 
      */
     public function getCurrentBlockage()
     {
@@ -94,7 +104,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Get all unread messages
+     * Retourne le nombre de messagesnon lus
      * @return int [description]
      */
     public function getUnreadMessages()
@@ -121,8 +131,8 @@ class User extends Authenticatable
     }
 
     /**
-     * Retrieve X last messages (where X equals nb_messages).
-     * @param  int    $nb_message Nb messages to retrieve
+     * Renvois les N derniers messages
+     * @param  int    $nb_message Nb de messages à retourner.
      * @return Message             [description]
      */
     public function getMessages( $nb_messages)
@@ -142,8 +152,8 @@ class User extends Authenticatable
     }
 
     /**
-     * Return all messages in the conversation given in parameter.
-     * @param  int $nb_messages [description]
+     * Retourne tous les messages d'une conversation
+     * @param  int $nb_messages Nombre de messages à retourner
      * @param  int $id_conv     Id conversation
      * @return Message              [description]
      */
@@ -157,8 +167,8 @@ class User extends Authenticatable
     }
 
     /**
-     * Return the number of unread messages in a conversation
-     * @param  int $id_conv Id of the conversation
+     * Retourne le nombre de messages non lus dans une conversation
+     * @param  int $id_conv ID de la conversation
      * @return Message          [description]
      */
     public function getUnreadMessagesInConv($id_conv)
@@ -172,7 +182,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if the connected user has already a role.
+     * Vérifie si l'utilisateur a un rôle
      * @return boolean [description]
      */
     public function hasAnyRole()
