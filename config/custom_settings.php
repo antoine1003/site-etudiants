@@ -9,6 +9,7 @@ return [
     ],
     'is_multilingue' => false,
     'is_under_maintenance' => false,
+    'estimated_maintenance_time_min' => 120,
     'name_site' => 'Study Flow',
     'logo_path' => 'http://placehold.it/127x35',
     'img' => [

@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class isUnderMaintenance
 {
@@ -19,6 +20,9 @@ class isUnderMaintenance
         if ($request->path() != 'maintenance') {
             if($maintenance_mode)
             {
+                if (Auth::check()) {
+                    Auth::logout();
+                }
                 return redirect()->route('maintenance');
             }
         }
