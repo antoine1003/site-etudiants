@@ -225,19 +225,26 @@ class UserController extends Controller
         $user = Auth::user();
         $conversations = $user->getConversations();
         $nb_unread = $user->getUnreadMessages();
-
-        if ($id_conv == null) {
-            $conversations = $user->getConversationsWithFullnameAndUnread();
-            return view('users.inbox',['conversations' => $conversations, 'nb_unread'=> $nb_unread, 'conn_user' => $user]);
+        //On récupère la liste des demandes d'amitier
+        $pending_friendships = $user->getFriendRequests();
+        $pending_users_array = array();
+        if (count($pending_friendships) > 0 ) {
+            foreach ($pending_friendships as $pending_friendship) {
+                $pending_user = User::find($pending_friendship->sender_id);
+                array_push($pending_users_array, $pending_user);
+            }
+        }
+        $conversations = $user->getConversationsWithFullnameAndUnread();
+        if ($id_conv == null) {            
+            return view('users.inbox',['conversations' => $conversations, 'nb_unread'=> $nb_unread, 'conn_user' => $user, 'pending_friendships' => $pending_friendships,'pending_users' => $pending_users_array,'breadcrumb_title' => 'Messagerie']);
         }
         else
         {
             $conversation_exist = Conversation::find($id_conv);
             //On vérifie que la conversation avec l'id donné en paramètre existe
-            if ($conversation_exist != null) { 
-                $conversations = $user->getConversationsWithFullnameAndUnread();        
+            if (count($conversation_exist) != 0) { 
                 //Si l'utilisateur connecté appartient à celle des conversations alors on peut l'afficher
-                if ($conversations != null) {
+                if ($user->canUserAccessToThisConv($id_conv)) {
                     //On marque les messages reçus en lu;
                     DB::table('messages')->where('conversations_id', $id_conv)
                                         ->where('emmeteurs_id','<>',$user->id)
@@ -253,7 +260,8 @@ class UserController extends Controller
                     $messages = DB::select(DB::raw('SELECT nom_fichier, chemin, emmeteurs_id, fichiers_id, contenu, lu, CONCAT(users.prenom, " ", users.nom) as emmeteur, messages.created_at as heure_envoi FROM messages JOIN users on users.id = messages.emmeteurs_id LEFT JOIN fichiers ON messages.fichiers_id = fichiers.id WHERE conversations_id = ? ORDER BY messages.id DESC,messages.created_at DESC LIMIT ? '),[$id_conv,$nb_message]);
                     //On inverse les messages afin de pourvoir aficher les N derniers
                     $reverse = array_reverse($messages);
-                    return view('users.conversation',['conversations' => $conversations, 'nb_unread'=> $nb_unread,'conversations_id' => $id_conv,'conn_user' => $user,'messages' => $reverse,'nb_messages' => $nb_message]);
+
+                    return view('users.conversation',['conversations' => $conversations, 'nb_unread'=> $nb_unread,'conversations_id' => $id_conv,'conn_user' => $user,'messages' => $reverse,'nb_messages' => $nb_message, 'pending_friendships' => $pending_friendships, 'pending_users' => $pending_users_array,'breadcrumb_title' => 'Conversation']);
                     
                 }
                 else
@@ -269,6 +277,11 @@ class UserController extends Controller
         
     }
 
+    /**
+     * Gestion de l'envoi de nouveaux messages
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
     public function inboxPost(Request $request)
     {
         //On vérifie si le message n'est pas vide.
@@ -318,8 +331,65 @@ class UserController extends Controller
      */
     public function dashboard()
     {
-        $user = Auth::user();
-        $nb_unread = $user->getUnreadMessages();
-        return view('users.dashboard',['nb_unread'=> $nb_unread]);
+        $user = Auth::user();        
+        $pending_friendships = $user->getFriendRequests();
+        $nb_unread = $user->getUnreadMessages();        
+        $pending_users_array = array();
+        if (count($pending_friendships) > 0 ) {
+            foreach ($pending_friendships as $pending_friendship) {
+                $pending_user = User::find($pending_friendship->sender_id);
+                $pending_user->sender_id = $pending_friendship->sender_id ;
+                array_push($pending_users_array, $pending_user);
+            }
+        }
+        return view('users.dashboard',['nb_unread'=> $nb_unread,'pending_friendships' => $pending_friendships,'pending_users' => $pending_users_array,'breadcrumb_title' => 'Accueil']);
+    }
+
+    public function addFriend(Request $request)
+    {
+        $email_recep = $request->input('email');
+        if ($email_recep != null) {
+            $recipient = User::where('email','=', $email_recep)->first();
+            if ($recipient != null) {
+                $user = Auth::user();
+                if ($user->id != $recipient->id) {
+                    $user->befriend($recipient);
+                    Session::flash('bootstrap-alert-type', 'success');
+                    Session::flash('bootstrap-alert', 'La demande de connexion a bien été envoyée !');
+                    Session::flash('bootstrap-icon', 'fa fa-check'); 
+                }
+                else
+                {
+                    Session::flash('bootstrap-alert-type', 'danger');
+                    Session::flash('bootstrap-alert', 'Vous ne pouvez pas vous ajouter vous même !');
+                    Session::flash('bootstrap-icon', 'fa fa-exclamation'); 
+                }
+                
+            }
+            else
+            {
+                Session::flash('bootstrap-alert-type', 'danger');
+                Session::flash('bootstrap-alert', 'L\'email que vous avez saisis ne correspond à aucuns membres!');
+                Session::flash('bootstrap-icon', 'fa fa-exclamation'); 
+            }
+        }
+        else
+        {
+            Session::flash('bootstrap-alert-type', 'danger');
+            Session::flash('bootstrap-alert', 'Veuillez renseigner un email!');
+            Session::flash('bootstrap-icon', 'fa fa-exclamation');
+        }
+        return redirect()->back();
+    }
+
+    public function handleFriends(Request $request)
+    {
+        $id_senders = $request->input('id_senders');
+        $id_receiver = $request->input('id_receiver');
+        // 0 : demande refusée 
+        // 1 : demande acceptée
+        $is_accepted =$request->input('is_accepted');
+
+        echo $id_senders.$id_receiver.$is_accepted;
     }
 }

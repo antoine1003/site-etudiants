@@ -44,7 +44,92 @@ h3.text-gray{
 
 .load-messages{
 	margin-top: 20px;
-	}
+}
+
+/**shopping cart dropdown menu**/
+.shopping-cart {
+  padding: 0px;
+  min-width: 300px !important;
+  border: 0px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -ms-border-radius: 0px;
+  border-radius: 0px;
+}
+.shopping-cart .mCSB_inside > .mCSB_container {
+  margin-right: 6px;
+}
+
+.content-scroll {
+  height: 250px;
+  width: 100%;
+}
+
+.cart-item {
+  padding-bottom: 5px;
+  padding-top: 5px;
+  position: relative;
+  border-bottom: 1px dashed #eee;
+}
+.cart-item img {
+  float: left;
+  width: 60px;
+  margin-right: 10px;
+}
+.cart-item .description {
+  overflow: hidden;  
+  padding-left: 10px;
+}
+.cart-item .description a {
+  color: #333;
+  font-size: 13px;
+}
+.cart-item .description a:hover {
+  color: #1ab394;
+}
+.cart-item .description strong {
+  display: block;
+  font-weight: 400;
+  font-size: 12px;
+}
+.cart-item .buttons {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+.cart-item .buttons a {
+  color: #999;
+  display: inline-block;
+  margin: 3px;
+  padding: 3px  6px;
+  border: 1px solid #ddd;
+}
+.cart-item .buttons a.accept:hover {
+  color: #1ab394;
+}
+
+.cart-item .buttons a.deny:hover {
+  color: #f44242
+}
+
+.cart-footer {
+  padding: 15px;
+  background-color: #f0f0f0;
+  text-align: center;
+}
+.cart-footer a {
+  margin: 5px;
+}
+
+h5.friendship{
+  margin-top: 5px;
+  color: #666666;
+}
+
+.icon-input{
+  right: 10px;
+  top: 12px;
+}
 
 /* Smartphones (portrait) ----------- */
 @media only screen 

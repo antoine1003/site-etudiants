@@ -34,6 +34,8 @@ Route::group(['prefix' => 'user','middleware' => 'auth'], function() {
     Route::post('inbox', 'UserController@inboxPost')->name('user.inbox.post')->middleware('UserHasRole');
     Route::post('welcome/3/{type}', 'UserController@welcomePost')->name('user.welcome-post')->where('id', '[0-9]+');
     Route::get('welcome/{id}/{type?}/{categorie?}/{classe?}', 'UserController@welcome')->name('user.welcome')->where('id', '[0-9]+');
+    Route::post('addFriend', 'UserController@addFriend')->name('user.addFriend')->middleware('UserHasRole');
+    Route::post('handleFriends', 'UserController@handleFriends')->name('user.handleFriends');
   });  
 
 Route::group(['prefix' => 'mobile'], function() {

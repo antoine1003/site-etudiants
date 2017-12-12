@@ -554,6 +554,23 @@ pre:after, pre:before {
   height: auto;
 }
 
+.navbar-right .badge {
+  background-color: #1ab394;
+  font-size: 9px;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  position: absolute;
+  right: 0;
+  top: 5px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  border-radius: 50%;
+}
+
 /*============================*/
 /*======dropdowm menu=========*/
 /*============================*/

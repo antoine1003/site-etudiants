@@ -76,6 +76,7 @@ return [
 		'home' => 'Accueil',
 		'calendar' => 'Calendrier',
 		'inbox' => 'Messagerie',
+		'add_friend' => 'Ajouter connaissances',
 	],
 	'left_menu' => [
 		'role' => 'Rôle',

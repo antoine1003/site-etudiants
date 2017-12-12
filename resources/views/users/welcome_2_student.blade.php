@@ -71,20 +71,20 @@
         <script src="{{ URL::asset('js/assan.custom.js') }}"></script>
                             <!--BOOTSTRAP ALERT-->
         <script src="{{ URL::asset('js/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
-            @if (Session::has('bootstrap-alert'))
-                <script type="text/javascript">
-                    $.notify({
-                        message: "{{Session::get('bootstrap-alert')}}",
-                    },{
-                        // settings
-                        placement: {
-                            from: "top",
-                            align: "center"
-                        },
-                        type: "{{Session::get('bootstrap-alert-type')}}",
-                    });
-                </script>
-            @endif
+        @if (Session::has('bootstrap-alert'))
+            <script type="text/javascript">
+                $.notify({
+                    message: "{{Session::get('bootstrap-alert')}}",
+                },{
+                    // settings
+                    placement: {
+                        from: "top",
+                        align: "center"
+                    },
+                    type: "{{Session::get('bootstrap-alert-type')}}",
+                });
+            </script>
+        @endif
         <script src="{{ URL::asset('js/sweetalert/sweetalert.min.js') }}"></script>
         <script type="text/javascript">
             document.querySelector('.warning-alert').onclick = function () {

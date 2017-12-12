@@ -13,22 +13,7 @@
 @endsection
 
 
-@section('content')
-        <div class="breadcrumb-wrap">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <h4 class="animated fadeIn">Messagerie</h4>
-                    </div>
-                    <div class="col-sm-6 hidden-xs text-right">
-                        <ol class="breadcrumb animated fadeIn">
-                            <li><a href="index.html">Utilisateur</a></li>
-                            <li>Messagerie</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-        </div><!--breadcrumbs-->
+@section('content')       
 
         <div class="overflow-hidden">
              <div class="container">
@@ -40,11 +25,12 @@
                         <ul class="list-unstyled side-nav animated flipInX">
                             @foreach ($conversations as $conversation)
                                 @if($conn_user->id == $conversation->u1_id)
-                                    <li><a href="<?php echo  @route('user.inbox',['id' => $conversation->id]);?>"><?php echo  $conversation->u2_nom_complet?> <?php if ($conversation->nb_unread_conv != 0) { echo '<span class="badge">'.$conversation->nb_unread_conv.'</span>';} ?> </a></li>
+                                    <li><a href="<?php echo  @route('user.inbox',['id' => $conversation->id]);?>">{{$conversation->u2_nom_complet}} <?php if ($conversation->nb_unread_conv != 0) { echo '<span class="badge">'.$conversation->nb_unread_conv.'</span>';} ?> </a></li>
                                 @else
-                                    <li><a href="<?php echo  @route('user.inbox',['id' => $conversation->id]);?>"><?php echo  $conversation->u1_nom_complet?><?php if ($conversation->nb_unread_conv != 0) { echo '<span class="badge">'.$conversation->nb_unread_conv.'</span>';} ?>
+                                    <li><a href="<?php echo  @route('user.inbox',['id' => $conversation->id]);?>">{{$conversation->u1_nom_complet}} <?php if ($conversation->nb_unread_conv != 0) { echo '<span class="badge">'.$conversation->nb_unread_conv.'</span>';} ?>
                                     </a></li>
                                 @endif
+
                             @endforeach
                         </ul>
                     </div>
@@ -128,38 +114,4 @@
 
                    
 @push('scripts')
-    <script src="{{ URL::asset('js/plugins/plugins.js') }}"></script> 
-    <script src="{{ URL::asset('js/assan.custom.js') }}"></script>
-    <script src="{{ URL::asset('js/jquery.min.js') }}"></script>
-     <!--scripts and plugins -->
-    
-    <!--bootstrap js plugin-->
-    <script src="{{ URL::asset('js/bootstrap/bootstrap.min.js')}}" type="text/javascript"></script>       
-    <!--easing plugin for smooth scroll-->
-    <script src="{{ URL::asset('js/jquery.easing.1.3.min.js') }}" type="text/javascript"></script>
-    <!--sticky header-->
-    <script type="text/javascript" src="{{ URL::asset('js/jquery.sticky.js') }}"></script>   
- 
-    <!--popup js-->
-    <script src="{{ URL::asset('js/jquery.magnific-popup.min.js') }}" type="text/javascript"></script>
-
-     <script type="text/javascript">
-        function promptLogout() {
-            swal({
-                title: "{{trans('alerts.modal.welcome.title')}}",
-                text: "{{trans('alerts.modal.welcome.description')}}",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: '#DD6B55',
-                confirmButtonText: "{{trans('alerts.modal.welcome.option_yes')}}",
-                cancelButtonText: "{{trans('alerts.modal.welcome.option_cancel')}}",
-                closeOnConfirm: false,
-                animation: "slide-from-top",
-            },
-            function () {
-                window.location.replace("{{route('logout-get')}}");
-            });            
-        }
-            
-    </script>
 @endpush

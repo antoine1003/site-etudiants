@@ -186,6 +186,7 @@ return [
         Themsaid\Langman\LangmanServiceProvider::class,
         PendoNL\LaravelFontAwesome\LaravelFontAwesomeServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        Hootlex\Friendships\FriendshipsServiceProvider::class,
     ],
 
     /*

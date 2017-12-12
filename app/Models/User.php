@@ -9,6 +9,7 @@ use App\Models\BlockedUser;
 use App\Models\Conversation;
 use Carbon\Carbon;
 use DB;
+use Hootlex\Friendships\Traits\Friendable;
 use Barryvdh\Debugbar\Facade as Debugbar;
 
 
@@ -16,6 +17,7 @@ class User extends Authenticatable
 {
     use Notifiable;
     use EntrustUserTrait;
+    use Friendable;
 
 
     /**
@@ -72,7 +74,7 @@ class User extends Authenticatable
 
     public function getConversationsWithFullnameAndUnread()
     {
-        $conversations = DB::select(DB::raw('SELECT conversations.id, u2.id as u2_id, CONCAT(u2.prenom," ", u2.nom) as u2_nom_complet, u1.id as u1_id, CONCAT(u1.prenom," ", u1.nom) as u1_nom_complet FROM conversations JOIN users  u1 ON conversations.users1_id = u1.id JOIN users u2 ON conversations.users2_id = u2.id WHERE users1_id = ? OR users2_id = ?'), [$this->id,$this->id]);
+        $conversations = DB::select(DB::raw('SELECT conversations.id, u2.id as u2_id, CONCAT(u2.prenom," ", u2.nom) as u2_nom_complet, u1.id as u1_id, CONCAT(u1.prenom," ", u1.nom) as u1_nom_complet FROM conversations JOIN users  u1 ON conversations.users1_id = u1.id JOIN users u2 ON conversations.users2_id = u2.id WHERE users1_id = ? OR users2_id = ? ORDER BY u2_nom_complet ASC, u1_nom_complet ASC'), [$this->id,$this->id]);
         foreach ($conversations as $conversation) {
             $conversation->nb_unread_conv = $this->getUnreadMessagesInConv($conversation->id);
         }
@@ -189,5 +191,24 @@ class User extends Authenticatable
     {
         $result = $this->hasRole(['teacher','student','parent']);
         return $result;
+    }
+
+    /**
+     * Vérifie si l'utiloisateur a accès à la conversation
+     * @param  [type] $id_conv [description]
+     * @return [type]          [description]
+     */
+    public function canUserAccessToThisConv($id_conv)
+    {
+        $nb_conv = Conversation::where('id',$id_conv)->where(function ($q) {
+                                                                return $q->where('users1_id',$this->id)->orWhere('users2_id',$this->id);
+                                                            })->get()->count();
+        if ($nb_conv == 0) {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }

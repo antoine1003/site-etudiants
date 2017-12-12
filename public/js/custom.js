@@ -1,176 +1,47 @@
-/*Theme    : assan
- * Author  : Design_mylife
- * Version : V2.6
- * 
- */
+/*================================
+=            SETTINGS            =
+================================*/
 
- $( window ).resize(function() {
-    $(".navbar-collapse").css({ maxHeight: $(window).height() - $(".navbar-header").height() + "px" });
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
+/*=====  End of SETTINGS  ======*/
+
+
+/*===========================*/
+//sticky header
+
+ jQuery( window ).resize(function() {
+    jQuery(".navbar-collapse").css({ maxHeight: $(window).height() - $(".navbar-header").height() + "px" });
 });
 //sticky header on scroll
-$(document).ready(function () {
+jQuery(document).ready(function () {
     $(window).load(function () {
-        $(".sticky").sticky({topSpacing: 0});
-    });
-    
-    //on hover dropdown menu
-     $(".navbar-nav>.dropdown").hover(function () {
-    $(this).toggleClass("open");
- });
-});
-
-/* ==============================================
- WOW plugin triggers animate.css on scroll
- =============================================== */
-$(document).ready(function () {
-    var wow = new WOW(
-            {
-                boxClass: 'wow', // animated element css class (default is wow)
-                animateClass: 'animated', // animation css class (default is animated)
-                offset: 100, // distance to the element when triggering the animation (default is 0)
-                mobile: false        // trigger animations on mobile devices (true is default)
-            }
-    );
-    wow.init();
-});
-
-
-//parallax
-$(document).ready(function () {
-    $(window).stellar({
-        horizontalScrolling: false,
-        responsive: true/*,
-         scrollProperty: 'scroll',
-         parallaxElements: false,
-         horizontalScrolling: false,
-         horizontalOffset: 0,
-         verticalOffset: 0*/
+        jQuery(".sticky").sticky({topSpacing: 0});
     });
 });
 
-//owl carousel for work
-$(document).ready(function () {
 
-    $("#work-carousel").owlCarousel({
+
+
+jQuery(document).ready(function(){
+    jQuery(".search-toggle").click(function(){
+        jQuery(".search-bar").slideDown('fast');
+    });
+    jQuery('.search-close').click(function () {
+            jQuery('.search-bar').slideUp();
+        });
+});
+
+//owl carousel
+jQuery(document).ready(function () {
+
+    jQuery("#owl-slider").owlCarousel({
     loop:true,
     margin:0,
-    nav:false,
-    responsive:{
-        0:{
-            items:1
-        },
-        600:{
-            items:2
-        },
-        1000:{
-            items:4
-        }
-    }
-});
-
-});
-
-
-//owl carousel for news
-$(document).ready(function () {
-
-    $("#news-carousel").owlCarousel({
-        // Most important owl features
-        items: 2,
-        itemsCustom: false,
-        itemsDesktop: [1199, 2],
-        itemsDesktopSmall: [980, 2],
-        itemsTablet: [768, 2],
-        itemsTabletSmall: false,
-        itemsMobile: [479, 1],
-        singleItem: false,
-        startDragging: true,
-        autoPlay: 4000
-    });
-
-});
-
-
-
-//owl carousel for testimonials
-$(document).ready(function () {
-
-    $("#testi-carousel").owlCarousel({
-    loop:true,
-    margin:0,
-    nav:false,
-    responsive:{
-        0:{
-            items:1
-        },
-        600:{
-            items:1
-        },
-        1000:{
-            items:1
-        }
-    }
-});
-
-});
-//featured work carousel slider
-
-$(document).ready(function () {
-
-    $("#featured-work").owlCarousel({
-    loop:true,
-    margin:0,
-    nav:false,
-    responsive:{
-        0:{
-            items:1
-        },
-        600:{
-            items:2
-        },
-        1000:{
-            items:4
-        }
-    }
-});
-
-});
-/* ==============================================
- Counter Up
- =============================================== */
-jQuery(document).ready(function ($) {
-    $('.counter').counterUp({
-        delay: 10,
-        time: 800
-    });
-});
-//MAGNIFIC POPUP
-$(document).ready(function () {
-$('.show-image').magnificPopup({type: 'image'});
-});
-
-/* ==============================================
- flex slider
- =============================================== */
-
-$(document).ready(function () {
-$('.main-flex-slider,.testi-slide').flexslider({
-    slideshowSpeed: 5000,
-    directionNav: false,
-    animation: "fade"
-});
-$('.testi-slide').flexslider({
-    slideshowSpeed: 5000,
-    directionNav: false,
-    animation: "fade",
-    smoothHeight:true
-});
-});
-//OWL CAROUSEL
-$(document).ready(function () {
-$("#clients-slider").owlCarousel({
-    loop:true,
-    margin:10,
     nav:false,
     responsive:{
         0:{
@@ -180,61 +51,156 @@ $("#clients-slider").owlCarousel({
             items:3
         },
         1000:{
-            items:5
+            items:4
+        }
+    }
+});
+
+});
+
+
+jQuery(window).load(function () {
+    jQuery(".content-scroll").mCustomScrollbar({advanced: {
+            updateOnContentResize: true
+        },
+        scrollButtons: {enable: false},
+        mouseWheelPixels: "200",
+        theme: "dark-2"
+    });
+});
+
+
+//tooltips
+jQuery(function () {
+    jQuery('[data-toggle="tooltip"]').tooltip();
+});
+
+//partners slider
+jQuery(document).ready(function () {
+
+    jQuery("#owl-partners").owlCarousel({
+    loop:true,
+    margin:0,
+    nav:false,
+    responsive:{
+        0:{
+            items:1
+        },
+        600:{
+            items:3
+        },
+        1000:{
+            items:6
+        }
+    }
+});
+
+});
+
+//Newsletter
+// Checking subcribe form when focus event
+    jQuery('.assan-newsletter input[type="text"], .assan-newsletter input[type="email"]').live('focus keypress', function () {
+        var $email = $(this);
+        if ($email.hasClass('error')) {
+            $email.val('').removeClass('error');
+        }
+        if ($email.hasClass('success')) {
+            $email.val('').removeClass('success');
+        }
+    });
+    // Subscribe form when submit to database
+    jQuery('.assan-newsletter').submit(function () {
+        var $email = $(this).find('input[name="email"]');
+        var $submit = $(this).find('input[name="submit"]');
+        var email_pattern = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i;
+        if (email_pattern.test($email.val()) === false) {
+            $email.val('Please enter a valid email address!').addClass('error');
+        } else {
+            var submitData = $(this).serialize();
+            $email.attr('disabled', 'disabled');
+            $submit.attr('disabled', 'disabled');
+            $.ajax({// Subcribe process with AJAX
+                type: 'POST',
+                url: 'mailchimp/process-subscribe.php',
+                data: submitData + '&action=add',
+                dataType: 'html',
+                success: function (msg) {
+                    if (parseInt(msg, 0) !== 0) {
+                        var msg_split = msg.split('|');
+                        if (msg_split[0] === 'success') {
+                            $submit.removeAttr('disabled');
+                            $email.removeAttr('disabled').val(msg_split[1]).addClass('success');
+                        } else {
+                            $submit.removeAttr('disabled');
+                            $email.removeAttr('disabled').val(msg_split[1]).addClass('error');
+                        }
+                    }
+                }
+            });
+        }
+
+        return false;
+    });
+
+
+  /* ===================================================================
+             TWEETIE -  TWITTER FEED PLUGIN THAT WORKS WITH NEW Twitter 1.1 API
+             ==================================================================== */
+            jQuery('.tweet').twittie({
+                apiPath: 'twit-api/tweet.php',
+                dateFormat: '%b. %d, %Y',
+                template: '{{tweet}} <div class="date">{{date}}</div> ',
+                count: 2
+            });
+
+
+/** product single slider**/
+$(document).ready(function() {
+  $("#product-single").owlCarousel({
+    loop:true,
+    margin:0,
+    nav:false,
+    responsive:{
+        0:{
+            items:1
+        },
+        600:{
+            items:1
+        },
+        1000:{
+            items:1
         }
     }
 });
 });
 
+/*===============================================
+=            FORM REQUEST FRIENDSHIP            =
+===============================================*/
 
-/*========tooltip and popovers====*/
-$(document).ready(function () {
-$("[data-toggle=popover]").popover();
-
-$("[data-toggle=tooltip]").tooltip();
-});
-
-//transparent header
-
-$(document).ready(function () {
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 100) {
-            $('.transparent-header').css("background", "#252525");
-        } else {
-            $('.transparent-header').css("background", "transparent");
-        }
-    });
-});
-
- //Search         
-    (function () {
-
-        $('.top-search').on('click', function() {
-            $('.search').fadeIn(500, function() {
-              $(this).toggleClass('search-toggle');
-            });     
+$(function() {
+    $("#accept-friendship").click(function() {
+        var id_senders = $(this).data('sender');
+        var id_receiver = $(this).data('receiver');
+        // 0 : demande refusée 
+        // 1 : demande acceptée
+        var is_accepted = $(this).data('accepted');
+        
+        var dataString ='id_senders=' + id_senders + '&id_receiver=' + id_receiver + '&is_accepted=' + is_accepted ;
+        console.log(dataString);
+        //alert (dataString);return false;
+        $.ajax({
+            type: "POST",
+            url: "handleFriends",
+            data: dataString,
+            success: function() {
+                    $("#user_" + id_senders).remove();
+                    $('#badge-new-friendship').html(function(i, val) { return val*1-1 });
+                },
+            });
         });
-
-        $('.search-close').on('click', function() {
-            $('.search').fadeOut(500, function() {
-                $(this).removeClass('search-toggle');
-            }); 
-        });
-
-    }());
-
-
-
-/***********************************************************
-     * ACCORDION
-     ***********************************************************/
-    $('.panel-ico a[data-toggle="collapse"]').on('click', function () {
-        if ($(this).closest('.panel-heading').hasClass('active')) {
-            $(this).closest('.panel-heading').removeClass('active');
-        } else {
-            $('.panel-heading a[data-toggle="collapse"]').closest('.panel-heading').removeClass('active');
-            $(this).closest('.panel-heading').addClass('active');
-        }
     });
-    
- 
+/*=====  End of FORM REQUEST FRIENDSHIP  ======*/
+$('.dropdown-menu').click(function(e) {
+    e.stopPropagation();
+});
