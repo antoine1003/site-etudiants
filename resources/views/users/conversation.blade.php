@@ -37,25 +37,32 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="text-center">
-                                <button id="load-more" onclick="loadMoreMessages()" class="btn btn-default text-center load-messages" ><i class="fa fa-ellipsis-h" aria-hidden="true"></i> Charger plus de messages</button>
+                                <button id="load-more" onclick="loadMoreMessages()" data-conv_id="{{$conversations_id}}" data-nb_mess="{{$nb_messages}}" class="btn btn-default text-center load-messages" ><i class="fa fa-ellipsis-h" aria-hidden="true"></i> Charger plus de messages</button>
                             </div>
                             <div class="divide10"></div>
-                            @foreach ($messages as $message)
-                            <div class="panel panel-default">
-                                <div class="panel-body <?php if($conn_user->id != $message->emmeteurs_id){ echo "text-right";} ?> ">
-                                 <strong><?php echo  $message->emmeteur;?> </strong><br>
-                                   <span><i class="fa fa-clock-o" aria-hidden="true"></i> {{Carbon\Carbon::parse($message->heure_envoi)->format('\\L\\e d/m/Y \\à  G\\hi\\ms\\s') }} <?php if($message->fichiers_id !=null){echo '<br><a href="'.asset('storage/'.$message->chemin) .'"><i class="fa fa-file" aria-hidden="true"></i> '. $message->nom_fichier .'</a>';} ?></span>
-                                   <p><?php echo  $message->contenu;?> </p>
+                            @if(count($messages) > 0)
+                                @foreach ($messages as $message)
+                                <div class="panel panel-default">
+                                    <div class="panel-body <?php if($conn_user->id != $message->emmeteurs_id){ echo "text-right";} ?> ">
+                                     <strong><?php echo  $message->emmeteur;?> </strong><br>
+                                       <span><i class="fa fa-clock-o" aria-hidden="true"></i> {{Carbon\Carbon::parse($message->heure_envoi)->format('\\L\\e d/m/Y \\à  G\\hi\\ms\\s') }} <?php if($message->fichiers_id !=null){echo '<br><a href="'.asset('storage/'.$message->chemin) .'"><i class="fa fa-file" aria-hidden="true"></i> '. $message->nom_fichier .'</a>';} ?></span>
+                                       <p><?php echo  $message->contenu;?> </p>
+                                    </div>
                                 </div>
-                            </div>
-                            @endforeach
+                                @endforeach
+                            @else
+                                <div class="panel-body">
+                                    <strong class="text-center">Vous n'avez pas encore échangé avec ce membre.</strong>
+                                </div>
+                            @endif
                             @include('flash::message')
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                 {!! Form::open(['url' => 'user/inbox','method' => 'POST','files' => true]) !!}
                                 {{ csrf_field() }}
                                     <input type="hidden" name="conversations_id" value="<?php echo $conversations_id ?>">
-                                    <textarea class="form-control counted" name="contenu" placeholder="Entrer votre message" rows="5" style="margin-bottom:10px;"></textarea>
+
+                                    <textarea class="form-control counted" name="contenu" data-emojiable="true" placeholder="Entrer votre message" rows="5" style="margin-bottom:10px;"></textarea>
                                     {!! $errors->first('contenu', '<small class="text-danger help-block">:message</small>') !!}
                                     {!! $errors->first('document', '<small class="text-danger help-block">:message</small>') !!}
                                     <button class="btn btn-info" name="envoyer" type="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i> Envoyer</button>
@@ -97,8 +104,11 @@
 
     </script>
     <script type="text/javascript">        
-        function loadMoreMessages() {  
-            windows.location =  <?php echo @route('user.inbox',['id' => $conversations_id,'nb_message' => $nb_messages +5]); ?>;
+        function loadMoreMessages() {
+            var button = document.getElementById('load-more');
+            var conv_id = button.dataset.conv_id;
+            var nb_mess_update = parseInt(button.dataset.nb_mess)+5;
+            window.location.replace(APP_URL + '/user/inbox/'+ conv_id + '/' + nb_mess_update);
         };            
     </script>
 @endpush

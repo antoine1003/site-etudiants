@@ -24,40 +24,38 @@
         @show
     </head>
     <body>
-        <div class="modal fade" tabindex="0" role="dialog" id="addLink" style="margin-top: 100px;">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">Ajouter une connaissance</h4>
-                        </div>                        
-                        <div class="modal-body">
-                            <div class="row">
-                                {!! Form::open(['url' => 'user/addFriend','method' => 'POST',]) !!}
-                                {{ csrf_field() }}
-                                <!-- Text input-->
-                                    <div class="form-group">
-                                      <label class="col-md-4 control-label" for="textinput">Email</label>  
-                                      <div class="col-md-5">
-                                      <input required="" name="email" type="email" placeholder="Entrez l'adresse mail" class="form-control input-md" style="margin-bottom: 10px;">
-                                        
-                                      </div>
-                                    </div>
-                                    <!-- Button (Double) -->
-                                    <div class="form-group">  
-                                      <label class="col-md-4 control-label"></label>
-                                      <div class="col-md-8">
-                                        <button name="submit" type="submit" class="btn btn-success">Ajouter</button>
-                                        <button class="btn btn-danger" data-dismiss="modal" >Fermer</button>
-                                      </div>
-                                    </div>
-                                {!! Form::close() !!}
+        <div class="modal fade" tabindex="-1" role="dialog" id="addLink" style="margin-top: 100px;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Ajouter une connaissance</h4>
+                    </div>                        
+                    <div class="modal-body">
+                        <div class="row">
+                            {!! Form::open(['url' => 'user/addFriend','method' => 'POST',]) !!}
+                            {{ csrf_field() }}
+                            <!-- Text input-->
+                                <div class="form-group">
+                                  <label class="col-md-4 control-label" for="textinput">Email</label>  
+                                  <div class="col-md-5">
+                                  <input required="" name="email" type="email" placeholder="Entrez l'adresse mail" class="form-control input-md" style="margin-bottom: 10px;">
+                              </div>
                             </div>
-
+                            <!-- Button (Double) -->
+                            <div class="form-group">  
+                              <label class="col-md-4 control-label"></label>
+                              <div class="col-md-8">
+                                <button name="submit" type="submit" class="btn btn-success">Ajouter</button>
+                                <button class="btn btn-danger" data-dismiss="modal" >Fermer</button>
+                              </div>
+                            </div>
+                            {!! Form::close() !!}
                         </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal-dialog -->
-            </div><!-- /.modal -->
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
         <!--navigation -->
         <div class="navbar navbar-default navbar-static-top yamm sticky" role="navigation">
             <div class="container">
@@ -76,7 +74,7 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user-o" aria-hidden="true"></i>  @lang('user_site.menu.my_account') <i class="fa fa-angle-down"></i></a> 
                             <ul class="dropdown-menu">                            
-                                <li><a href=""><i class="fa fa-calendar" aria-hidden="true"></i> @lang('user_site.menu.calendar')</a></li>
+                                <li><a href="{{@route('user.calendar')}}"><i class="fa fa-calendar" aria-hidden="true"></i> @lang('user_site.menu.calendar')</a></li>
                                 <li><a href=""><i class="fa fa-plus" aria-hidden="true"></i>  @lang('user_site.menu.add_friend')</a></li>
                             </ul>
                         </li>
@@ -84,7 +82,7 @@
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown">
+                        <li class="dropdown" id="dd_friendrequest">
                                 <a href="#" class="dropdown-toggle js-activated" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users" aria-hidden="true"></i> <?php if (count($pending_friendships) > 0) {
                                     echo '<span class="badge" id="badge-new-friendship">'. count($pending_friendships) .'</span>';
                                 } ?></a>
@@ -100,8 +98,8 @@
                                                         <strong class="price">{{$pending_user->email}}</strong>
                                                     </div><!--Description-->
                                                     <div class="buttons">
-                                                        <a href="#" id="accept-friendship" class="fa fa-check accept" data-toggle="tooltip" title="Accepter" data-sender="{{$pending_user->id}}" data-receiver="{{Auth::user()->id}}" data-accepted="1"></a>
-                                                        <a href="#" class="fa fa-times deny" data-toggle="tooltip" title="Refuser" data-sender="{{$pending_user->id}}" data-receiver="{{Auth::user()->id}}" data-accepted="0"></a>
+                                                        <a href="#" id="handle-friendship" class="fa fa-check accept" data-toggle="tooltip" title="Accepter" data-sender="{{$pending_user->id}}" data-receiver="{{Auth::user()->id}}" data-accepted="1"></a>
+                                                        <a href="#" id="handle-friendship" class="fa fa-times deny" data-toggle="tooltip" title="Refuser" data-sender="{{$pending_user->id}}" data-receiver="{{Auth::user()->id}}" data-accepted="0"></a>
                                                     </div>
                                                 </div>
                                             @endforeach
@@ -112,7 +110,8 @@
                                     </div><!--cart-items-->
 
                                     <div class="cart-footer">
-                                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addLink"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</a>
+                                        <a href="#" class="btn btn-success" id="openmodal"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</a>
+                                        <a href="{{@route('user.manageFriends')}}" class="btn btn-primary"><i class="fa fa-wrench" aria-hidden="true"></i> Gérer</a>
                                     </div><!--footer of cart-->
 
 
@@ -153,9 +152,10 @@
         </footer>
         <!--footer end-->
         <!--js plugins-->
-
-        
-         
+        @routes
+        <script type="text/javascript">
+            var APP_URL =" {!! url('/') !!}";
+        </script>
         <script src="{{ URL::asset('js/jquery.min.js') }}"></script>
         <script src="{{ URL::asset('js/jquery-migrate.min.js') }}"></script>
         <!--easing plugin for smooth scroll-->
@@ -171,7 +171,7 @@
         <!--owl carousel slider-->
         <script src="{{ URL::asset('js/owl.carousel.min.js') }}" type="text/javascript"></script>
         <script src="{{ URL::asset('js/tweetie.min.js') }}" type="text/javascript"></script>
-
+         <script src="https://rawgit.com/notifyjs/notifyjs/master/dist/notify.js" type="text/javascript"></script>
         <script src="{{ URL::asset('js/custom.js') }}"></script>
 
         <!--sticky header-->
@@ -207,20 +207,15 @@
         </script>
 
          @if (Session::has('bootstrap-alert'))
-         <script src="{{ URL::asset('js/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
             <script type="text/javascript">
-                $.notify({
-                    icon: "{{Session::get('bootstrap-icon')}}",
-                    message: "{{Session::get('bootstrap-alert')}}",
-                },{
-                    // settings
-                    placement: {
-                        from: "bottom",
-                        align: "right"
-                    },
-                    type: "{{Session::get('bootstrap-alert-type')}}",
-                });
+                  $.notify.addStyle('notif-html', {
+                       html: '<div class="notifyjs-corner" style="right: 0px; bottom: 0px;">  <div class="notifyjs-wrapper notifyjs-hidable"><div class="notifyjs-arrow" style=""></div>        <div class="notifyjs-container" style="">            <div class="notifyjs-bootstrap-base notifyjs-bootstrap-{{Session::get("bootstrap-alert-type")}}">                <span data-notify-html/>            </div>        </div>    </div></div>',
+                    });
+                 $.notify( "{{Session::get('bootstrap-alert')}}",   { position:"right bottom", style: 'notif-html'});
             </script>
+            <!-- <script type="text/javascript">
+                 $.notify( "{{Session::get('bootstrap-alert')}}",   { position:"right bottom",className: "{{Session::get('bootstrap-alert-type')}}"});
+            </script> -->
         @endif
         @stack('scripts')
     </body>

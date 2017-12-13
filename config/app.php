@@ -187,6 +187,8 @@ return [
         PendoNL\LaravelFontAwesome\LaravelFontAwesomeServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Hootlex\Friendships\FriendshipsServiceProvider::class,
+        Tightenco\Ziggy\ZiggyServiceProvider::class,
+        MaddHatter\LaravelFullcalendar\ServiceProvider::class,
     ],
 
     /*
@@ -243,6 +245,7 @@ return [
         'FontAwesome' => PendoNL\LaravelFontAwesome\Facade::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+        'Calendar' => MaddHatter\LaravelFullcalendar\Facades\Calendar::class,
     ],
 
 ];
