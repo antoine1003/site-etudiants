@@ -12,11 +12,13 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\Fichier;
 use App\Models\Message;
+use App\Models\Event;
 use App\Models\Conversation;
 use App\Models\CategorieClasseProfesseur;
 use App\Models\Matiere;
 use App\Models\CategorieClasse;
 use DB;
+use Eloquent;
 
 class UserController extends Controller
 {
@@ -356,28 +358,24 @@ class UserController extends Controller
                     $user->befriend($recipient);
                     Session::flash('bootstrap-alert-type', 'success');
                     Session::flash('bootstrap-alert', 'La demande de connexion a bien été envoyée !');
-                    Session::flash('bootstrap-icon', 'fa fa-check'); 
                 }
                 else
                 {
-                    Session::flash('bootstrap-alert-type', 'danger');
+                    Session::flash('bootstrap-alert-type', 'error');
                     Session::flash('bootstrap-alert', 'Vous ne pouvez pas vous ajouter vous même !');
-                    Session::flash('bootstrap-icon', 'fa fa-exclamation'); 
                 }
                 
             }
             else
             {
-                Session::flash('bootstrap-alert-type', 'danger');
-                Session::flash('bootstrap-alert', 'L\'email que vous avez saisis ne correspond à aucuns membres!');
-                Session::flash('bootstrap-icon', 'fa fa-exclamation'); 
+                Session::flash('bootstrap-alert-type', 'warn');
+                Session::flash('bootstrap-alert', "L'email que vous avez saisis ne correspond à aucuns membres!");
             }
         }
         else
         {
             Session::flash('bootstrap-alert-type', 'danger');
             Session::flash('bootstrap-alert', 'Veuillez renseigner un email!');
-            Session::flash('bootstrap-icon', 'fa fa-exclamation');
         }
         return redirect()->back();
     }
@@ -389,7 +387,75 @@ class UserController extends Controller
         // 0 : demande refusée 
         // 1 : demande acceptée
         $is_accepted =$request->input('is_accepted');
+        app('debugbar')->disable();
+        if (isset($id_senders) && isset($id_receiver) && isset($is_accepted)) {
+            $user = User::find($id_receiver);
+            $sender = User::find($id_senders);
+            if($user->hasFriendRequestFrom($sender))
+            {
+                //Si la demande est refusée
+                if ($is_accepted == 0) {
+                    $user->denyFriendRequest($sender);                    
+                }
+                else
+                {
+                    $user->acceptFriendRequest($sender);
+                    $conversation = new Conversation;
+                    $conversation->users1_id = $user->id;
+                    $conversation->users2_id = $sender->id;
+                    $conversation->save();
+                }
+                return "success";
+            }
+            else
+            {
+                return "no_pending_request";
+            }
+        }
+        else
+        {
+            return "error";
+        }
+    }
 
-        echo $id_senders.$id_receiver.$is_accepted;
+    public function calendar(Request $request)
+    {
+        $events = [];
+
+        $events[] = \Calendar::event(
+            'Event One', //event title
+            false, //full day event?
+            '2015-02-11T0800', //start time (you can also use Carbon instead of DateTime)
+            '2015-02-12T0800', //end time (you can also use Carbon instead of DateTime)
+            0 //optionally, you can specify an event ID
+        );
+
+        $events[] = \Calendar::event(
+            "Valentine's Day", //event title
+            true, //full day event?
+            new \DateTime('2015-02-14'), //start time (you can also use Carbon instead of DateTime)
+            new \DateTime('2015-02-14'), //end time (you can also use Carbon instead of DateTime)
+            'stringEventId' //optionally, you can specify an event ID
+        );
+
+        $user = Auth::user();        
+        $pending_friendships = $user->getFriendRequests();
+        $nb_unread = $user->getUnreadMessages();        
+        $pending_users_array = array();
+        if (count($pending_friendships) > 0 ) {
+            foreach ($pending_friendships as $pending_friendship) {
+                $pending_user = User::find($pending_friendship->sender_id);
+                $pending_user->sender_id = $pending_friendship->sender_id ;
+                array_push($pending_users_array, $pending_user);
+            }
+        }
+
+
+        $cal = \Calendar::addEvents($events);
+
+        $calendar = compact('cal');
+        echo json_encode($calendar);
+
+        return view('users.calendar',['calendar' => $cal,'nb_unread'=> $nb_unread,'pending_friendships' => $pending_friendships,'pending_users' => $pending_users_array,'breadcrumb_title' => 'Accueil']);
     }
 }
