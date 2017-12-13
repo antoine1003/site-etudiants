@@ -161,10 +161,8 @@ class User extends Authenticatable
      */
     public function getMessagesInConv( $nb_messages, $id_conv)
     {
-          
-        $messages = Message::select('*')->where('conversations_id', $id_conv)
+        $messages = Message::select('*')->where('conversations_id', $id_conv)->orderBy('created_at','asc')
         ->limit($nb_messages)->get();
-       
         return $messages;        
     }
 
