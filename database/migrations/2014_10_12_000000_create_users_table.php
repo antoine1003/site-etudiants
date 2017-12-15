@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('prenom');
             $table->string('email')->unique();
             $table->string('ville');
+            $table->string('phone')->nullable();
             $table->string('password');
             $table->dateTime('date_inscription');
             $table->boolean('is_blocked')->default(false);

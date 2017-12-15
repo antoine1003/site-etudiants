@@ -66,6 +66,7 @@ return [
     		'title' => 'Accueil utilisateur',
     		'inbox' => 'Messagerie',
     		'conversation' => 'Conversation',
+			'calendar' => 'Calendrier',
     		'teacher' => [
     			'my_students' => 'Mes élèves'
     		],

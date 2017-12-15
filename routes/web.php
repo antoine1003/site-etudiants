@@ -38,6 +38,8 @@ Route::group(['prefix' => 'user','middleware' => 'auth'], function() {
     Route::get('calendar', 'UserController@calendar')->name('user.calendar')->where('id', '[0-9]+');
     Route::post('addFriend', 'UserController@addFriend')->name('user.addFriend')->middleware('UserHasRole');
     Route::post('handleFriends', 'UserController@handleFriends')->name('user.handleFriends');
+    Route::post('mooveEvent', 'UserController@mooveEvent')->name('user.mooveEvent');
+    Route::post('readNotification', 'UserController@readNotification')->name('user.readNotification');
   });  
 
 Route::group(['prefix' => 'mobile'], function() {
@@ -49,6 +51,8 @@ Route::group(['prefix' => 'mobile'], function() {
     Route::post('getMessagesByUserWithConv', 'MobileController@getMessagesByUserWithConv');
     Route::post('passwordUpdate', 'MobileController@passwordUpdate');    
     Route::post('addMessageInConversation', 'MobileController@addMessageInConversation');
+    Route::post('handleFriends', 'MobileController@handleFriends');
+    Route::post('getPendingFriendships', 'MobileController@getPendingFriendships');
 });
 
 Route::get('maintenance',function() {

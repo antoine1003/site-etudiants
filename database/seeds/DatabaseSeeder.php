@@ -7,6 +7,7 @@ use App\Models\CategorieClasse;
 use App\Models\User;
 use App\Models\Matiere;
 use App\Models\Conversation;
+use App\Models\Event;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,14 +18,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(EtatValidationSeeder::class);
-        $this->call(CategorieClasseSeeder::class);
+        //$this->call(EtatValidationSeeder::class);
+        //$this->call(CategorieClasseSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(ClasseSeeder::class);
         $this->call(RoleSeeder::class);
         $this->call(MatiereSeeder::class);
         $this->call(BlockedUserSeeder::class);
-        $this->call(ConversationSeeder::class);
+        //$this->call(ConversationSeeder::class);
         $this->call(MessageSeeder::class);
+        //$this->call(EventSeeder::class);
     }
 }

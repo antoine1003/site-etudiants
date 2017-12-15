@@ -17,45 +17,37 @@
 
 @section('content')
         <div class="overflow-hidden">
-             <div class="container">
-
-            <div class="row">
-                 {!! $calendar->calendar() !!}
-    
-            </div>
-        </div><!--side navigation container-->
+            <div class="container">
+                <div class="panel panel-default">
+                    <div class="panel-body" >
+                        {!! $calendar->calendar() !!}
+                    </div>
+                </div>
+            </div><!--side navigation container-->
         </div>
 @endsection
 
                    
 @push('scripts')
-<script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+<script src="{{ URL::asset('js/jquery-dateFormat.min.js') }}"></script>
+<script src="{{ URL::asset('js/fullcalendar/moment.min.js') }}"></script>
+<script src="{{ URL::asset('js/fullcalendar/fullcalendar.min.js') }}"></script>
+<script src="{{ URL::asset('js/fullcalendar/fr.js') }}"></script>
+<script type="text/javascript">
+    $('#calendar').fullCalendar({
+    dayClick: function(date, jsEvent, view) {
+
+        alert('Clicked on: ' + date.format());
+
+        alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+
+        alert('Current view: ' + view.name);
+
+        // change the day's background color just for fun
+        $(this).css('background-color', 'red');
+
+    }
+});
+</script>
 {!! $calendar->script() !!}
-
-     <script type="text/javascript">        
-       document.getElementById('file-input').onchange = function () {
-            var fullPath = this.value;
-            var filename = fullPath.replace(/^.*[\\\/]/, '');
-
-            document.getElementById('file-name').innerHTML  = filename;
-
-            document.getElementById('remove-file').style.visibility = 'visible';
-        };
-
-        document.getElementById('remove-file').onclick = function () {            
-            document.getElementById('remove-file').style.visibility = 'hidden';
-            document.getElementById("file-name").innerHTML = "";
-            document.getElementById("file-input").value = "";
-        };
-
-    </script>
-    <script type="text/javascript">        
-        function loadMoreMessages() {
-            var button = document.getElementById('load-more');
-            var conv_id = button.dataset.conv_id;
-            var nb_mess_update = parseInt(button.dataset.nb_mess)+5;
-            window.location.replace(APP_URL + '/user/inbox/'+ conv_id + '/' + nb_mess_update);
-        };            
-    </script>
 @endpush

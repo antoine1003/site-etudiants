@@ -8,15 +8,19 @@ use App\Models\Classe;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
+use Calendar;
+use Carbon\Carbon;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Fichier;
 use App\Models\Message;
+use App\Models\Notification;
 use App\Models\Event;
 use App\Models\Conversation;
 use App\Models\CategorieClasseProfesseur;
 use App\Models\Matiere;
 use App\Models\CategorieClasse;
+use App\Notifications\FriendshipNotification;
 use DB;
 use Eloquent;
 
@@ -384,20 +388,22 @@ class UserController extends Controller
     {
         $id_senders = $request->input('id_senders');
         $id_receiver = $request->input('id_receiver');
-        // 0 : demande refusée 
+
+        // 2 : demande refusée 
         // 1 : demande acceptée
-        $is_accepted =$request->input('is_accepted');
+        // 3 : bloquer l'utilisateur
+        $action =$request->input('action');
+        $return_value;
         app('debugbar')->disable();
-        if (isset($id_senders) && isset($id_receiver) && isset($is_accepted)) {
+        if (isset($id_senders) && isset($id_receiver) && isset($action)) {
             $user = User::find($id_receiver);
             $sender = User::find($id_senders);
             if($user->hasFriendRequestFrom($sender))
             {
-                //Si la demande est refusée
-                if ($is_accepted == 0) {
+                if ($action == 2) {
                     $user->denyFriendRequest($sender);                    
                 }
-                else
+                else if($action == 1)
                 {
                     $user->acceptFriendRequest($sender);
                     $conversation = new Conversation;
@@ -405,39 +411,62 @@ class UserController extends Controller
                     $conversation->users2_id = $sender->id;
                     $conversation->save();
                 }
-                return "success";
+                else if($action == 3)
+                {
+                    $user->blockFriend($sender);
+                }
+                $return_value = "success";
             }
             else
             {
-                return "no_pending_request";
+                $return_value =  "no_pending_request";
             }
+            $sender->notify(new FriendshipNotification($action, $user->prenom.' '.$user->nom));
         }
         else
         {
-            return "error";
+            $return_value = "error";
         }
+
+        return $return_value;
     }
 
     public function calendar(Request $request)
     {
         $events = [];
+        $data = Event::all();
+            if($data->count()){
+              foreach ($data as $key => $value) {
+                $events[] = Calendar::event(
+                    $value->title,
+                    true,
+                    new \DateTime($value->start_date),
+                    new \DateTime($value->end_date.' +1 day')
+                );
+              }
+        }
+        $calendar = Calendar::addEvents($events);
+        $calendar->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
+        'eventDrop' => " function(event, delta, revertFunc,res) {
 
-        $events[] = \Calendar::event(
-            'Event One', //event title
-            false, //full day event?
-            '2015-02-11T0800', //start time (you can also use Carbon instead of DateTime)
-            '2015-02-12T0800', //end time (you can also use Carbon instead of DateTime)
-            0 //optionally, you can specify an event ID
-        );
+        if (!confirm('Are you sure about this change?')) {
+            revertFunc();
+        }
+        else
+        {
+            var zboub = 'id_event='+ event.id +'&start_date='+ event.start.format('DD/MM/YYYY_HH:mm') +'&start_end='+ event.end.format('DD/MM/YYYY_HH:mm');
+            console.log(zboub);
+            /*$.ajax({
+              url: @route('user.mooveEvent'),
+              data: 'id_event='+ event.id +'&start_date='+ event.start_date +'&start_end='+ end2,                                                    
+              type: 'POST',
+              success: function(json) {
+              }
+            });*/
+        }
 
-        $events[] = \Calendar::event(
-            "Valentine's Day", //event title
-            true, //full day event?
-            new \DateTime('2015-02-14'), //start time (you can also use Carbon instead of DateTime)
-            new \DateTime('2015-02-14'), //end time (you can also use Carbon instead of DateTime)
-            'stringEventId' //optionally, you can specify an event ID
-        );
-
+    }",
+          ]);
         $user = Auth::user();        
         $pending_friendships = $user->getFriendRequests();
         $nb_unread = $user->getUnreadMessages();        
@@ -450,12 +479,27 @@ class UserController extends Controller
             }
         }
 
+        return view('users.calendar',['calendar' => $calendar,'nb_unread'=> $nb_unread,'pending_friendships' => $pending_friendships,'pending_users' => $pending_users_array,'breadcrumb_title' => 'Accueil']);
+    }
 
-        $cal = \Calendar::addEvents($events);
+    public function readNotification(Request $request)
+    {
+        $notifications_id = $request->input('notifications_id');
+        if (isset($notifications_id)) {
+            $notification = Notification::find($notifications_id);
 
-        $calendar = compact('cal');
-        echo json_encode($calendar);
-
-        return view('users.calendar',['calendar' => $cal,'nb_unread'=> $nb_unread,'pending_friendships' => $pending_friendships,'pending_users' => $pending_users_array,'breadcrumb_title' => 'Accueil']);
+            if (isset($notification)) {
+                $notification->read_at = Carbon::now();
+                $notification->save();
+                return "success";
+            }
+            else{
+                return "failed";
+            }
+        }
+        else
+        {
+            return "failed";
+        }
     }
 }

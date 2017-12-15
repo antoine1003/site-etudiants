@@ -16,10 +16,10 @@ class CreateEventsTable extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->boolean('all_day');
-            $table->dateTime('start');
-            $table->dateTime('end');
-            $table->dateTime('comment');
+            $table->boolean('all_day')->default(false);
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
+            $table->dateTime('comment')->nullable();
             $table->timestamps();
         });
     }

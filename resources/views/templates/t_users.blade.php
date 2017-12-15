@@ -33,7 +33,7 @@
                     </div>                        
                     <div class="modal-body">
                         <div class="row">
-                            {!! Form::open(['url' => 'user/addFriend','method' => 'POST',]) !!}
+                            {!! Form::open(['url' => 'user/addFriend','method' => 'POST']) !!}
                             {{ csrf_field() }}
                             <!-- Text input-->
                                 <div class="form-group">
@@ -83,30 +83,92 @@
 
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown" id="dd_friendrequest">
-                                <a href="#" class="dropdown-toggle js-activated" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users" aria-hidden="true"></i> <?php if (count($pending_friendships) > 0) {
-                                    echo '<span class="badge" id="badge-new-friendship">'. count($pending_friendships) .'</span>';
+                                <a href="#" class="dropdown-toggle js-activated" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users" aria-hidden="true"></i> <?php if (count($pending_friendships) > 0 || count(Auth::user()->unreadNotifications) > 0) {
+                                    echo '<span class="badge" id="badge-all-notification">'. (count($pending_friendships) + count(Auth::user()->unreadNotifications)) .'</span>';
                                 } ?></a>
-                                <div class="dropdown-menu shopping-cart">
+                                <div class="dropdown-menu shopping-cart"  style="max-width: 50px;">
 
                                     <div class="cart-items content-scroll">
-                                        <h5 class="text-center friendship"><i class="fa fa-bell" aria-hidden="true"></i> Demandes</h5>
-                                        @if(count($pending_friendships) != 0)
-                                            @foreach($pending_users as $pending_user)                                      
-                                                <div id="user_{{$pending_user->id}}" class="cart-item clearfix">
-                                                    <div class="description">
-                                                        <a href="#">{{$pending_user->prenom.' ' .$pending_user->nom}} </a>
-                                                        <strong class="price">{{$pending_user->email}}</strong>
-                                                    </div><!--Description-->
-                                                    <div class="buttons">
-                                                        <a href="#" id="handle-friendship" class="fa fa-check accept" data-toggle="tooltip" title="Accepter" data-sender="{{$pending_user->id}}" data-receiver="{{Auth::user()->id}}" data-accepted="1"></a>
-                                                        <a href="#" id="handle-friendship" class="fa fa-times deny" data-toggle="tooltip" title="Refuser" data-sender="{{$pending_user->id}}" data-receiver="{{Auth::user()->id}}" data-accepted="0"></a>
+                                            <div class="tabbable-panel">
+                                                <div class="tabbable-line">
+                                                        <ul class="nav nav-tabs ">
+                                                            <li class="active" id="received_fs_li" style="width: 49%;">
+                                                                <a  id="received_fs_link" class="text-center" href="#" data-toggle="tab">
+                                                                    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                                                                    @if(count($pending_friendships) > 0)
+                                                                        <span class="badge" id="badge-friendship">{{count($pending_friendships)}}</span>
+                                                                    @endif
+                                                                </a>
+                                                            </li>
+                                                            <li id="sent_fs_li" style="width: 49%;">
+                                                                <a id="sent_fs_link" class="text-center" href="#" data-toggle="tab">
+                                                                    <i class="fa fa-bell" aria-hidden="true"></i>
+                                                                    @if(count(Auth::user()->unreadNotifications) > 0)
+                                                                        <span class="badge" id="badge-notification">{{count(Auth::user()->unreadNotifications)}}</span>
+                                                                    @endif
+                                                                </a>                                               
+                                                            </li>
+                                                        </ul>
+                                                    <div class="tab-content">
+                                                        <div class="tab-pane active" id="tab-received">
+                                                            @if(count($pending_friendships) != 0)
+                                                                @foreach($pending_users as $pending_user)                                      
+                                                                    <div id="user_{{$pending_user->id}}" class="cart-item clearfix">
+                                                                        <div class="description">
+                                                                            <a href="#">{{$pending_user->prenom.' ' .$pending_user->nom}} </a>
+                                                                            <strong class="price">{{$pending_user->email}}</strong>
+                                                                        </div><!--Description-->
+                                                                        <div class="buttons">
+                                                                            <a href="#" id="handle-friendship" class="fa fa-check accept" data-toggle="tooltip" title="Accepter" data-sender="{{$pending_user->id}}" data-receiver="{{Auth::user()->id}}" data-action="1"></a>
+                                                                            <a href="#" id="handle-friendship" class="fa fa-times deny" data-toggle="tooltip" title="Refuser" data-sender="{{$pending_user->id}}" data-receiver="{{Auth::user()->id}}" data-action="2"></a><br>
+                                                                             <a href="#" id="handle-friendship" class="fa fa-ban block" data-toggle="tooltip" title="Bloquer" data-sender="{{$pending_user->id}}" data-receiver="{{Auth::user()->id}}" data-action="3"></a>
+                                                                        </div>
+                                                                    </div>
+                                                                @endforeach
+                                                                <div class="panel panel-default hide" id="no-friend-request">
+                                                                  <div class="panel-body">
+                                                                    Vous n'avez pas de demande de connexion.
+                                                                  </div>
+                                                                </div>
+                                                            @else
+                                                                <div class="panel panel-default" id="no-friend-request">
+                                                                  <div class="panel-body">
+                                                                    Vous n'avez pas de demande de connexion.
+                                                                  </div>
+                                                                </div>
+                                                            @endif   
+                                                        </div>
+                                                        <div class="tab-pane" id="tab-sent">
+                                                            @if(count(Auth::user()->unreadNotifications) > 0)
+                                                                @foreach(Auth::user()->unreadNotifications as $notification)
+                                                                    @if($notification->data['type'] == 1)
+                                                                    <div class="alert alert-success small-alert" id="{{$notification->id}}" role="alert">
+                                                                        <button type="button" id="notif-read" class="close succ" data-notification="{{$notification->id}}"><span aria-hidden="true"><i class="fa fa-check"></i></span></button>
+                                                                         {{$notification->data['message']}}
+                                                                    </div>
+                                                                    @else
+                                                                        <div class="alert alert-danger small-alert" id="{{$notification->id}}" role="alert">
+                                                                            <button type="button" id="notif-read" class="close warn" data-notification="{{$notification->id}}"><span aria-hidden="true"><i class="fa fa-check"></i></span></button>
+                                                                             {{$notification->data['message']}}
+                                                                        </div>
+                                                                    @endif
+                                                                @endforeach
+                                                                <div class="panel panel-default hide" id="no-notification">
+                                                                  <div class="panel-body">
+                                                                    Vous n'avez pas de notifications.
+                                                                  </div>
+                                                                </div>
+                                                            @else
+                                                                <div class="panel panel-default">
+                                                                  <div class="panel-body">
+                                                                    Vous n'avez pas de notifications.
+                                                                  </div>
+                                                                </div>
+                                                            @endif
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            @endforeach
-                                        @else
-                                            <h6 class="text-center">Vous n'avez pas de demande d'amis.</h6>
-                                        @endif   
-                                        
+                                            </div>
                                     </div><!--cart-items-->
 
                                     <div class="cart-footer">
@@ -204,6 +266,21 @@
         $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip(); 
 });
+        </script>
+        <script type="text/javascript">
+            $('#received_fs_link').click(function() {
+                $( "#received_fs_li" ).addClass( "active" );
+                $( "#sent_fs_li" ).removeClass( "active" );
+                $('#tab-received').addClass( "active" );
+                $('#tab-sent').removeClass('active');
+            });
+            $('#sent_fs_link').click(function() {
+                $( "#received_fs_li" ).removeClass( "active" );
+                $( "#sent_fs_li" ).addClass( "active" );
+
+                $('#tab-sent').addClass( "active" );
+                $('#tab-received').removeClass('active');
+            });
         </script>
 
          @if (Session::has('bootstrap-alert'))

@@ -139,15 +139,16 @@ $('.dropdown-menu').click(function(e) {
 
 
 $(function() {
-    $("#handle-friendship.accept, #handle-friendship.deny").click(function() {
+    $("#handle-friendship.accept, #handle-friendship.deny, #handle-friendship.block").click(function() {
         var id_senders = $(this).data('sender');
         var id_receiver = $(this).data('receiver');
         // 0 : demande refusée 
         // 1 : demande acceptée
-        var is_accepted = $(this).data('accepted');
+        // 2 : bloqué
+        var action = $(this).data('action');
         //var url_sub = route('user.handleFriends');
         
-        var dataString ='id_senders=' + id_senders + '&id_receiver=' + id_receiver + '&is_accepted=' + is_accepted ;
+        var dataString ='id_senders=' + id_senders + '&id_receiver=' + id_receiver + '&action=' + action ;
         $.notify.addStyle('notif-success', {
                        html: '<div class="notifyjs-corner" style="right: 0px; bottom: 0px;">  <div class="notifyjs-wrapper notifyjs-hidable"><div class="notifyjs-arrow" style=""></div>        <div class="notifyjs-container" style="">            <div class="notifyjs-bootstrap-base notifyjs-bootstrap-success">                <span data-notify-html/>            </div>        </div>    </div></div>',
                     });
@@ -165,33 +166,94 @@ $(function() {
             success: function(dara_response) {
                 switch (dara_response) {
                     case 'success':
-                        if (is_accepted == 1) {
-                             $('#badge-new-friendship').html(function(i, val) { return val*1-1 });
-                            $.notify( "Relation acceptée!",   { position:"right bottom",style: 'notif-success'});
+                        if (action == 1) {                             
+                            $.notify("Relation acceptée!",   { position:"right bottom",style: 'notif-success'});
                         }
-                        else {
-                            $.notify( "Relation refusée!",   { position:"right bottom",style: 'notif-failed'});
+                        else if (action == 2){
+                            $.notify("Relation refusée!",   { position:"right bottom",style: 'notif-success'});
+                        }
+                        else
+                        {
+                            $.notify("Utilisateur bloqué!",   { position:"right bottom",style: 'notif-success'});
                         }
                         break;
                     case 'no_pending_request':
                          $.notify( "Aucune demande de connexion reçue de ce membre !",   { position:"right bottom",style: 'notif-warn'});
                         break;
                     default:
-                        
+                         $.notify( "Une erreur c'est produite. <br>Merci de bien vouloir réessayer!",   { position:"right bottom",style: 'notif-failed'});
                         break;
                 }
-                    $("#user_" + id_senders).slideUp(150, function() {
-                            $(this).remove(); 
-                        }); 
-                   
-                   
+                $("#user_" + id_senders).slideUp(150, function() {
+                        $(this).remove(); 
+                    });
+                
+                $('#badge-all-notification').html(function(i, val) { return val*1-1 }); 
+                    var nb_all_not = $('#badge-all-notification').text();
+                    if(nb_all_not == '0')
+                    {
+                        $('#badge-all-notification').addClass("hide");
+                    }
+
+                    $("#badge-friendship").text(function(i, val) { return val*1-1 });
+                    var nb_not = $("#badge-friendship").text();
+                    console.log(nb_not);
+                    if (nb_not == '0') {
+                        $("#no-friend-request").addClass('show').removeClass('hide');
+                        $("#badge-friendship").hide();
+                    }
                     
                 },
-            error: function(){
-                console.log('x: number');
-            },
+            error: function(xhr, status, error) {
+                console.log(xhr.responseText);
+                },
             });
         });
     });
 /*=====  End of FORM REQUEST FRIENDSHIP  ======*/
+
+/*=========================================
+=            NOTIFICATION READ            =
+=========================================*/
+
+$(function() {
+    $("#notif-read.warn,#notif-read.succ").click(function() {
+        var notifications_id = $(this).data('notification');
+        
+        var dataString ='notifications_id=' + notifications_id ;
+        console.log(dataString);
+        $.ajax({
+            type: "POST",
+            url:  APP_URL + '/user/readNotification',
+            data: dataString,
+            success: function(dara_response) {
+                if (dara_response === 'success') {
+                    $("#" + notifications_id).slideUp(150, function() {
+                            $(this).remove(); 
+                        });
+                    $('#badge-all-notification').html(function(i, val) { return val*1-1 }); 
+                    var nb_all_not = $('#badge-all-notification').text();
+                    if(nb_all_not == '0')
+                    {
+                        $('#badge-all-notification').addClass("hide");
+                    }
+
+                    $("#badge-notification").text(function(i, val) { return val*1-1 });
+                    var nb_not = $("#badge-notification").text();
+                    console.log(nb_not);
+                    if (nb_not == '0') {
+                        $("#no-notification").addClass('show').removeClass('hide');
+                        $("#badge-notification").hide();
+                    }
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log(xhr.responseText);
+                },
+            });
+        });
+    });
+
+/*=====  End of NOTIFICATION READ  ======*/
+
 
