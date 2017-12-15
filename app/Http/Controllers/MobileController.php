@@ -198,4 +198,108 @@ class MobileController extends Controller
             echo "refused";
         }
     }
+
+
+
+    public function getPendingFriendships(Request $request)
+    {
+        app('debugbar')->disable();
+        if (config('custom_settings.token_mobile') == $request->input('token_mobile')) {
+            $user_id = $request->input('id_user');
+            if (isset($user_id)) {                
+                $user = User::find($user_id);
+                $pending =  $user->getFriendRequests();
+                echo json_encode($pending);
+            }
+            else
+            {
+                return "failed";
+            }
+        }
+        else
+        {
+            echo "refused";
+        }
+    }
+
+    public function handleFriends(Request $request)
+    {
+        app('debugbar')->disable();
+        if (config('custom_settings.token_mobile') == $request->input('token_mobile')) {
+            $id_sender = $request->input('id_sender');
+            $id_receiver = $request->input('id_receiver');
+            if ((isset($id_user) && isset($id_receiver)) && ($id_receiver != $id_sender)) {
+                $user_sender = User::find($id_sender);
+                $user_receiver = User::find($id_receiver);
+                $action = $request->input('id_receiver');
+                switch ($action) {
+                    case 'accept':
+                        if ($user_sender->hasFriendRequestFrom($user_receiver)) {
+                            $user_sender->acceptFriendRequest($user_receiver);
+                            $conversation = new Conversation;
+                            $conversation->users1_id = $user_sender->id;
+                            $conversation->users2_id = $user_receiver->id;
+                            $conversation->save();
+                            return "success";
+                        }
+                        else
+                        {
+                            return "no_pending_friendship";
+                        }
+                        break;                        
+                    case 'deny':
+                        if ($user_sender->hasFriendRequestFrom($user_receiver)) {
+                            $user_sender->denyFriendRequest($user_receiver);
+                            return "success";
+                        }
+                        else
+                        {
+                            return "no_pending_friendship";
+                        }
+                        break;
+                    case 'unblock':
+                        if ($user_sender->hasFriendRequestFrom($user_receiver) || $user_sender->isFriendWith($user_receiver)) {
+                            $user_sender->unblockFriend($user_receiver);
+                            return "success";
+                        }
+                        else
+                        {
+                            return "no_pending_friendship";
+                        }
+                        break;
+                    case 'block':
+                        if ($user_sender->hasFriendRequestFrom($user_receiver) || $user_sender->isFriendWith($user_receiver)) {
+                            $user_sender->blockFriend($user_receiver);
+                            return "success";
+                        }
+                        else
+                        {
+                            return "no_pending_friendship";
+                        }
+                        break;
+                    case 'ask':
+                        if (!$user_sender->hasSentFriendRequestTo($user_receiver)) {
+                            $user_sender->befriend($user_receiver);
+                            return "success";
+                        }
+                        else
+                        {
+                            return "already_sent";
+                        }
+                        break;
+                    default:
+                        return "failed";
+                        break;
+                }
+            }
+            else
+            {
+                echo "failed";
+            }           
+        }
+        else
+        {
+            echo "refused";
+        }
+    }
 }
