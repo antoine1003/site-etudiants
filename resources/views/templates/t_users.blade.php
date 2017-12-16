@@ -66,7 +66,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="index.html"><img src="{{ URL::asset('img/logo/logo_bgw.png')}}" alt="ASSAN"></a>
+                    <a class="navbar-brand" href="{{@route('index')}}"><img src="{{ URL::asset('img/logo/logo_bgw.png')}}" alt="ASSAN"></a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
@@ -83,7 +83,7 @@
 
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown" id="dd_friendrequest">
-                                <a href="#" class="dropdown-toggle js-activated" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-users" aria-hidden="true"></i> <?php if (count($pending_friendships) > 0 || count(Auth::user()->unreadNotifications) > 0) {
+                                <a href="#" class="dropdown-toggle js-activated" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell" aria-hidden="true"></i> <?php if (count($pending_friendships) > 0 || count(Auth::user()->unreadNotifications) > 0) {
                                     echo '<span class="badge" id="badge-all-notification">'. (count($pending_friendships) + count(Auth::user()->unreadNotifications)) .'</span>';
                                 } ?></a>
                                 <div class="dropdown-menu shopping-cart"  style="max-width: 50px;">
@@ -94,7 +94,7 @@
                                                         <ul class="nav nav-tabs ">
                                                             <li class="active" id="received_fs_li" style="width: 49%;">
                                                                 <a  id="received_fs_link" class="text-center" href="#" data-toggle="tab">
-                                                                    <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                                                                    <i class="fa fa-users" aria-hidden="true"></i>
                                                                     @if(count($pending_friendships) > 0)
                                                                         <span class="badge" id="badge-friendship">{{count($pending_friendships)}}</span>
                                                                     @endif

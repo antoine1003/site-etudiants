@@ -37,7 +37,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="text-center">
-                                <button id="load-more" onclick="loadMoreMessages()" data-conv_id="{{$conversations_id}}" data-nb_mess="{{$nb_messages}}" class="btn btn-default text-center load-messages" ><i class="fa fa-ellipsis-h" aria-hidden="true"></i> Charger plus de messages</button>
+                                <button id="load-more" onclick="loadMoreMessages()" data-conv_id="{{$conversations_id}}" data-nb_mess="{{$nb_messages}}" class="btn btn-default text-center mt-2" ><i class="fa fa-ellipsis-h" aria-hidden="true"></i> Charger plus de messages</button>
                             </div>
                             <div class="divide10"></div>
                             @if(count($messages) > 0)

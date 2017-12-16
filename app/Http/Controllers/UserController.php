@@ -454,7 +454,7 @@ class UserController extends Controller
         }
         else
         {
-            var zboub = 'id_event='+ event.id +'&start_date='+ event.start.format('DD/MM/YYYY_HH:mm') +'&start_end='+ event.end.format('DD/MM/YYYY_HH:mm');
+            var zboub = 'id_event='+ id +'&start_date='+ event.start.format('DD/MM/YYYY_HH:mm') +'&start_end='+ event.end.format('DD/MM/YYYY_HH:mm');
             console.log(zboub);
             /*$.ajax({
               url: @route('user.mooveEvent'),

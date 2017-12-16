@@ -19,7 +19,12 @@
                     <div class=" col-md-12">
                         <h1 class="text-uppercase">404</h1>
                         <p class="lead">@lang('errors.404.description')</p>
-                        <a href='{{ route("index") }}' class='btn btn-lg btn-white-outline'>@lang('errors.404.main_site')</a>
+                        @if(Auth::check())
+                            <a href='{{ route("index") }}' class='btn btn-lg btn-white-outline'>@lang('errors.404.main_site')</a>
+                        @else
+                            <a href='{{ route("user.dashboard") }}' class='btn btn-lg btn-white-outline'>@lang('errors.404.main_site')</a>
+                        @endif
+                        
                     </div>
                 </div>
             </div>
