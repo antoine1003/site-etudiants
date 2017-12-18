@@ -335,7 +335,7 @@ class MobileController extends Controller
         if (config('custom_settings.token_mobile') == $request->input('token_mobile')) {
             $id_sender = $request->input('id_sender');
             $id_receiver = $request->input('id_receiver');
-            if ((isset($id_sender) && isset($id_receiver)) && ($id_receiver != $id_sender)) {
+            if (isset($id_sender)) {
                 $user_sender = User::find($id_sender);
                 $user_receiver = User::find($id_receiver);
                 /**
@@ -355,6 +355,7 @@ class MobileController extends Controller
                             $conversation->users1_id = $user_sender->id;
                             $conversation->users2_id = $user_receiver->id;
                             $conversation->save();
+                            $user_sender->notify(new FriendshipNotification($action, $user_receiver->prenom . ' ' . $user_receiver->nom));
                             return "success";
                         }
                         else
@@ -393,13 +394,15 @@ class MobileController extends Controller
                         }
                         break;
                     case 'ask':
-                        if (!$user_receiver->hasSentFriendRequestTo($user_sender) && !$user_receiver->isFriendWith($user_sender)) {
-                            $user_receiver->befriend($user_sender);
-                            return "success";
+                        $user_receiver = User::where('email',$request->input('email_receiver'))->first();
+                        if ($user_sender->hasSentFriendRequestTo($user_receiver) || $user_sender->isFriendWith($user_receiver) || $user_receiver->hasFriendRequestFrom($user_sender))
+                        {                                   
+                            return "already_sent|already_friend";
                         }
                         else
                         {
-                            return "already_sent";
+                            $user_sender->befriend($user_receiver);
+                            return "success";
                         }
                         break;
                     default:
