@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Message;
+use App\Models\Conversation;
 use Illuminate\Support\Facades\Hash;
 
 class MobileController extends Controller
@@ -372,7 +373,7 @@ class MobileController extends Controller
                         }
                         break;
                     case 'unblock':
-                        if ($user_receiver->hasFriendRequestFrom($user_sender) || $user_receiver->isFriendWith($user_sender)) {
+                        if ($user_receiver->hasBlocked($user_sender)) {
                             $user_receiver->unblockFriend($user_sender);
                             return "success";
                         }
@@ -392,7 +393,7 @@ class MobileController extends Controller
                         }
                         break;
                     case 'ask':
-                        if (!$user_receiver->hasSentFriendRequestTo($user_sender)) {
+                        if (!$user_receiver->hasSentFriendRequestTo($user_sender) && !$user_receiver->isFriendWith($user_sender)) {
                             $user_receiver->befriend($user_sender);
                             return "success";
                         }
