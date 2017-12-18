@@ -334,7 +334,7 @@ class MobileController extends Controller
         if (config('custom_settings.token_mobile') == $request->input('token_mobile')) {
             $id_sender = $request->input('id_sender');
             $id_receiver = $request->input('id_receiver');
-            if ((isset($id_user) && isset($id_receiver)) && ($id_receiver != $id_sender)) {
+            if ((isset($id_sender) && isset($id_receiver)) && ($id_receiver != $id_sender)) {
                 $user_sender = User::find($id_sender);
                 $user_receiver = User::find($id_receiver);
                 /**
@@ -343,7 +343,7 @@ class MobileController extends Controller
                  * - deny
                  * - unblock
                  * - block
-                 * @var [type]
+                 * @var string
                  */
                 $action = $request->input('action');
                 switch ($action) {
