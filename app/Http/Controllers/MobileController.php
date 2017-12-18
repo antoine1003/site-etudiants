@@ -348,8 +348,8 @@ class MobileController extends Controller
                 $action = $request->input('action');
                 switch ($action) {
                     case 'accept':
-                        if ($user_sender->hasFriendRequestFrom($user_receiver)) {
-                            $user_sender->acceptFriendRequest($user_receiver);
+                        if ($user_receiver->hasFriendRequestFrom($user_sender)) {
+                            $user_receiver->acceptFriendRequest($user_sender);
                             $conversation = new Conversation;
                             $conversation->users1_id = $user_sender->id;
                             $conversation->users2_id = $user_receiver->id;
@@ -362,8 +362,8 @@ class MobileController extends Controller
                         }
                         break;                        
                     case 'deny':
-                        if ($user_sender->hasFriendRequestFrom($user_receiver)) {
-                            $user_sender->denyFriendRequest($user_receiver);
+                        if ($user_receiver->hasFriendRequestFrom($user_sender)) {
+                            $user_receiver->denyFriendRequest($user_sender);
                             return "success";
                         }
                         else
@@ -372,8 +372,8 @@ class MobileController extends Controller
                         }
                         break;
                     case 'unblock':
-                        if ($user_sender->hasFriendRequestFrom($user_receiver) || $user_sender->isFriendWith($user_receiver)) {
-                            $user_sender->unblockFriend($user_receiver);
+                        if ($user_receiver->hasFriendRequestFrom($user_sender) || $user_receiver->isFriendWith($user_sender)) {
+                            $user_receiver->unblockFriend($user_sender);
                             return "success";
                         }
                         else
@@ -382,8 +382,8 @@ class MobileController extends Controller
                         }
                         break;
                     case 'block':
-                        if ($user_sender->hasFriendRequestFrom($user_receiver) || $user_sender->isFriendWith($user_receiver)) {
-                            $user_sender->blockFriend($user_receiver);
+                        if ($user_receiver->hasFriendRequestFrom($user_sender) || $user_receiver->isFriendWith($user_sender)) {
+                            $user_receiver->blockFriend($user_sender);
                             return "success";
                         }
                         else
@@ -392,8 +392,8 @@ class MobileController extends Controller
                         }
                         break;
                     case 'ask':
-                        if (!$user_sender->hasSentFriendRequestTo($user_receiver)) {
-                            $user_sender->befriend($user_receiver);
+                        if (!$user_receiver->hasSentFriendRequestTo($user_sender)) {
+                            $user_receiver->befriend($user_sender);
                             return "success";
                         }
                         else
