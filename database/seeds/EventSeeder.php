@@ -13,9 +13,9 @@ class EventSeeder extends Seeder
     public function run()
     {
     	$data = [
-        	['title'=>'Rom Event', 'start_date'=>'2017-05-10', 'end_date'=>'2017-05-15'],
-        	['title'=>'Coyala Event', 'start_date'=>'2017-05-11', 'end_date'=>'2017-05-16'],
-        	['title'=>'Lara Event', 'start_date'=>'2017-05-16', 'end_date'=>'2017-05-22'],
+        	['id' => 1, 'title'=>'Devoir Arnaud', 'start_date'=>'2017-12-10','eventcategories_id' => 1, 'end_date'=>'2017-12-10'],
+        	['id' => 2, 'title'=>'Cours Antoine', 'start_date'=>'2017-12-11 12:20:00', 'eventcategories_id' => 2, 'end_date'=>'2017-12-11 13:20:00'],
+        	['id' => 3, 'title'=>'Cours Arnaud', 'start_date'=>'2017-12-16', 'eventcategories_id' => 2,'end_date'=>'2017-12-22'],
         ];
         foreach ($data as $key => $value) {
         	Event::create($value);

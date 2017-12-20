@@ -46,6 +46,13 @@ h3.text-gray{
   display: none !important;
 }
 
+.deny-course{
+    position: relative;
+    top: 25px;
+    right: -18px;
+  }
+
+
 /**shopping cart dropdown menu**/
 .shopping-cart {
   padding: 0px;
@@ -104,11 +111,16 @@ h3.text-gray{
   padding: 3px  6px;
   border: 1px solid #ddd;
 }
-.cart-item .buttons a.accept:hover {
+.cart-item .buttons a.accept:hover, .accept-course:hover {
   color: #1ab394;
 }
 
-.cart-item .buttons a.deny:hover {
+.close{
+  opacity: 1;
+  color: #A7A6A6;
+}
+
+.cart-item .buttons a.deny:hover, .deny-course:hover {
   color: #f44242;
 }
 

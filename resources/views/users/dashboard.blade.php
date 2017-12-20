@@ -11,9 +11,6 @@
           <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
           <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
-        <style type="text/css">
-            
-        </style>
 @endsection
 
 
@@ -25,16 +22,17 @@
                     <div class="side-nav-wrapper">
                         @role('teacher')
                         <ul class="list-unstyled side-nav">
-                            <h3 class="text-gray ">@lang('user_site.type.teacher')</h3>
-                            <li><a href="#"><i class="fa fa-calendar-plus-o" aria-hidden="true"></i>@lang('user_site.left_menu.sub_teacher.next_class')</a></li>
-                            <li><a href="#"><i class="fa fa-users"></i> @lang('user_site.dashboard.teacher.my_students')</a></li>
+                            <h3 class="text-gray ">Professeur</h3>
+                            <li><a href="#"><i class="fa fa-calendar-plus-o" aria-hidden="true"></i>Mes prochains cours</a></li>
+                            <li><a href="#"><i class="fa fa-users"></i> Mes élèves</a></li>
                         </ul>
                         @endrole
                         @role('student')
                         <ul class="list-unstyled side-nav">
                             <h3 class="text-gray ">@lang('user_site.type.student')</h3>
-                            <li><a href="#"><i class="fa fa-calendar-plus-o" aria-hidden="true"></i>@lang('user_site.left_menu.sub_teacher.next_class')</a></li>
-                            <li><a href="#"><i class="fa fa-users"></i> @lang('user_site.dashboard.teacher.my_students')</a></li>
+                            <li><a href="#"><i class="fa fa-calendar-plus-o" aria-hidden="true"></i>Mes prochains Cours</a></li>
+                            <li><a href="{{@route('user.askClass')}}"><i class="fa fa-plus"></i> Demander un cours</a></li>
+                            <li><a href="#"><i class="fa fa-book"></i> Mes devoirs</a></li>
                         </ul>
                         @endrole
                     </div>

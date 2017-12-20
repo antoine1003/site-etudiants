@@ -43,6 +43,11 @@ class User extends Authenticatable
         return $this->belongTo('App\Models\BlockedUser');
     }
 
+    public function eventuser()
+    {
+        return $this->belongTo('App\Models\EventUser');
+    }
+
     /**
      * Vérifie si l'utilisateur connecté est bloqué ou non.
      * @return boolean
@@ -72,6 +77,10 @@ class User extends Authenticatable
         return $conversations;
     }
 
+    /**
+     * Renvois les conversations concernant l'utilisateur.
+     * @return [type] [description]
+     */
     public function getConversationsWithFullnameAndUnread()
     {
         $conversations = DB::select(DB::raw('SELECT conversations.id, u2.id as u2_id, CONCAT(u2.prenom," ", u2.nom) as u2_nom_complet, u1.id as u1_id, CONCAT(u1.prenom," ", u1.nom) as u1_nom_complet FROM conversations JOIN users  u1 ON conversations.users1_id = u1.id JOIN users u2 ON conversations.users2_id = u2.id WHERE users1_id = ? OR users2_id = ? ORDER BY u2_nom_complet ASC, u1_nom_complet ASC'), [$this->id,$this->id]);

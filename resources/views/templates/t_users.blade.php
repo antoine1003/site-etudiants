@@ -83,9 +83,11 @@
 
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown" id="dd_friendrequest">
-                                <a href="#" class="dropdown-toggle js-activated" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell" aria-hidden="true"></i> <?php if (count($pending_friendships) > 0 || count(Auth::user()->unreadNotifications) > 0) {
-                                    echo '<span class="badge" id="badge-all-notification">'. (count($pending_friendships) + count(Auth::user()->unreadNotifications)) .'</span>';
-                                } ?></a>
+                                <a href="#" class="dropdown-toggle js-activated" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell" aria-hidden="true"></i> 
+                                    @if(count($pending_friendships) > 0 || count(Auth::user()->unreadNotifications) > 0)
+                                        <span class="badge" id="badge-all-notification">{{(count($pending_friendships) + count(Auth::user()->unreadNotifications))}}</span>
+                                    @endif
+                                </a>
                                 <div class="dropdown-menu shopping-cart"  style="max-width: 50px;">
 
                                     <div class="cart-items content-scroll">
@@ -141,14 +143,22 @@
                                                         <div class="tab-pane" id="tab-sent">
                                                             @if(count(Auth::user()->unreadNotifications) > 0)
                                                                 @foreach(Auth::user()->unreadNotifications as $notification)
-                                                                    @if($notification->data['type'] == 1)
-                                                                    <div class="alert alert-success small-alert" id="{{$notification->id}}" role="alert">
-                                                                        <button type="button" id="notif-read" class="close succ" data-notification="{{$notification->id}}"><span aria-hidden="true"><i class="fa fa-check"></i></span></button>
-                                                                         {{$notification->data['message']}}
-                                                                    </div>
-                                                                    @else
-                                                                        <div class="alert alert-danger small-alert" id="{{$notification->id}}" role="alert">
-                                                                            <button type="button" id="notif-read" class="close warn" data-notification="{{$notification->id}}"><span aria-hidden="true"><i class="fa fa-check"></i></span></button>
+                                                                    @if($notification->type =='App\Notifications\FriendshipNotification')
+                                                                        @if($notification->data['type'] == 1)
+                                                                        <div class="alert alert-success small-alert" id="{{$notification->id}}" role="alert">
+                                                                            <button type="button" id="notif-read" class="close succ" data-notification="{{$notification->id}}"><span aria-hidden="true"><i class="fa fa-check"></i></span></button>
+                                                                             {{$notification->data['message']}}
+                                                                        </div>
+                                                                        @else
+                                                                            <div class="alert alert-danger small-alert" id="{{$notification->id}}" role="alert">
+                                                                                <button type="button" id="notif-read" class="close warn" data-notification="{{$notification->id}}"><span aria-hidden="true"><i class="fa fa-check"></i></span></button>
+                                                                                 {{$notification->data['message']}}
+                                                                            </div>
+                                                                        @endif
+                                                                    @elseif($notification->type =='App\Notifications\CourseNotification')
+                                                                        <div class="alert alert-info small-alert" id="{{$notification->id}}" role="alert">                                                          
+                                                                            <button type="button" id="notif-read" class="close accept-course" data-notification="{{$notification->id}}" data-toggle="tooltip" title="Accepter"><i class="fa fa-check"></i></button>
+                                                                            <button type="button" id="notif-read" class="close deny-course" data-notification="{{$notification->id}}" data-toggle="tooltip" title="Refuser"><i class="fa fa-times"></i></button>
                                                                              {{$notification->data['message']}}
                                                                         </div>
                                                                     @endif

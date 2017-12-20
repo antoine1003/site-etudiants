@@ -34,12 +34,16 @@ Route::group(['prefix' => 'user','middleware' => 'auth'], function() {
     Route::post('inbox', 'UserController@inboxPost')->name('user.inbox.post')->middleware('UserHasRole');
     Route::post('welcome/3/{type}', 'UserController@welcomePost')->name('user.welcome-post')->where('id', '[0-9]+');
     Route::get('welcome/{id}/{type?}/{categorie?}/{classe?}', 'UserController@welcome')->name('user.welcome')->where('id', '[0-9]+');
-    Route::get('manageFriends', 'UserController@manageFriends')->name('user.manageFriends')->where('id', '[0-9]+');
-    Route::get('calendar', 'UserController@calendar')->name('user.calendar')->where('id', '[0-9]+');
+    Route::get('manageFriends', 'UserController@manageFriends')->name('user.manageFriends');
+    Route::get('calendar', 'UserController@calendar')->name('user.calendar');
+    Route::get('askClass', 'UserController@askClass')->name('user.askClass');
+    Route::post('askClass', 'UserController@askClassPost')->name('user.askClass.post');
     Route::post('addFriend', 'UserController@addFriend')->name('user.addFriend')->middleware('UserHasRole');
     Route::post('handleFriends', 'UserController@handleFriends')->name('user.handleFriends');
     Route::post('mooveEvent', 'UserController@mooveEvent')->name('user.mooveEvent');
     Route::post('readNotification', 'UserController@readNotification')->name('user.readNotification');
+    Route::post('mooveEvent', 'UserController@mooveEvent')->name('user.mooveEvent');
+    
   });  
 
 Route::group(['prefix' => 'mobile'], function() {
@@ -53,6 +57,7 @@ Route::group(['prefix' => 'mobile'], function() {
     Route::post('addMessageInConversation', 'MobileController@addMessageInConversation');
     Route::post('handleFriends', 'MobileController@handleFriends');
     Route::post('getPendingFriendships', 'MobileController@getPendingFriendships');
+    Route::post('getEventsWithId', 'MobileController@getEventsWithId');
 });
 
 Route::get('maintenance',function() {

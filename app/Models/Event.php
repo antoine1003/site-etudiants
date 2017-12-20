@@ -5,10 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 
-class Event extends Model  implements \MaddHatter\LaravelFullcalendar\Event
+class Event extends Model implements \MaddHatter\LaravelFullcalendar\Event
 {
     protected $fillable = ['id','title','start_date','end_date'];
     protected $dates = ['start', 'end'];
+
+    public function eventuser()
+    {
+        return $this->belongTo('App\Models\EventUser');
+    }
+
+    public function eventcategorie()
+    {
+        return $this->hasOne('App\Models\EventCategorie');
+    }
+
+    public function eventetat()
+    {
+        return $this->hasOne('App\Models\EventEtat');
+    }
 
     /**
      * Get the event's id number
