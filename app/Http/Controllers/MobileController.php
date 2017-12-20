@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Message;
 use App\Models\Conversation;
 use Illuminate\Support\Facades\Hash;
+use DB;
 
 class MobileController extends Controller
 {
@@ -425,6 +426,40 @@ class MobileController extends Controller
     /*=====  End of FRIENDSHIP  ======*/
     
    
+/*==================================
+=            EVENEMENTS            =
+==================================*/
+
+public function getEventsWithId(Request $request)
+{
+    
+    app('debugbar')->disable();
+    if (config('custom_settings.token_mobile') == $request->input('token_mobile')) {
+        $id_user = $request->input('id_user');
+        if (isset($id_user))
+        {
+            $user = User::find($id_user);
+            if (isset($user)) {
+                $events = DB::select('SELECT event_users.creator, events.* FROM event_users JOIN events ON events.id = event_users.events_id WHERE event_users.users_id = ?',[$id_user]);
+                return json_encode($events);
+            }
+            else
+            {
+                return "user_not_found";
+            }
+        }
+        else
+        {
+            return "failed";
+        }
+    }
+    else
+    {
+        return "refused";
+    }
+}
+
+/*=====  End of EVENEMENTS  ======*/
 
 
 
