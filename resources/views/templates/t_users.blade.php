@@ -70,15 +70,16 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li> <a href="<?php echo @route('user.dashboard') ?>"><i class="fa fa-home" aria-hidden="true"></i> @lang('user_site.menu.home')</a></li>
+                        <li> <a href="<?php echo @route('user.dashboard') ?>"><i class="fa fa-home" aria-hidden="true"></i> Accueil</a></li>
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user-o" aria-hidden="true"></i>  @lang('user_site.menu.my_account') <i class="fa fa-angle-down"></i></a> 
-                            <ul class="dropdown-menu">                            
-                                <li><a href="{{@route('user.calendar')}}"><i class="fa fa-calendar" aria-hidden="true"></i> @lang('user_site.menu.calendar')</a></li>
-                                <li><a href=""><i class="fa fa-plus" aria-hidden="true"></i>  @lang('user_site.menu.add_friend')</a></li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user-o" aria-hidden="true"></i>  Mon compte <i class="fa fa-angle-down"></i></a> 
+                            <ul class="dropdown-menu">
+                                <li><a href="{{@route('user.profile')}}"><i class="fa fa-address-card-o" aria-hidden="true"></i> Mon profil</a></li>                   
+                                <li><a href="{{@route('user.calendar')}}"><i class="fa fa-calendar" aria-hidden="true"></i> Calendrier</a></li>
+                                <li><a href=""><i class="fa fa-plus" aria-hidden="true"></i>  Ajouter connaissance</a></li>
                             </ul>
                         </li>
-                        <li><a href=" <?php echo @route('user.inbox') ?>"><i class="fa fa-envelope" aria-hidden="true"></i>  @lang('user_site.menu.inbox') <?php if($nb_unread > 0){echo '<span class="badge">'.$nb_unread . '</span>';} ?></a></li>    
+                        <li><a href=" <?php echo @route('user.inbox') ?>"><i class="fa fa-envelope" aria-hidden="true"></i>  Messagerie <?php if($nb_unread > 0){echo '<span class="badge">'.$nb_unread . '</span>';} ?></a></li>    
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
@@ -146,21 +147,36 @@
                                                                     @if($notification->type =='App\Notifications\FriendshipNotification')
                                                                         @if($notification->data['type'] == 1)
                                                                         <div class="alert alert-success small-alert" id="{{$notification->id}}" role="alert">
-                                                                            <button type="button" id="notif-read" class="close succ" data-notification="{{$notification->id}}"><span aria-hidden="true"><i class="fa fa-check"></i></span></button>
+                                                                            <button type="button" id="notif-read" class="close succ" data-notification="{{$notification->id}}" data-toggle="tooltip" data-placement="bottom" title="Lu"><span aria-hidden="true"><i class="fa fa-check"></i></span></button>
                                                                              {{$notification->data['message']}}
                                                                         </div>
                                                                         @else
                                                                             <div class="alert alert-danger small-alert" id="{{$notification->id}}" role="alert">
-                                                                                <button type="button" id="notif-read" class="close warn" data-notification="{{$notification->id}}"><span aria-hidden="true"><i class="fa fa-check"></i></span></button>
+                                                                                <button type="button" id="notif-read" class="close warn" data-notification="{{$notification->id}}" data-toggle="tooltip" data-placement="bottom" title="Lu"><span aria-hidden="true"><i class="fa fa-check"></i></span></button>
                                                                                  {{$notification->data['message']}}
                                                                             </div>
                                                                         @endif
                                                                     @elseif($notification->type =='App\Notifications\CourseNotification')
-                                                                        <div class="alert alert-info small-alert" id="{{$notification->id}}" role="alert">                                                          
-                                                                            <button type="button" id="notif-read" class="close accept-course" data-notification="{{$notification->id}}" data-toggle="tooltip" title="Accepter"><i class="fa fa-check"></i></button>
-                                                                            <button type="button" id="notif-read" class="close deny-course" data-notification="{{$notification->id}}" data-toggle="tooltip" title="Refuser"><i class="fa fa-times"></i></button>
-                                                                             {{$notification->data['message']}}
-                                                                        </div>
+                                                                        @if($notification->data['type'] == 'reply')
+                                                                            @if($notification->data['action'] == 1)
+                                                                                 <div class="alert alert-success small-alert" id="{{$notification->id}}" role="alert">
+                                                                                    <button type="button" id="notif-read" class="close warn" data-notification="{{$notification->id}}" data-toggle="tooltip" data-placement="bottom" title="Lu"><span aria-hidden="true"><i class="fa fa-check"></i></span></button>
+                                                                                 {{$notification->data['message']}}
+                                                                                </div>
+                                                                            @else
+                                                                                 <div class="alert alert-danger small-alert" id="{{$notification->id}}" role="alert">
+                                                                                    <button type="button" id="notif-read" class="close warn" data-notification="{{$notification->id}}" data-toggle="tooltip" data-placement="bottom" title="Lu"><span aria-hidden="true"><i class="fa fa-check"></i></span></button>
+                                                                                 {{$notification->data['message']}}
+                                                                            </div>
+                                                                            @endif                                                                            
+                                                                        @else
+                                                                            <div class="alert alert-info small-alert" id="{{$notification->id}}" role="alert">                                                          
+                                                                                <button type="button" id="course-notif" class="close accept-course" data-notification="{{$notification->id}}" data-sender="{{$notification->data['senders_id']}}" data-toggle="tooltip" title="Accepter" data-action="1" data-event-id="{{$notification->data['events_id']}}"><i class="fa fa-check"></i></button>
+                                                                                <button type="button" id="course-notif" class="close deny-course" data-notification="{{$notification->id}}" data-sender="{{$notification->data['senders_id']}}" data-toggle="tooltip" title="Refuser" data-action="0" data-event-id="{{$notification->data['events_id']}}"><i class="fa fa-times"></i></button>
+                                                                                <div style="padding-right: 20px;">
+                                                                                 {{$notification->data['message']}}</div>
+                                                                            </div>
+                                                                        @endif
                                                                     @endif
                                                                 @endforeach
                                                                 <div class="panel panel-default hide" id="no-notification">
@@ -182,7 +198,7 @@
                                     </div><!--cart-items-->
 
                                     <div class="cart-footer">
-                                        <a href="#" class="btn btn-success" id="openmodal"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</a>
+                                        <a href="#" class="btn btn-success" id="openmodal" ><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</a>
                                         <a href="{{@route('user.manageFriends')}}" class="btn btn-primary"><i class="fa fa-wrench" aria-hidden="true"></i> Gérer</a>
                                     </div><!--footer of cart-->
 

@@ -12,12 +12,15 @@ use App\Models\Matiere;
 use App\Models\Message;
 use App\Models\Notification;
 use App\Models\Role;
+use App\Models\EventUser;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Notifications\FriendshipNotification;
 use App\Notifications\CourseNotification;
 use Calendar;
 use Carbon\Carbon;
 use DB;
+use DateInterval;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
@@ -334,7 +337,7 @@ class UserController extends Controller
 
             } else {
                 Session::flash('bootstrap-alert-type', 'warn');
-                Session::flash('bootstrap-alert', "L'email que vous avez saisis ne correspond à aucuns membres!");
+                Session::flash('bootstrap-alert', "L'email que vous avez saisis ne correspond à aucun membre!");
             }
         } else {
             Session::flash('bootstrap-alert-type', 'danger');
@@ -397,6 +400,7 @@ class UserController extends Controller
         }
         else
         {
+            console.log(event.end);
             var donnees = 'id_event='+ event.id +'&start_date='+ event.start.format('DD/MM/YYYY HH:mm') +'&end_date='+ event.end.format('DD/MM/YYYY HH:mm');
             console.log(donnees);
             $.ajax({
@@ -472,6 +476,24 @@ class UserController extends Controller
         return view('users.askclass', ['nb_unread' => $nb_unread, 'pending_friendships' => $pending_friendships, 'pending_users' => $pending_users_array, 'breadcrumb_title' => 'Demande de cours', 'teachers' => $teachers]);
     }
 
+    public function profile(Request $request)
+    {
+         $user                = Auth::user();
+        $pending_friendships = $user->getFriendRequests();
+        $nb_unread           = $user->getUnreadMessages();
+        $pending_users_array = array();
+        if (count($pending_friendships) > 0) {
+            foreach ($pending_friendships as $pending_friendship) {
+                $pending_user            = User::find($pending_friendship->sender_id);
+                $pending_user->sender_id = $pending_friendship->sender_id;
+                array_push($pending_users_array, $pending_user);
+            }
+        }
+
+        $friendships = $user->getAcceptedFriendships();
+         return view('users.profile', ['nb_unread' => $nb_unread, 'pending_friendships' => $pending_friendships, 'pending_users' => $pending_users_array, 'breadcrumb_title' => 'Mon profil']);
+    }
+    
 
     /*=====================================
     =            FONCTION POST            =
@@ -536,6 +558,7 @@ class UserController extends Controller
 
     public function mooveEvent(Request $request)
     {
+        app('debugbar')->disable();
         $id_event = $request->input('id_event');
         $start_date = $request->input('start_date');
         $end_date = $request->input('end_date');
@@ -575,6 +598,8 @@ class UserController extends Controller
         $title = $request->input('title');
         $start_date = new \DateTime($request->input('date'));
         $duration = $request->input('duration');
+        $end_date = clone $start_date;
+        $end_date->add(new DateInterval('PT' . $duration . 'M'));        
         $professeur = $request->input('professeur');
 
         $recipient = User::find($professeur);
@@ -582,23 +607,113 @@ class UserController extends Controller
             $event = new Event;
             $event->title = $title;
             $event->start_date = $start_date;
-            $event->end_date = $start_date->modify('+'. $duration .' minutes');
+            $event->end_date = $end_date;
             $event->eventcategories_id = 2; // Cours
             $event->eventetats_id = 5; // Pending
             $event->save();
 
+
+            $event_user_creator = new EventUser;
+            $event_user_creator->users_id = Auth::id();
+            $event_user_creator->events_id = $event->id;
+            $event_user_creator->creator = 1;
+            $event_user_creator->save();
+
+            $event_user_reciever = new EventUser;
+            $event_user_reciever->users_id = $professeur;
+            $event_user_reciever->events_id = $event->id;
+            $event_user_reciever->save();
+
             
             flash()->success('L\'évènement a été créé !');
-            $recipient->notify( new CourseNotification($event, Auth::user()));
-            return view('users.askclass');
+            $recipient->notify( new CourseNotification($event, Auth::user(),'ask'));
+            return redirect()->route('user.askClass');
         }
         else
         {
             flash()->error('Le professeur saisis n\'existe pas!');
             return view('users.askclass');
         }
-        
     }
+
+    public function handleClass(Request $request)
+    {
+        app('debugbar')->disable();
+        $id_event = $request->input('id_event');
+        $id_notification = $request->input('id_notification');
+        $senders_id = $request->input('senders_id');
+        $action = $request->input('action');
+        $notification = Notification::find($id_notification);
+        $event = Event::find($id_event);
+        if(empty($event) && empty($notification) && !isset($action))
+        {
+            return "empty_parameter";
+        }
+        else
+        {
+            switch ($action) {
+                case '0':
+                    $notification->read_at = Carbon::now();
+                    $notification->save();
+                    $event->eventetats_id = 6; // Refusé
+                    $recipient = User::find($senders_id);
+                    $recipient->notify( new CourseNotification($event, Auth::user(),'reply', 0));
+                    $event->save();
+                    return "success";
+                    break;
+                case '1':
+                    $notification->read_at = Carbon::now();
+                    $notification->save();
+                    $event->eventetats_id = 4; // Planifié
+                    $event->save();
+                    $recipient = User::find($senders_id);
+                    $recipient->notify( new CourseNotification($event, Auth::user(),'reply', 1));
+                    return "success";
+                    break;
+                default:
+                    return "wrong_action";
+                    break;
+            }
+        }
+    }
+
+    public function changePassword(Request$request)
+    {
+        $u = Auth::user();
+        if (isset($u)) {
+            $password_old = $request->input('old_password');
+            $password_new = $request->input('password');
+            if (strlen($password_new) >= 6) {
+                if (Hash::check($password_old, $u->password)) {
+                    $u->password = bcrypt($password_new);
+                    $u->save();
+                    flash()->success('Le mot de passe a bien été mis à jours.');
+                    return redirect()->route('user.profile');                
+                }
+                else{
+                    //Le old_password ne match pas avec celui dans la BDD
+                    flash()->error('L\'ancien mot de passe n\'est pas correct.');
+                    return redirect()->route('user.profile');                ;
+                }
+            }
+            else
+            {
+                //Mdp inférieur à 6 char
+                //Le old_password ne match pas avec celui dans la BDD
+                flash()->error('La taille du mot de passe n\'est pas correct.');
+                return redirect()->route('user.profile');                ;
+            }
+        }
+        else
+        {
+            //Utilisateur non trouvé
+            //Le old_password ne match pas avec celui dans la BDD
+            flash()->error('Utilisateur non trouvé.');
+            return redirect()->route('user.profile');                ;
+        }
+    }
+
+
 
     /*=====  End of FONCTION POST  ======*/
     

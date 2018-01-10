@@ -33,21 +33,5 @@
 <script src="{{ URL::asset('js/fullcalendar/moment.min.js') }}"></script>
 <script src="{{ URL::asset('js/fullcalendar/fullcalendar.min.js') }}"></script>
 <script src="{{ URL::asset('js/fullcalendar/fr.js') }}"></script>
-<script type="text/javascript">
-    $('#calendar').fullCalendar({
-    dayClick: function(date, jsEvent, view) {
-
-        alert('Clicked on: ' + date.format());
-
-        alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-
-        alert('Current view: ' + view.name);
-
-        // change the day's background color just for fun
-        $(this).css('background-color', 'red');
-
-    }
-});
-</script>
 {!! $calendar->script() !!}
 @endpush

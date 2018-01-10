@@ -13,46 +13,21 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        // USER
-        User::create([
-            'id' => 1,
-            'nom' => 'Dautry',
-            'prenom' => 'Antoine',
-            'ville' => 'Bouaye, France',
-            'is_blocked' => 0,
-            'verified' => 1,
-            'phone' => '0672057198',
-            'email' => 'antoine.dautry@free.fr',
-            'password' => bcrypt('p46993'),
-            'date_inscription' => Carbon::now(),
-            ]);
 
-        // USER
-        User::create([
-            'id' => 2,
-            'nom' => 'Jaffrennou',
-            'prenom' => 'Arnaud',
-            'ville' => 'Bouguenais, France',
+        $faker = Faker\Factory::create('fr_FR');
+        for ($i=1; $i < 15; $i++) { 
+            User::create([
+            'id' => $i,
+            'nom' => $faker->lastName,
+            'prenom' => $faker->firstName,
+            'ville' => $faker->city,
             'is_blocked' => 0,
             'verified' => 1,
-            'phone' => '0672052033',
-            'email' => 'arnaud@mail.fr',
+            'phone' => $faker->phoneNumber,
+            'email' => 'adresse'. $i .'@mail.fr',
             'password' => bcrypt('password'),
             'date_inscription' => Carbon::now(),
             ]);
-
-         // USER
-        User::create([
-            'id' => 3,
-            'nom' => 'Molinaro',
-            'prenom' => 'Antoine',
-            'ville' => 'Nantes, France',
-            'is_blocked' => 0,
-            'verified' => 1,
-            'email' => 'antoine@mail.fr',
-            'password' => bcrypt('password'),
-            'date_inscription' => Carbon::now(),
-            ]);
-
+        }
     }
 }

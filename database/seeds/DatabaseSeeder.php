@@ -27,12 +27,13 @@ class DatabaseSeeder extends Seeder
         $this->call(ClasseSeeder::class);
         $this->call(RoleSeeder::class);
         $this->call(MatiereSeeder::class);
-        $this->call(BlockedUserSeeder::class);
+        //$this->call(BlockedUserSeeder::class);
         //$this->call(ConversationSeeder::class);
         //$this->call(MessageSeeder::class);
         $this->call(EventCategorieSeeder::class);
         $this->call(EventEtatSeeder::class);
         $this->call(EventSeeder::class);
         $this->call(EventUserSeeder::class);
+        $this->call(RoleUserSeeder::class);
     }
 }

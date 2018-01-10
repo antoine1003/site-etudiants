@@ -41,5 +41,11 @@ class EventEtatSeeder extends Seeder
             'nom_etat_public' => 'En attente',
             'nom_etat'        => 'pending',
         ]);
+
+        EventEtat::create([
+            'id'              => 6,
+            'nom_etat_public' => 'Refusé',
+            'nom_etat'        => 'refused',
+        ]);
     }
 }

@@ -36,13 +36,16 @@ Route::group(['prefix' => 'user','middleware' => 'auth'], function() {
     Route::get('welcome/{id}/{type?}/{categorie?}/{classe?}', 'UserController@welcome')->name('user.welcome')->where('id', '[0-9]+');
     Route::get('manageFriends', 'UserController@manageFriends')->name('user.manageFriends');
     Route::get('calendar', 'UserController@calendar')->name('user.calendar');
-    Route::get('askClass', 'UserController@askClass')->name('user.askClass');
+    Route::get('askClass', ['middleware' => ['role:student'], 'uses' => 'UserController@askClass'])->name('user.askClass');
     Route::post('askClass', 'UserController@askClassPost')->name('user.askClass.post');
     Route::post('addFriend', 'UserController@addFriend')->name('user.addFriend')->middleware('UserHasRole');
     Route::post('handleFriends', 'UserController@handleFriends')->name('user.handleFriends');
     Route::post('mooveEvent', 'UserController@mooveEvent')->name('user.mooveEvent');
     Route::post('readNotification', 'UserController@readNotification')->name('user.readNotification');
     Route::post('mooveEvent', 'UserController@mooveEvent')->name('user.mooveEvent');
+    Route::post('changePassword', 'UserController@changePassword')->name('user.changePassword');
+    Route::post('handleClass', 'UserController@handleClass')->name('user.handleClass');
+    
     
   });  
 

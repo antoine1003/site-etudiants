@@ -17,28 +17,6 @@ class MessageSeeder extends Seeder
     	 * 2 : arnaud
     	 * 3 : moli 
     	 */
-    	Message::create([
-    		'emmeteurs_id' => 1,
-            'conversations_id' => 1,
-            'contenu' => 'Bonjour Arnaud, Tu vas bien?',
-        ]);
-
-    	Message::create([
-    		'emmeteurs_id' => 2,
-    		'conversations_id' => 1,
-    		'contenu' => 'Super et toi?',
-    	]);
-
-    	Message::create([
-    		'emmeteurs_id' => 1,
-            'conversations_id' => 2,
-            'contenu' => 'Ou se trouve l\'oiseau? Oui, non, zbradaraldjan?' ,
-        ]);
-
-    	Message::create([
-    		'emmeteurs_id' => 3,
-            'conversations_id' => 2,
-            'contenu' => 'Sur la branche.' ,
-        ]);
+    	
     }
 }
