@@ -66,7 +66,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="{{@route('index')}}"><img src="{{ URL::asset('img/logo/logo_bgw.png')}}" alt="ASSAN"></a>
+                    <a class="navbar-brand" href="{{@route('user.dashboard')}}"><img src="{{ URL::asset('img/logo/logo_bgw.png')}}" alt="ASSAN"></a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
@@ -76,7 +76,6 @@
                             <ul class="dropdown-menu">
                                 <li><a href="{{@route('user.profile')}}"><i class="fa fa-address-card-o" aria-hidden="true"></i> Mon profil</a></li>                   
                                 <li><a href="{{@route('user.calendar')}}"><i class="fa fa-calendar" aria-hidden="true"></i> Calendrier</a></li>
-                                <li><a href=""><i class="fa fa-plus" aria-hidden="true"></i>  Ajouter connaissance</a></li>
                             </ul>
                         </li>
                         <li><a href=" <?php echo @route('user.inbox') ?>"><i class="fa fa-envelope" aria-hidden="true"></i>  Messagerie <?php if($nb_unread > 0){echo '<span class="badge">'.$nb_unread . '</span>';} ?></a></li>    

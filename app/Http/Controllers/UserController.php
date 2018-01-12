@@ -327,9 +327,21 @@ class UserController extends Controller
             if ($recipient != null) {
                 $user = Auth::user();
                 if ($user->id != $recipient->id) {
-                    $user->befriend($recipient);
-                    Session::flash('bootstrap-alert-type', 'success');
-                    Session::flash('bootstrap-alert', 'La demande de connexion a bien été envoyée !');
+                    if ($user->hasSentFriendRequestTo($recipient)) {
+                        Session::flash('bootstrap-alert-type', 'error');
+                        Session::flash('bootstrap-alert', 'La demande de connexion a déjà été envoyée !');
+                    }
+                    else{
+                        if($user->isFriendWith($recipient)){
+                            Session::flash('bootstrap-alert-type', 'error');
+                            Session::flash('bootstrap-alert', 'Vous êtes déjà amis avec cette personne !');
+                        }
+                        else{
+                            $user->befriend($recipient);
+                            Session::flash('bootstrap-alert-type', 'success');
+                            Session::flash('bootstrap-alert', 'La demande de connexion a bien été envoyée !');
+                        }
+                    }
                 } else {
                     Session::flash('bootstrap-alert-type', 'error');
                     Session::flash('bootstrap-alert', 'Vous ne pouvez pas vous ajouter vous même !');
@@ -352,7 +364,8 @@ class UserController extends Controller
         $events = [];
         $data   = Event::select('events.id','title','all_day', 'start_date', 'end_date', 'eventcategories_id', 'eventetats_id')
                         ->join('event_users', 'event_users.events_id', 'events.id')
-            ->where('users_id', Auth::id())->get();
+                        ->where('users_id', Auth::id())
+                        ->where('eventetats_id', '<>','5')->get(); //On n'affiche pas les évènements en attente
         if ($data->count()) {
             foreach ($data as $key => $value) {
                 if ($value->eventetats_id != '1') {
